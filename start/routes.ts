@@ -25,3 +25,5 @@ Route.get('/', async ({ view }) => {
 })
 
 Route.get('/test', async () => {return 'working'} )
+
+Route.get('/company_contacts', 'CompanyContactsController.index')

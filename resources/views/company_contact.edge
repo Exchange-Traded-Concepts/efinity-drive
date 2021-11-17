@@ -1,0 +1,35 @@
+@layout('layouts.main')
+
+@section('content')
+
+<div class="row">
+  <div class="col-md-6">
+    Content here
+  </div>
+  <div class="col-md-6">
+    <form action="/companyContacts" method="post">
+      <div class="form-group">
+        <label for="first_name">First Name</label>
+        <input type="text" class="form-control" id="first_name" name="first_name"   placeholder="First Name">
+      </div>
+      <div class="form-group">
+        <label for="email">Last Name</label>
+        <input type="text" class="form-control" id="last_name" name="last_name"  placeholder="Last Name">
+      </div>
+      <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Email Address">
+      </div>
+      <div class="form-group">
+        <label for="office_phone">Office Phone</label>
+        <input type="text" class="form-control" id="office_phone" placeholder="Office Phone">
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+
+    </form>
+
+  </div>
+
+
+</div>
+@endsection
