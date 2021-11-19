@@ -1,13 +1,48 @@
-@layout('layouts.main')
+@layout('layouts.adminDashboard')
 
 @section('content')
-
+<div class="container-fluid">
 <div class="row">
   <div class="col-md-6">
-    Content here
+    <!-- card -->
+    <div class="card shadow mb-4">
+      <!-- Card Header - Dropdown -->
+      <div
+        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Company Contacts</h6>
+        <div class="dropdown no-arrow">
+          <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+               aria-labelledby="dropdownMenuLink">
+            <div class="dropdown-header">Admin:</div>
+            <a class="dropdown-item" href="#">Add Contact</a>
+          <!--  <a class="dropdown-item" href="#">Another action</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Something else here</a>
+          -->
+          </div>
+        </div>
+      </div>
+      <!-- Card Body -->
+      <div class="card-body">
+        <ul>
+          <li>{{ session.get('area_code')}}</li>
+          <li>David Meinke</li>
+          <li>Bat Man</li>
+          <li>Hulk Hogan</li>
+          <li>Clark Kent</li>
+
+        </ul>
+      </div>
+    </div>
+    <!-- ./end col -->
   </div>
   <div class="col-md-6">
-    <form action="/companyContacts" method="post">
+    <form action="/company_contacts" method="post">
+      {{ csrfField() }}
       <div class="form-group">
         <label for="first_name">First Name</label>
         <input type="text" class="form-control" id="first_name" name="first_name"   placeholder="First Name">
@@ -24,6 +59,10 @@
         <label for="office_phone">Office Phone</label>
         <input type="text" class="form-control" id="office_phone" placeholder="Office Phone">
       </div>
+    <div class="form-group">
+      <label for="other_phone">Other Phone</label>
+      <input type="text" class="form-control" id="other_phone" placeholder="Other Phone">
+    </div>
       <button type="submit" class="btn btn-primary">Submit</button>
 
     </form>
@@ -31,5 +70,6 @@
   </div>
 
 
-</div>
+</div></div>
+
 @endsection

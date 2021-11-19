@@ -27,3 +27,8 @@ Route.get('/', async ({ view }) => {
 Route.get('/test', async () => {return 'working'} )
 
 Route.get('/company_contacts', 'CompanyContactsController.index')
+Route.post('/company_contacts', 'CompanyContactsController.store')
+
+Route.get('/dashboard', async ({view})  => {
+  return view.render('admin')
+})
