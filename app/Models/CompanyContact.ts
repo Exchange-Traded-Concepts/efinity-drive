@@ -12,6 +12,9 @@ export default class CompanyContact extends BaseModel {
   public last_name: string
 
   @column()
+  public job_title: string
+
+  @column()
   public email: string
 
   @column()
@@ -25,4 +28,7 @@ export default class CompanyContact extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  @column()
+  public office_location: string
 }

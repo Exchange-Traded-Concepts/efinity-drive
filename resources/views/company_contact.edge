@@ -34,6 +34,14 @@
           <li>Bat Man</li>
           <li>Hulk Hogan</li>
           <li>Clark Kent</li>
+          @if(contacts)
+            @each(contact in contacts)
+              <li>{{contact.first_name}} {{ contact.last_name }} {{ contact.office_location}}</li>
+            @end
+          @end
+
+
+
 
         </ul>
       </div>
@@ -52,17 +60,29 @@
         <input type="text" class="form-control" id="last_name" name="last_name"  placeholder="Last Name">
       </div>
       <div class="form-group">
+        <label for="job_title">Last Name</label>
+        <input type="text" class="form-control" id="job_title" name="job_title"  placeholder="Job Title">
+      </div>
+      <div class="form-group">
         <label for="email">Email address</label>
-        <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Email Address">
+        <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Email Address">
       </div>
       <div class="form-group">
         <label for="office_phone">Office Phone</label>
-        <input type="text" class="form-control" id="office_phone" placeholder="Office Phone">
+        <input type="text" name="office_phone" class="form-control" id="office_phone" placeholder="Office Phone">
       </div>
     <div class="form-group">
       <label for="other_phone">Other Phone</label>
-      <input type="text" class="form-control" id="other_phone" placeholder="Other Phone">
+      <input type="text" name="other_phone" class="form-control" id="other_phone" placeholder="Other Phone">
     </div>
+      <div class="form-group">
+        <label for="other_phone">Office</label>
+        <select name="office_location" class="form-control">
+          <option name="OKC">OKC</option>
+          <option name="NYC">NYC</option>
+        </select>
+
+      </div>
       <button type="submit" class="btn btn-primary">Submit</button>
 
     </form>
