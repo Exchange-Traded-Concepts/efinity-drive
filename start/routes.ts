@@ -32,3 +32,5 @@ Route.post('/company_contacts', 'CompanyContactsController.store')
 Route.get('/dashboard', async ({view})  => {
   return view.render('admin')
 })
+
+Route.get('/client', 'ClientsController.index')

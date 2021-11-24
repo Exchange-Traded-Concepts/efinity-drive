@@ -36,7 +36,11 @@
           <li>Clark Kent</li>
           @if(contacts)
             @each(contact in contacts)
-              <li>{{contact.first_name}} {{ contact.last_name }} {{ contact.office_location}}</li>
+              <li>{{contact.first_name}} {{ contact.last_name }}
+                @if( contact.office_location)
+                 {{ contact.office_location }}
+                @end
+              </li>
             @end
           @end
 
@@ -53,7 +57,7 @@
       {{ csrfField() }}
       <div class="form-group">
         <label for="first_name">First Name</label>
-        <input type="text" class="form-control" id="first_name" name="first_name"   placeholder="First Name">
+        <input type="text" class="form-control" id="first_name" name="first_name"  value=""  placeholder="First Name">
       </div>
       <div class="form-group">
         <label for="email">Last Name</label>
