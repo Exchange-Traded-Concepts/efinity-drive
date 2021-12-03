@@ -3,6 +3,7 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 //import session from "Config/session";
 import CompanyContact from "App/Models/CompanyContact";
 import Database from "@ioc:Adonis/Lucid/Database";
+import FileUpload from 'App/utils/fileUploader';
 
 export default class CompanyContactsController {
   public async index ({ view, session }: HttpContextContract){
@@ -20,7 +21,9 @@ export default class CompanyContactsController {
   }
 
   public async store ({request, session, response} : HttpContextContract ){
-
+    console.log(request.file('upload'));
+    const data = await FileUpload.uploadToS3(request.file('upload'),'uploads',null);
+    console.log({data});
     await CompanyContact.create({
       first_name : request.input('first_name'),
       last_name : request.input('last_name'),
