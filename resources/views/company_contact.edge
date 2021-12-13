@@ -15,7 +15,7 @@
              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
           </a>
-          <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+          <div class="dropdown-menu dropdow0n-menu-right shadow animated--fade-in"
                aria-labelledby="dropdownMenuLink">
             <div class="dropdown-header">Admin:</div>
             <a class="dropdown-item" href="#">Add Contact</a>
@@ -53,7 +53,7 @@
     <!-- ./end col -->
   </div>
   <div class="col-md-6">
-    <form action="/company_contacts" method="post">
+    <form action="/company_contacts" method="post"  enctype="multipart/form-data">
       {{ csrfField() }}
       <div class="form-group">
         <label for="first_name">First Name</label>
@@ -86,6 +86,10 @@
           <option name="NYC">NYC</option>
         </select>
 
+      </div>
+      <div class="form-group">
+        <label for="upload">upload</label>
+        <input type="file" name="upload" class="form-control" id="upload" aria-describedby="uploadHelp" placeholder="upload">
       </div>
       <button type="submit" class="btn btn-primary">Submit</button>
 
