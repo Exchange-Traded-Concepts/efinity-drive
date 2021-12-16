@@ -1,0 +1,202 @@
+@layout('layouts.adminDashboard')
+
+@section('content')
+<div class="container-fluid">
+<div>
+  @if(flashMessages.has('notification'))
+  <div class="alert alert-success">{{ flashMessages.get('notification') }}</div>
+  @endif
+</div>
+<div class="row">
+
+  <div class="col-md-6">
+    <div class="card shadow mb-4">
+      <div
+        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Funds</h6>
+      </div>
+      <div class="card-body">
+        {{ funds }}
+        @each(d in funds)
+        {{d}}
+        {{ d.id }} : {{ d.fund_name }} {{d.ticker }}<a href="{{ `/funds/${d.id}/edit` }}">Edit</a><br>
+        @end
+
+      </div>
+
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card shadow mb-4">
+      <div
+        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Funds</h6>
+      </div>
+      <div class="card-body">
+        @if(flashMessages.has('errors'))
+          <div class="alert alert-danger" >There was an error in your form
+            {{ flashMessages.get('errors')}}
+          </div>
+        @endif
+
+        <form
+          @if(fund)
+          action=" {{ `/funds/${fund.id}?_method=PATCH`}}"
+          @else
+          action="/funds"
+          @end
+          method="post"
+          enctype="multipart/form-data">
+          {{ csrfField() }}
+          <div class="form-group">
+            <label for="name">Fund Name</label>
+            <input type="text" class="form-control {{ flashMessages.has('errors.name') ? 'alert-danger' :'' }}"
+                   id="name"
+                   name="fund_name"
+                   @if(custo)
+                   value="{{fund.fund_name ||''}}"
+                   @endif
+                   placeholder="Fund Name">
+          </div>
+
+          <div class="form-group row">
+            <div class="col-md-6">
+            <label for="ticker">Ticker</label>
+            <input type="text" class="form-control"
+                   id="ticker"
+                   name="ticker"
+                   @if(custo)
+                   value="{{fund.ticker ||''}}"
+                   @endif
+                   placeholder="Ticker" maxlength="5" >
+          </div>
+          <div class="col-md-6">
+            <label for="exchange">Exchange</label>
+            <input type="text"
+                   name="exchange"
+                   @if(fund)
+                   value="{{fund.exchange ||''}}"
+                   @endif
+                   class="form-control"
+                   id="exchange"
+                   placeholder="Exchange">
+          </div>
+          </div>
+          <div class="form-group">
+            <label for="Company">Company</label>
+            <select name="client_id" class="form-control" id="Company" aria-describedby="client">
+              @each(c in clients)
+              <option value="{{ c.id }}"
+                      @if(fund)
+                      @if(c.id == fund.clientId)
+                      selected
+                      @endif
+                      @endif
+              > {{ c.name }}</option>
+              @end
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="custodian">Custodian</label>
+            <select name="custodian_id" class="form-control" id="custodian" aria-describedby="custodian">
+              @each(cu in custodians)
+              <option value="{{ cu.id }}"
+                      @if(fund)
+                      @if(cu.id == fund.custodianId)
+                      selected
+                      @endif
+                      @endif
+              > {{ cu.name }}</option>
+              @end
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="distributor">Distributor</label>
+            <select name="distributor_id" class="form-control" id="distributor" aria-describedby="distributor">
+              @each(di in distributors)
+              <option value="{{ di.id }}"
+                      @if(fund)
+                      @if(di.id == fund.distributorId)
+                      selected
+                      @endif
+                      @endif
+              > {{ di.name }}</option>
+              @end
+            </select>
+          </div>
+          <div class="form-group row">
+            <div class="col-md-6">
+            <label for="trust">Trust</label>
+            <input type="text"
+                   class="form-control"
+                   id="trust"
+                   @if(fund)
+                   value="{{fund.trust ||''}}"
+                   @endif
+                   name="trust"
+                   placeholder="Trust">
+          </div>
+
+          <div class="col-md-6">
+            <label for="fiscal_year_end">Fiscal Year End</label>
+            <input type="text"
+                   name="fiscal_year_end"
+                   @if(custo)
+                   value="{{fund.fiscal_year_end ||''}}"
+                   @endif
+                   class="form-control"
+                   id="fiscal_year_end"
+                   placeholder="Fiscal Year End">
+          </div>
+            </div>
+            <div class="form-group">
+              <label for="fund_website">Fund Website</label>
+              <input type="text"
+                     name="fund_website"
+                     @if(fund)
+                     value="{{fund.fund_website ||''}}"
+                     @endif
+                     class="form-control"
+                     id="fund_website"
+                     placeholder="Fund Website">
+            </div>
+          <div class="form-group row">
+            <div class="col-md-6">
+            <label for="Dividend Frequency">Dividend Frequency</label>
+            <input type="text"
+                   name="dividend_frequency"
+                   @if(fund)
+                   value="{{fund.dividend_frequency ||''}}"
+                   @endif
+                   class="form-control"
+                   id="Dividend Frequency"
+                   placeholder="Dividend Frequency">
+          </div>
+          <div class="col-md-6">
+            <label for="prospectus_date">Prospectus Date</label>
+            <input type="date"
+                   name="prospectus_date"
+                   @if(fund)
+                   value="{{fund.prospectus_date ||''}}"
+                   @endif
+                   class="form-control"
+                   id="prospectus_date"
+                   placeholder="Prospectus Date">
+          </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Submit</button>
+          @if(flashMessages.has('errors.name'))
+          <p class="alert-danger">
+            {{ flashMessages.get('errors.name')}}
+          </p>
+          @endif
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+@endsection

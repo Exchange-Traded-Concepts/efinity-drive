@@ -4,7 +4,7 @@
 <div class="container-fluid">
 <div>
   @if(flashMessages.has('notification'))
-  <p class="alert-success">{{ flashMessages.get('notification') }}</p>
+  <div class="alert alert-success">{{ flashMessages.get('notification') }}</div>
   @endif
 </div>
 <div class="row">
@@ -17,7 +17,7 @@
       </div>
       <div class="card-body">
       @each(d in data)
-        {{ d.id }} : {{ d.name }} <a href="{{ `/distributor/${d.id}/edit` }}">Edit</a><br>
+        {{ d.id }} : {{ d.name }} <a href="{{ `/distributor/${d.id}/edit` }}"><i class="fas fa-pencil-alt"></i></a> <i class="far fa-address-book"></i><br>
        @end
 
       </div>

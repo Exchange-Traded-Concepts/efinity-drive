@@ -35,11 +35,20 @@ Route.get('/dashboard', async ({view})  => {
 
 Route.get('/client', 'ClientsController.index')
 Route.post('/client', 'ClientsController.store')
-
+Route.get('/client/:id/edit', 'ClientsController.edit')
+Route.patch('/client/:id', 'ClientsController.update')
 
 Route.get('/custodian', 'CustodiansController.index')
+Route.post('/custodian', 'CustodiansController.store')
+Route.get('/custodian/:id/edit', 'CustodiansController.edit')
+Route.patch('/custodian/:id', 'CustodiansController.update')
 
 Route.get('/distributor', 'DistributorsController.index')
 Route.post('/distributor', 'DistributorsController.store')
 Route.get('/distributor/:id/edit', 'DistributorsController.edit')
 Route.patch('/distributor/:id', 'DistributorsController.update')
+
+Route.get('/funds', 'FundsController.index')
+Route.post('/funds', 'FundsController.store')
+Route.get('/funds/:id/edit', 'FundsController.edit')
+Route.patch('/funds/:id', 'FundsController.update')
