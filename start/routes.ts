@@ -45,8 +45,8 @@ Route.get('/dashboard', async ({view})  => {
 
  */
 
-Route.get('/register', 'AuthController.showRegister')
-Route.post('/register', 'AuthController.register')
+Route.get('/register', 'AuthController.showRegister').middleware('isAdmin')
+Route.post('/register', 'AuthController.register').middleware('isAdmin')
 
 Route.post('/login', 'AuthController.login')
 Route.get('/logout', 'AuthController.logout').middleware('auth')
