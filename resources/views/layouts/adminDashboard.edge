@@ -113,7 +113,9 @@
     <div class="sidebar-heading">
       Addons
     </div>
-    @if(auth.user.can_edit)
+    <!--
+    @ if(auth.user.can_edit)
+    -->
     <li class="nav-item {{ active }}">
       <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseMaintenance"
          aria-expanded="true" aria-controls="collapseMaintenance">
@@ -134,7 +136,7 @@
         </div>
       </div>
     </li>
-    @endif
+    <!-- @endif -->
 
     <!-- Nav Item - Pages Collapse Menu
     <li class="nav-item active">
@@ -364,9 +366,11 @@
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
-              @if(auth.isLoggedIn)
-              <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{auth.user.first_name}} {{auth.user.last_name}}</span>
+  <!--            @ if(auth.isLoggedIn)
+              <span class="mr-2 d-none d-lg-inline text-gray-600 small">auth.user.first_name auth.user.last_name </span>
               @endif
+
+              -->
               <img class="img-profile rounded-circle"
                    src="/img/undraw_profile.svg">
             </a>
@@ -439,9 +443,10 @@
       <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
       <div class="modal-footer">
         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-        @if(auth.isLoggedIn)
+       <!-- @ if(auth.isLoggedIn)
         <a class="btn btn-primary" href="/logout">Logout</a>
-        @endif
+        @ endif
+        -->
       </div>
     </div>
   </div>

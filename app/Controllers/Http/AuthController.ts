@@ -30,7 +30,7 @@ export default class AuthController {
       password: data.password,
       is_active: await this.trueCheck(request.input('is_active')),
       is_admin: await this.trueCheck(request.input('is_admin')),
-      can_edit: await this.trueCheck('can_edit')
+      can_edit: await this.trueCheck(request.input('can_edit'))
     })
 
     session.put('created_user',{ user })
