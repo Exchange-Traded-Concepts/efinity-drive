@@ -4,7 +4,6 @@ import Client from "App/Models/Client";
 import FileUpload from "App/utils/fileUploader";
 import States from "App/utils/USState";
 import {rules, schema} from "@ioc:Adonis/Core/Validator";
-import Fund from "App/Models/Fund";
 //import Database from "@ioc:Adonis/Lucid/Database";
 
 export default class ClientsController {

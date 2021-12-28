@@ -64,6 +64,7 @@ export default class FundsController {
     const maint = 'show'
     const c_fund = await Fund.findOrFail(params.id)
     const p_date = await this.short_date(c_fund.prospectus_date)
+    //@ts-ignore
     c_fund.prospectus_date = p_date
   //  console.log(p_date)
     return view.render('maintenance/fund', { funds, custodians, clients, distributors, maint, c_fund})
@@ -135,7 +136,9 @@ export default class FundsController {
    let year = date.getFullYear();
    let month = date.getMonth() + 1;
    let dt = date.getDate();
+   //@ts-ignore
    dt = dt.toString().padStart(2, '0');
+   //@ts-ignore
    month = month.toString().padStart(2, '0');
    return year + '-' + month + '-' + dt
  }
