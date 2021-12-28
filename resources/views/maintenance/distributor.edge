@@ -16,9 +16,28 @@
         <h6 class="m-0 font-weight-bold text-primary">Distributors</h6>
       </div>
       <div class="card-body">
+        <table class="table table-striped">
+          <tr>
+            <th>ID</th>
+            <th>Distributor Name</th>
+            <th>State</th>
+            <th>Options</th>
+          </tr>
       @each(d in data)
-        {{ d.id }} : {{ d.name }} <a href="{{ `/distributor/${d.id}/edit` }}"><i class="fas fa-pencil-alt"></i></a> <i class="far fa-address-book"></i><br>
+          <tr>
+            <td>
+              {{ d.id }}
+            </td>
+            <td>
+              {{ d.name }}
+            </td>
+            <td>{{d.state}}</td>
+            <td>
+              <a href="{{ `/distributor/${d.id}/edit` }}"><i class="fas fa-pencil-alt"></i></a> <i class="far fa-address-book"></i>
+            </td>
+          </tr>
        @end
+        </table>
 
       </div>
 

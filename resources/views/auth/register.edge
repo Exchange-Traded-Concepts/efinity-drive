@@ -1,0 +1,176 @@
+@layout('layouts.adminDashboard')
+
+@section('content')
+<div class="container-fluid">
+@if(flashMessages.has('notification'))
+<div class="alert alert-success">{{ flashMessages.get('notification') }}</div>
+@endif
+<div class="row">
+  <div class="col-md-6">
+    <div class="card shadow mb-4">
+      <div
+        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Users</h6>
+      </div>
+      <div class="card-body">
+        <table class="table table-striped">
+          <tr>
+            <th>
+              Name
+            </th>
+            <th>
+              Is Admin (ETC Staff)
+            </th>
+            <th>
+              Can Edit All
+            </th>
+            <th>
+              Options
+            </th>
+          </tr>
+      @each(u in allUsers)
+          <tr>
+            <td>{{u.first_name}} {{u.last_name}}</td>
+            <td style="text-align: center">
+              @if(u.is_admin ===1)
+              <i class="fas fa-check-circle" style="color: #0f6848"></i>
+              @else
+                &nbsp;
+              @end
+            </td>
+            <td style="text-align: center">
+              @if(u.can_edit)
+              <i class="fas fa-check-circle" style="color: #0f6848"></i>
+              @else
+                &nbsp;
+              @end
+            </td>
+            <td style="text-align: center">
+              <a href="{{ `/register/${u.id}/edit` }}"><i class="fas fa-pencil-alt"></i></a>
+            </td>
+      @endeach
+          </tr>
+        </table>
+
+      </div>
+  </div>
+
+  </div>
+  <div class="col-md-6">
+
+    <div class="card shadow mb-4">
+      <div
+        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Register User</h6>
+      </div>
+      <div class="card-body">
+        <form action="/register" method="post">
+          {{ csrfField() }}
+
+
+        <div>
+          <div class="form-group">
+            <label for="first_name">First Name</label>
+            <input
+                type="text"
+                class="form-control {{ flashMessages.get('errors.first_name') ? 'is-danger' : '' }}"
+                name="first_name"
+                id="first_name"
+                value="{{ flashMessages.get('first_name') || '' }}"
+                placeholder="First Name">
+            </div>
+
+            @if (flashMessages.has('errors.name'))
+            <p class="help is-danger">
+              {{ flashMessages.get('errors.name') }}
+            </p>
+            @endif
+          </div>
+          <div>
+            <div class="form-group">
+              <label for="last_name">Last Name</label>
+              <input
+                type="text"
+                class="form-control {{ flashMessages.get('errors.last_name') ? 'is-danger' : '' }}"
+                name="last_name"
+                id="last_name"
+                value="{{ flashMessages.get('last_name') || '' }}"
+                placeholder="Last Name">
+            </div>
+
+            @if (flashMessages.has('errors.name'))
+            <p class="help is-danger">
+              {{ flashMessages.get('errors.name') }}
+            </p>
+            @endif
+          </div>
+
+          <div>
+            <div class="form-group">
+             <label class="label">Email</label>
+              <input
+                type="email"
+                class="input form-control {{ flashMessages.get('errors.email') ? 'is-danger' : '' }}"
+                name="email"
+                value="{{ flashMessages.get('email') || '' }}"
+                placeholder="Email">
+            </div>
+
+            @if (flashMessages.has('errors.email'))
+            <p class="help is-danger">
+              {{ flashMessages.get('errors.email') }}
+            </p>
+            @endif
+          </div>
+        <div>
+          <div class="form-group">
+            <label class="label">Password</label>
+            <input
+                type="password"
+                class="input form-control {{ flashMessages.get('errors.password') ? 'is-danger' : '' }}"
+                name="password"
+                placeholder="Password" >
+            </div>
+            @if (flashMessages.has('errors.password'))
+            <p class="help is-danger">
+              {{ flashMessages.get('errors.password') }}
+            </p>
+            @endif
+          </div>
+          <div>
+          <div class="form-group">
+            <label class="label">Confirm Password</label>
+              <input
+                type="password"
+                class="input form-control {{ flashMessages.get('errors.password_confirmation') ? 'is-danger' : '' }}"
+                name="password_confirmation"
+                placeholder="Confirm Password">
+            </div>
+
+            @if (flashMessages.has('errors.password_confirmation'))
+            <p class="help is-danger">
+              {{ flashMessages.get('errors.password_confirmation') }}
+            </p>
+            @endif
+          </div>
+          <div class="form-check">
+            <input id="active" type="checkbox" name="is_active" value="1" class="form-check-input">
+            <label for="active" class="form-check-label">Active</label>
+          </div>
+          <div class="form-check">
+            <input id="admin" type="checkbox" name="is_admin" value="1" class="form-check-input">
+            <label for="admin" class="form-check-label">Admin</label>
+          </div>
+          <div class="form-check">
+            <input id="can_edit" type="checkbox" name="can_edit" value="1" class="form-check-input">
+            <label for="can_edit" class="form-check-label">Allow Full Edit Permissions</label>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+@endsection
+

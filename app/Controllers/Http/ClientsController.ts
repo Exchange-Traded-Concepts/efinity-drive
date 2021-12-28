@@ -4,6 +4,7 @@ import Client from "App/Models/Client";
 import FileUpload from "App/utils/fileUploader";
 import States from "App/utils/USState";
 import {rules, schema} from "@ioc:Adonis/Core/Validator";
+import Fund from "App/Models/Fund";
 //import Database from "@ioc:Adonis/Lucid/Database";
 
 export default class ClientsController {
@@ -15,11 +16,12 @@ export default class ClientsController {
 
     const data = await Client.all();
     const states = await States.state_hash()
+    const maint = 'show'
 
     session.get('area_code')
     // Write value
     session.put('area_code', 777)
-    return view.render('client/index', {data, states})
+    return view.render('client/index', {data, states, maint})
   }
   public async store ({request, session, response}: HttpContextContract) {
 
@@ -56,7 +58,9 @@ export default class ClientsController {
   }
 
 
-  public async show ({}: HttpContextContract) {
+  public async show ({view}: HttpContextContract) {
+    const clients = await Client.all()
+    return view.render('admin/clients', {clients})
   }
 
 
@@ -65,22 +69,18 @@ export default class ClientsController {
     const client =    await Client.findBy('id',params.id)
     const states =  await States.state_hash()
     const data =    await Client.all()
-    return view.render('client/index', { client: client, states, data})
+    const maint = 'show'
+    return view.render('client/index', { client: client, states, data, maint})
 
   }
 
 
   public async update ({ params, request, response, session  }: HttpContextContract) {
 
-    console.log('dis some bullshit')
-
     const c = await Client.findOrFail( params.id)
-    console.log('HERE')
-    //console.log(client1)
 
     const data = await this.validateInput(request)
 
-    console.log('DATA')
     c.merge({
       name: data.name,
       address: data.address,
@@ -95,9 +95,7 @@ export default class ClientsController {
       etf_website:  request.input('etf_website'),
     })
 
-    console.log('logged')
-    console.log(c)
-    await c.save()
+     await c.save()
     session.flash('notification', 'Client Updated')
     return response.redirect('back', )
 

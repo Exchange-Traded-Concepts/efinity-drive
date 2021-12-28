@@ -26,29 +26,59 @@ Route.get('/', async ({ view }) => {
 
 Route.get('/test', async () => {return 'working'} )
 
-Route.get('/company_contacts', 'CompanyContactsController.index')
-Route.post('/company_contacts', 'CompanyContactsController.store')
+Route.get('/company', 'CompanyContactsController.show').middleware('auth')
 
+Route.group(() => {
+  Route.get('/company_contacts', 'CompanyContactsController.index')
+  Route.post('/company_contacts', 'CompanyContactsController.store')
+  Route.get('/company_contacts/:id/edit', 'CompanyContactsController.edit')
+  Route.patch('/company_contacts/:id', 'CompanyContactsController.update')
+  Route.get('/company_contacts/:id/delete', 'CompanyContactsController.destroy')
+}).middleware('isAdmin')
+
+Route.get('/dashboard', 'DashboardController.index')
+
+/*
 Route.get('/dashboard', async ({view})  => {
   return view.render('admin')
 })
 
-Route.get('/client', 'ClientsController.index')
-Route.post('/client', 'ClientsController.store')
-Route.get('/client/:id/edit', 'ClientsController.edit')
-Route.patch('/client/:id', 'ClientsController.update')
+ */
 
-Route.get('/custodian', 'CustodiansController.index')
-Route.post('/custodian', 'CustodiansController.store')
-Route.get('/custodian/:id/edit', 'CustodiansController.edit')
-Route.patch('/custodian/:id', 'CustodiansController.update')
+Route.get('/register', 'AuthController.showRegister').middleware('isAdmin')
+Route.post('/register', 'AuthController.register').middleware('isAdmin')
 
-Route.get('/distributor', 'DistributorsController.index')
-Route.post('/distributor', 'DistributorsController.store')
-Route.get('/distributor/:id/edit', 'DistributorsController.edit')
-Route.patch('/distributor/:id', 'DistributorsController.update')
+Route.post('/login', 'AuthController.login')
+Route.get('/logout', 'AuthController.logout').middleware('auth')
 
+Route.group(()=> {
+  Route.get('/client', 'ClientsController.index').middleware('isAdmin')
+  Route.post('/client', 'ClientsController.store')
+  Route.get('/client/:id/edit', 'ClientsController.edit')
+  Route.patch('/client/:id', 'ClientsController.update')
+}).middleware('auth')
+
+Route.group(() => {
+  Route.get('/custodian', 'CustodiansController.index')
+  Route.post('/custodian', 'CustodiansController.store')
+  Route.get('/custodian/:id/edit', 'CustodiansController.edit')
+  Route.patch('/custodian/:id', 'CustodiansController.update')
+}).middleware('editAdmin')
+
+Route.group( ()=>{
+  Route.get('/distributor', 'DistributorsController.index')
+  Route.post('/distributor', 'DistributorsController.store')
+  Route.get('/distributor/:id/edit', 'DistributorsController.edit')
+  Route.patch('/distributor/:id', 'DistributorsController.update')
+}).middleware('editAdmin')
+
+Route.group(() => {
 Route.get('/funds', 'FundsController.index')
 Route.post('/funds', 'FundsController.store')
 Route.get('/funds/:id/edit', 'FundsController.edit')
 Route.patch('/funds/:id', 'FundsController.update')
+}).middleware('editAdmin')
+
+Route.get('/admin_funds', 'FundsController.show').middleware('isAdmin')
+Route.get('/admin_clients', 'ClientsController.show').middleware('isAdmin')
+

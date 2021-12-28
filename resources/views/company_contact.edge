@@ -10,91 +10,163 @@
       <div
         class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
         <h6 class="m-0 font-weight-bold text-primary">Company Contacts</h6>
-        <div class="dropdown no-arrow">
-          <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-          </a>
-          <div class="dropdown-menu dropdow0n-menu-right shadow animated--fade-in"
-               aria-labelledby="dropdownMenuLink">
-            <div class="dropdown-header">Admin:</div>
-            <a class="dropdown-item" href="#">Add Contact</a>
-          <!--  <a class="dropdown-item" href="#">Another action</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Something else here</a>
-          -->
-          </div>
-        </div>
+
       </div>
       <!-- Card Body -->
       <div class="card-body">
-        <ul>
-          <li>{{ session.get('area_code')}}</li>
-          <li>David Meinke</li>
-          <li>Bat Man</li>
-          <li>Hulk Hogan</li>
-          <li>Clark Kent</li>
+        <table class="table table-striped">
+          <tr>
+            <th>Name, Title</th>
+            <th>Office</th>
+            <th>Other</th>
+            <th>Location</th>
+            <th>Options</th>
+          </tr>
           @if(contacts)
-            @each(contact in contacts)
-              <li>{{contact.first_name}} {{ contact.last_name }}
-                @if( contact.office_location)
-                 {{ contact.office_location }}
-                @end
-              </li>
+            @each(c in contacts)
+           <tr>
+            <td>
+              {{c.first_name}} {{ c.last_name }}, {{c.job_title}}
+            </td>
+            <td>
+              {{c.office_phone}}
+            </td>
+            <td>
+              {{ c.other_phone}}
+            </td>
+            <td>{{c.office_location}}</td>
+            <td>
+              <a href="{{ `/company_contacts/${c.id}/edit` }}"><i class="fas fa-pencil-alt"></i></a>&nbsp;&nbsp;
+                <a href="{{ `/company_contacts/${c.id}/delete` }}" onclick="return confirm('Are you sure you want to delete this contact?');">
+                  <i class="fa fa-trash" style="color: #cc0000;" ></i>
+                </a>
+               </td>
+          </tr>
+
             @end
           @end
-
-
-
-
-        </ul>
+        </table>
       </div>
     </div>
     <!-- ./end col -->
   </div>
   <div class="col-md-6">
-    <form action="/company_contacts" method="post"  enctype="multipart/form-data">
+    <div class="card shadow mb-4">
+      <div
+        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Company Contact</h6>
+      </div>
+      <div class="card-body">
+    <form
+      @if(contact)
+      action=" {{ `/company_contacts/${contact.id}?_method=PATCH`}}"
+      @else
+      action="/company_contacts"
+      @end
+      method="post"
+      enctype="multipart/form-data">
       {{ csrfField() }}
       <div class="form-group">
         <label for="first_name">First Name</label>
-        <input type="text" class="form-control" id="first_name" name="first_name"  value=""  placeholder="First Name">
+        <input type="text"
+               class="form-control"
+               id="first_name"
+               name="first_name"
+               @if(contact)
+                value="{{contact.first_name ||''}}"
+               @endif
+               placeholder="First Name">
       </div>
       <div class="form-group">
-        <label for="email">Last Name</label>
-        <input type="text" class="form-control" id="last_name" name="last_name"  placeholder="Last Name">
+        <label for="last_name">Last Name</label>
+        <input type="text"
+               class="form-control"
+               id="last_name"
+               name="last_name"
+               @if(contact)
+                 value="{{contact.last_name ||''}}"
+               @endif
+               placeholder="Last Name">
       </div>
       <div class="form-group">
-        <label for="job_title">Last Name</label>
-        <input type="text" class="form-control" id="job_title" name="job_title"  placeholder="Job Title">
+        <label for="job_title">Job Title</label>
+        <input type="text"
+               class="form-control"
+               id="job_title"
+               name="job_title"
+               @if(contact)
+                value="{{contact.job_title ||''}}"
+               @endif
+               placeholder="Job Title">
       </div>
       <div class="form-group">
         <label for="email">Email address</label>
-        <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Email Address">
+        <input type="email"
+               name="email"
+               class="form-control"
+               id="email"
+               aria-describedby="emailHelp"
+               @if(contact)
+                value="{{contact.email ||''}}"
+               @endif
+               placeholder="Email Address">
       </div>
       <div class="form-group">
         <label for="office_phone">Office Phone</label>
-        <input type="text" name="office_phone" class="form-control" id="office_phone" placeholder="Office Phone">
+        <input type="text"
+               name="office_phone"
+               class="form-control"
+               id="office_phone"
+               @if(contact)
+                value="{{contact.office_phone ||''}}"
+               @endif
+               placeholder="Office Phone">
       </div>
     <div class="form-group">
       <label for="other_phone">Other Phone</label>
-      <input type="text" name="other_phone" class="form-control" id="other_phone" placeholder="Other Phone">
+      <input type="text"
+             name="other_phone"
+             class="form-control"
+             id="other_phone"
+             @if(contact)
+              value="{{contact.other_phone ||''}}"
+             @endif
+             placeholder="Other Phone">
     </div>
       <div class="form-group">
         <label for="other_phone">Office</label>
         <select name="office_location" class="form-control">
-          <option name="OKC">OKC</option>
-          <option name="NYC">NYC</option>
+          <option name="OKC"
+                  @if(contact)
+                    @if( contact.office_location === `OKC`)
+                      selected
+                    @endif
+                  @endif
+          >
+          OKC
+          </option>
+          <option name="NYC"
+                  @if(contact)
+                    @if( contact.office_location === `NYC`)
+                      selected
+                    @endif
+                  @endif
+          >
+          NYC</option>
         </select>
 
       </div>
+      <!--
       <div class="form-group">
         <label for="upload">upload</label>
         <input type="file" name="upload" class="form-control" id="upload" aria-describedby="uploadHelp" placeholder="upload">
       </div>
+      -->
       <button type="submit" class="btn btn-primary">Submit</button>
 
     </form>
-
+      </div>
+    </div>
   </div>
 
 

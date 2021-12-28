@@ -9,8 +9,9 @@ export default class DistributorsController {
     const data = await Distributor.all()
 
     const states = await States.state_hash()
+    const maint = 'show'
 
-    return view.render('maintenance/distributor', {data, states})
+    return view.render('maintenance/distributor', {data, states, maint})
 
   }
 

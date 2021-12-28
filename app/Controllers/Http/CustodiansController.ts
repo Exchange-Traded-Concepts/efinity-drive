@@ -6,17 +6,13 @@ import Custodian from "App/Models/Custodian";
 export default class CustodiansController {
   public async index({ view }: HttpContextContract) {
     const data = await Custodian.all()
-
     const states = await States.state_hash()
-
-    return view.render('maintenance/custodian', {data, states})
-
-  }
-
-  public async create({}: HttpContextContract) {
-
+    const maint = 'show'
+    return view.render('maintenance/custodian', {data, states, maint})
 
   }
+
+  public async create({}: HttpContextContract) {}
 
   public async store({request, response, session}: HttpContextContract) {
 
@@ -40,7 +36,8 @@ export default class CustodiansController {
     const custo =    await Custodian.findBy('id',params.id)
     const states =  await States.state_hash()
     const data =    await Custodian.all()
-    return view.render('maintenance/custodian', { custo, states, data})
+    const maint = 'show'
+    return view.render('maintenance/custodian', { custo, states, data, maint})
 
   }
 

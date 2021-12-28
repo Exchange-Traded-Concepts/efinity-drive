@@ -18,9 +18,19 @@
     <h6 class="m-0 font-weight-bold text-primary">Company Contacts</h6>
     </div>
   <div class="card-body">
+    <table class="table table-striped">
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Options</th>
+      </tr>
     @each(d in data)
-    {{ d.id }} : {{ d.name }} <a href="{{ `/client/${d.id}/edit` }}">Edit</a><br>
-    @end
+    <tr>
+      <td>{{ d.id }}</td>
+      <td>{{ d.name }}</td>
+      <td><a href="{{ `/client/${d.id}/edit` }}"><i class="fas fa-pencil-alt"></i></a></td>
+     @end
+    </table>
 
 
 

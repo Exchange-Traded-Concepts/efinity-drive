@@ -16,12 +16,22 @@
         <h6 class="m-0 font-weight-bold text-primary">Funds</h6>
       </div>
       <div class="card-body">
-        {{ funds }}
+        <table class="table table-striped">
+          <TR>
+            <th>ID</th>
+            <th>Fund Name</th>
+            <th>Ticker</th>
+            <th>Options</th>
+          </TR>
         @each(d in funds)
-        {{d}}
-        {{ d.id }} : {{ d.fund_name }} {{d.ticker }}<a href="{{ `/funds/${d.id}/edit` }}">Edit</a><br>
+          <tr>
+          <td>{{ d.id }} </td>
+          <td>{{ d.fund_name }}</td>
+          <td>{{d.ticker }}</td>
+          <td><a href="{{ `/funds/${d.id}/edit` }}"><i class="fas fa-pencil-alt"></i></a></td>
+          </tr>
         @end
-
+        </table>
       </div>
 
     </div>
@@ -40,8 +50,8 @@
         @endif
 
         <form
-          @if(fund)
-          action=" {{ `/funds/${fund.id}?_method=PATCH`}}"
+          @if(c_fund)
+          action=" {{ `/funds/${c_fund.id}?_method=PATCH`}}"
           @else
           action="/funds"
           @end
@@ -53,8 +63,8 @@
             <input type="text" class="form-control {{ flashMessages.has('errors.name') ? 'alert-danger' :'' }}"
                    id="name"
                    name="fund_name"
-                   @if(custo)
-                   value="{{fund.fund_name ||''}}"
+                   @if(c_fund)
+                    value="{{c_fund.fund_name ||''}}"
                    @endif
                    placeholder="Fund Name">
           </div>
@@ -65,8 +75,8 @@
             <input type="text" class="form-control"
                    id="ticker"
                    name="ticker"
-                   @if(custo)
-                   value="{{fund.ticker ||''}}"
+                   @if(c_fund)
+                   value="{{c_fund.ticker ||''}}"
                    @endif
                    placeholder="Ticker" maxlength="5" >
           </div>
@@ -74,8 +84,8 @@
             <label for="exchange">Exchange</label>
             <input type="text"
                    name="exchange"
-                   @if(fund)
-                   value="{{fund.exchange ||''}}"
+                   @if(c_fund)
+                   value="{{c_fund.exchange ||''}}"
                    @endif
                    class="form-control"
                    id="exchange"
@@ -87,8 +97,8 @@
             <select name="client_id" class="form-control" id="Company" aria-describedby="client">
               @each(c in clients)
               <option value="{{ c.id }}"
-                      @if(fund)
-                      @if(c.id == fund.clientId)
+                      @if(c_fund)
+                      @if(c.id == c_fund.clientId)
                       selected
                       @endif
                       @endif
@@ -101,8 +111,8 @@
             <select name="custodian_id" class="form-control" id="custodian" aria-describedby="custodian">
               @each(cu in custodians)
               <option value="{{ cu.id }}"
-                      @if(fund)
-                      @if(cu.id == fund.custodianId)
+                      @if(c_fund)
+                      @if(cu.id == c_fund.custodianId)
                       selected
                       @endif
                       @endif
@@ -115,8 +125,8 @@
             <select name="distributor_id" class="form-control" id="distributor" aria-describedby="distributor">
               @each(di in distributors)
               <option value="{{ di.id }}"
-                      @if(fund)
-                      @if(di.id == fund.distributorId)
+                      @if(c_fund)
+                      @if(di.id == c_fund.distributorId)
                       selected
                       @endif
                       @endif
@@ -130,8 +140,8 @@
             <input type="text"
                    class="form-control"
                    id="trust"
-                   @if(fund)
-                   value="{{fund.trust ||''}}"
+                   @if(c_fund)
+                   value="{{c_fund.trust ||''}}"
                    @endif
                    name="trust"
                    placeholder="Trust">
@@ -141,8 +151,8 @@
             <label for="fiscal_year_end">Fiscal Year End</label>
             <input type="text"
                    name="fiscal_year_end"
-                   @if(custo)
-                   value="{{fund.fiscal_year_end ||''}}"
+                   @if(c_fund)
+                   value="{{c_fund.fiscal_year_end ||''}}"
                    @endif
                    class="form-control"
                    id="fiscal_year_end"
@@ -153,8 +163,8 @@
               <label for="fund_website">Fund Website</label>
               <input type="text"
                      name="fund_website"
-                     @if(fund)
-                     value="{{fund.fund_website ||''}}"
+                     @if(c_fund)
+                     value="{{c_fund.fund_website ||''}}"
                      @endif
                      class="form-control"
                      id="fund_website"
@@ -165,8 +175,8 @@
             <label for="Dividend Frequency">Dividend Frequency</label>
             <input type="text"
                    name="dividend_frequency"
-                   @if(fund)
-                   value="{{fund.dividend_frequency ||''}}"
+                   @if(c_fund)
+                   value="{{c_fund.dividend_frequency ||''}}"
                    @endif
                    class="form-control"
                    id="Dividend Frequency"
@@ -176,8 +186,8 @@
             <label for="prospectus_date">Prospectus Date</label>
             <input type="date"
                    name="prospectus_date"
-                   @if(fund)
-                   value="{{fund.prospectus_date ||''}}"
+                   @if(c_fund)
+                   value="{{c_fund.prospectus_date ||''}}"
                    @endif
                    class="form-control"
                    id="prospectus_date"

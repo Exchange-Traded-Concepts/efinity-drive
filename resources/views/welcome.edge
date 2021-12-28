@@ -17,8 +17,15 @@
       </p>
       -->
     </div>
+
     <div>
-      <form class="form" action="" method="POST">
+      @if (flashMessages.has('notification'))
+      <div class="notification is-danger is-light">
+        {{ flashMessages.get('notification') }}
+      </div>
+      @endif
+      <form class="form" action="/login" method="POST">
+        {{ csrfField() }}
        <input type="text" placeholder="Username" name="email">
 
         <input type="password" placeholder="Password" name="password">

@@ -5,19 +5,28 @@ import Custodian from "App/Models/Custodian";
 import Client from "App/Models/Client";
 import Distributor from "App/Models/Distributor";
 
-
-
 export default class FundsController {
   public async index({view}: HttpContextContract) {
-    const funds = await Fund.query().preload('client')
+    const funds = await Fund.query()
+      .preload('client')
+      .preload('custodian')
+      .preload('distributor')
     const custodians = await Custodian.all()
     const clients = await Client.all()
     const distributors = await Distributor.all()
     const maint = 'show'
 
-    console.log(funds)
-
     return view.render('maintenance/fund', {funds, custodians, clients, distributors, maint})
+  }
+
+  public async show({view}: HttpContextContract) {
+
+    const funds = await Fund.query()
+      .preload('client')
+      .preload('custodian')
+      .preload('distributor')
+    return view.render('admin/funds', {funds})
+
   }
 
   public async create({  }: HttpContextContract) {
@@ -26,9 +35,7 @@ export default class FundsController {
   }
 
   public async store({request, response, session}: HttpContextContract) {
-    console.log('HERE ')
     const data = await this.validateInput(request)
-    console.log('after the data')
     await Fund.create({
       fund_name: data.fund_name,
       ticker: data.ticker,
@@ -47,11 +54,47 @@ export default class FundsController {
 
   }
 
-  public async show({}: HttpContextContract) {}
 
-  public async edit({}: HttpContextContract) {}
 
-  public async update({}: HttpContextContract) {}
+  public async edit({view,params}: HttpContextContract) {
+    const funds = await Fund.query().preload('client')
+    const custodians = await Custodian.all()
+    const clients = await Client.all()
+    const distributors = await Distributor.all()
+    const maint = 'show'
+    const c_fund = await Fund.findOrFail(params.id)
+    const p_date = await this.short_date(c_fund.prospectus_date)
+    c_fund.prospectus_date = p_date
+  //  console.log(p_date)
+    return view.render('maintenance/fund', { funds, custodians, clients, distributors, maint, c_fund})
+  }
+
+  public async update({params, request, response, session}: HttpContextContract) {
+    const fund = await Fund.findOrFail( params.id)
+    const data = await this.validateInput(request)
+
+    console.log(data.prospectus_date)
+
+    fund.merge({
+      fund_name: data.fund_name,
+      ticker: data.ticker,
+      clientId: data.client_id,
+      distributorId: data.distributor_id,
+      custodianId : data.custodian_id,
+      trust: data.trust,
+      fiscal_year_end: data.fiscal_year_end,
+      dividend_frequency: data.dividend_frequency,
+      fund_website: data.fund_website,
+      exchange: data.exchange,
+      prospectus_date: data.prospectus_date,
+    })
+
+    await fund.save()
+    session.flash('notification', 'Fund saved.')
+    return response.redirect().back()
+
+
+  }
 
   public async destroy({}: HttpContextContract) {}
 
@@ -87,4 +130,14 @@ export default class FundsController {
       },
     })
   }
+ public async short_date(return_date) {
+   let date = new Date(return_date);
+   let year = date.getFullYear();
+   let month = date.getMonth() + 1;
+   let dt = date.getDate();
+   dt = dt.toString().padStart(2, '0');
+   month = month.toString().padStart(2, '0');
+   return year + '-' + month + '-' + dt
+ }
+
 }

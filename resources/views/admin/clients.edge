@@ -1,0 +1,77 @@
+@layout('layouts.adminDashboard')
+
+@section('content')
+<div class="container-fluid">
+<div class="row">
+  <div class="col-md-12">
+    <!-- card -->
+    <div class="card shadow mb-4">
+      <!-- Card Header - Dropdown -->
+      <div
+        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Clients </h6>
+        @if(auth.user.can_edit)
+        <div class="dropdown no-arrow">
+          <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+          </a>
+          <div class="dropdown-menu dropdow0n-menu-right shadow animated--fade-in"
+               aria-labelledby="dropdownMenuLink">
+            <div class="dropdown-header">Admin:</div>
+            <a class="dropdown-item" href="/client">Add Client</a>
+            <!--  <a class="dropdown-item" href="#">Another action</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Something else here</a>
+            -->
+          </div>
+        </div>
+        @endif
+      </div>
+      <!-- Card Body -->
+      <div class="card-body">
+        <table class="table table-striped">
+          <tr>
+            <th>Name</th>
+            <th>State</th>
+            <th>Phone</th>
+            <th>Primary Contact</th>
+            <th>Primary Contact Email</th>
+            <th>Website</th>
+            <th>Fund Website</th>
+          </tr>
+          @if(clients)
+          @each(c in clients)
+          <tr>
+            <td>
+              {{c.name}}
+            </td>
+            <td>
+              &nbsp
+            </td>
+            <td>
+              {{ c.primary_contact_phone }}
+            </td>
+            <td>
+              {{c. primary_contact_name }}
+            </td>
+            <td>
+              {{c.primary_contact_email}}
+            </td>
+            <td>
+              {{ c.website}}
+            </td>
+            <td>{{c.office_location}}</td>
+
+          </tr>
+
+          @end
+          @end
+        </table>
+      </div>
+    </div>
+    <!-- ./end col -->
+  </div>
+</div>
+</div>
+@endsection

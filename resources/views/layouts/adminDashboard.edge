@@ -27,11 +27,9 @@
   <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-      <div class="sidebar-brand-icon rotate-n-15">
-        <i class="fas fa-laugh-wink"></i>
-      </div>
-      <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/dashboard">
+      <img src="/img/etc-logo.png" width="100">
+
     </a>
 
     <!-- Divider -->
@@ -39,7 +37,7 @@
 
     <!-- Nav Item - Dashboard -->
     <li class="nav-item">
-      <a class="nav-link" href="index.html">
+      <a class="nav-link" href="/dashboard">
         <i class="fas fa-fw fa-tachometer-alt"></i>
         <span>Dashboard</span></a>
     </li>
@@ -52,7 +50,39 @@
       Interface
     </div>
 
-    <!-- Nav Item - Pages Collapse Menu -->
+    <!-- Nav Item - Company Contacts -->
+    <li class="nav-item">
+      <a class="nav-link" href="/admin_funds">
+        <i class="fas fa-landmark"></i>
+        <span>Funds</span></a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" href="/admin_clients">
+        <i class="fas fa-chess-rook"></i>
+        <span>Clients</span></a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" href="/tasks">
+        <i class="fas fa-calendar-day"></i>
+        <span>Tasks</span></a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" href="/client_contacts">
+        <i class="fas fa-address-card"></i>
+        <span>Contacts</span></a>
+    </li>
+
+    <!-- Nav Item - Company Contacts -->
+    <li class="nav-item">
+      <a class="nav-link" href="/company">
+        <i class="fas fa-address-card"></i>
+        <span>Company Contacts</span></a>
+    </li>
+
+    <!-- Nav Item - Pages Collapse Menu
     <li class="nav-item">
       <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseTwo"
          aria-expanded="true" aria-controls="collapseTwo">
@@ -67,13 +97,24 @@
         </div>
       </div>
     </li>
+     -->
 
     <!-- Nav Item - Utilities Collapse Menu -->
     <!-- show is the class to expand the menu in the example below -->
     <!-- <div id="collapseMaintenance" class="collapse show"  aria-labelledby="headingMaintenance"
          data-parent="#accordionSidebar">
     -->
-    <li class="nav-item active">
+
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+      Addons
+    </div>
+    @if(auth.user.can_edit)
+    <li class="nav-item {{ active }}">
       <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseMaintenance"
          aria-expanded="true" aria-controls="collapseMaintenance">
         <i class="fas fa-fw fa-wrench"></i>
@@ -83,23 +124,19 @@
            data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
           <h6 class="collapse-header">Maintain:</h6>
+          <a class="collapse-item" href="/company_contacts">Company Contacts</a>
           <a class="collapse-item" href="/client">Clients</a>
           <a class="collapse-item" href="/funds">Funds</a>
           <a class="collapse-item" href="/distributor">Distributor</a>
           <a class="collapse-item" href="/custodian">Custodians</a>
+          <a class="collapse-item" href="/register">Users</a>
+
         </div>
       </div>
     </li>
+    @endif
 
-    <!-- Divider -->
-    <hr class="sidebar-divider">
-
-    <!-- Heading -->
-    <div class="sidebar-heading">
-      Addons
-    </div>
-
-    <!-- Nav Item - Pages Collapse Menu -->
+    <!-- Nav Item - Pages Collapse Menu
     <li class="nav-item active">
       <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
          aria-controls="collapsePages">
@@ -121,27 +158,22 @@
       </div>
     </li>
 
-    <!-- Nav Item - Company Contacts -->
-    <li class="nav-item">
-      <a class="nav-link" href="/company_contacts">
-        <i class="fas fa-fw fa-broadcast-tower"></i>
-        <span>Contacts</span></a>
-    </li>
+ -->
 
-    <!-- Nav Item - Charts -->
+    <!-- Nav Item - Charts
     <li class="nav-item">
       <a class="nav-link" href="charts.html">
         <i class="fas fa-fw fa-chart-area"></i>
         <span>Charts</span></a>
     </li>
-
-    <!-- Nav Item - Tables -->
+-->
+    <!-- Nav Item - Tables
     <li class="nav-item">
       <a class="nav-link" href="tables.html">
         <i class="fas fa-fw fa-table"></i>
         <span>Tables</span></a>
     </li>
-
+-->
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
 
@@ -331,7 +363,10 @@
           <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+
+              @if(auth.isLoggedIn)
+              <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{auth.user.first_name}} {{auth.user.last_name}}</span>
+              @endif
               <img class="img-profile rounded-circle"
                    src="/img/undraw_profile.svg">
             </a>
@@ -351,7 +386,7 @@
                 Activity Log
               </a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+              <a class="dropdown-item" href="/logout" data-toggle="modal" data-target="#logoutModal">
                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                 Logout
               </a>
@@ -373,7 +408,7 @@
     <footer class="sticky-footer bg-white">
       <div class="container my-auto">
         <div class="copyright text-center my-auto">
-          <span>Copyright &copy; Your Website <span id="year"></span></span>
+          <span>Copyright &copy; Exchange Traded Concepts <span id="year"></span></span>
         </div>
       </div>
     </footer>
@@ -404,7 +439,9 @@
       <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
       <div class="modal-footer">
         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-        <a class="btn btn-primary" href="login.html">Logout</a>
+        @if(auth.isLoggedIn)
+        <a class="btn btn-primary" href="/logout">Logout</a>
+        @endif
       </div>
     </div>
   </div>
@@ -418,13 +455,13 @@
 
 <script src="/jquery/jquery.min.js"></script>
 
-
+<script src="/jquery-easing/jquery.easing.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 <script src="/js/sb-admin-2.js"></script>
-<script src="/jquery-easing/jquery.easing.min.js"></script>
+
 
 </body>
 </html>

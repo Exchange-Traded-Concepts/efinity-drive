@@ -1,0 +1,65 @@
+@layout('layouts.adminDashboard')
+
+@section('content')
+<div class="container-fluid">
+<div class="row">
+  <div class="col-md-12">
+    <!-- card -->
+    <div class="card shadow mb-4">
+      <!-- Card Header - Dropdown -->
+      <div
+        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Company Contacts</h6>
+        @if(auth.user.can_edit)
+        <div class="dropdown no-arrow">
+          <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+          </a>
+          <div class="dropdown-menu dropdow0n-menu-right shadow animated--fade-in"
+               aria-labelledby="dropdownMenuLink">
+            <div class="dropdown-header">Admin:</div>
+            <a class="dropdown-item" href="/company_contacts">Add Contact</a>
+            <!--  <a class="dropdown-item" href="#">Another action</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Something else here</a>
+            -->
+          </div>
+         </div>
+        @endif
+      </div>
+      <!-- Card Body -->
+      <div class="card-body">
+        <table class="table table-striped">
+          <tr>
+            <th>Name, Title</th>
+            <th>Office</th>
+            <th>Other</th>
+            <th>Location</th>
+          </tr>
+          @if(contacts)
+          @each(c in contacts)
+          <tr>
+            <td>
+              {{c.first_name}} {{ c.last_name }}, {{c.job_title}}
+            </td>
+            <td>
+              {{c.office_phone}}
+            </td>
+            <td>
+              {{ c.other_phone}}
+            </td>
+            <td>{{c.office_location}}</td>
+
+          </tr>
+
+          @end
+          @end
+        </table>
+      </div>
+    </div>
+    <!-- ./end col -->
+  </div>
+</div>
+</div>
+@endsection
