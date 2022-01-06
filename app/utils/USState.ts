@@ -2,6 +2,7 @@ export default class States{
 
  static async state_hash() {
    const states = {
+     'NA': 'N/A',
      'AL': 'Alabama',
      'AK': 'Alaska',
      'AS': 'American Samoa',

@@ -62,6 +62,11 @@
         <i class="fas fa-chess-rook"></i>
         <span>Clients</span></a>
     </li>
+    <li class="nav-item">
+      <a class="nav-link active" href="/fund_pipeline">
+        <i class="fas fa-stream "></i>
+        <span>Fund Pipeline</span></a>
+    </li>
 
     <li class="nav-item">
       <a class="nav-link" href="/tasks">
@@ -113,7 +118,7 @@
     <div class="sidebar-heading">
       Addons
     </div>
-
+  @if(auth)
     @if(auth.user.can_edit)
     <li class="nav-item {{ active }}">
       <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseMaintenance"
@@ -136,6 +141,7 @@
       </div>
     </li>
      @endif
+    @endif
 
     <!-- Nav Item - Pages Collapse Menu
     <li class="nav-item active">

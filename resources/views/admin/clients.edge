@@ -44,24 +44,54 @@
           @each(c in clients)
           <tr>
             <td>
+              @if(c.name)
               {{c.name}}
+              @else
+              &nbsp;
+              @end
             </td>
             <td>
-              &nbsp
+              @if(c.state)
+              {{ c.state }}
+              @else
+              &nbsp;
+              @end
             </td>
             <td>
+              @if(c.primary_contact_phone)
               {{ c.primary_contact_phone }}
+              @else
+              &nbsp;
+              @end
             </td>
             <td>
+              @if(c.primary_contact_name)
               {{c. primary_contact_name }}
+              @else
+              &nbsp;
+              @end
             </td>
             <td>
+              @if(c.primary_contact_email)
               {{c.primary_contact_email}}
+              @else
+              &nbsp;
+              @end
             </td>
             <td>
+              @if(c.website)
               {{ c.website}}
+              @else
+              &nbsp;
+              @end
             </td>
-            <td>{{c.office_location}}</td>
+            <td>
+              @if(c.etf_website)
+              {{c.etf_website}}
+              @else
+              &nbsp;
+              @end
+            </td>
 
           </tr>
 

@@ -65,6 +65,50 @@ export default class AuthController {
   }
 
 
+  public async edit({view, params}:HttpContextContract){
+    const cuser = await users.findOrFail(params.id)
+    const allUsers = await users.all()
+    const maint = 'show'
+
+    return view.render('auth/register', {allUsers, maint, cuser})
+
+  }
+
+  public async update({params, request, session, view}:HttpContextContract){
+    const u = await users.findOrFail( params.id)
+
+    const data = await this.validateUpdate(request)
+
+    if(u.email != request.input('email')){
+      const emailScehma = schema.create({
+        email: schema.string({trim: true}, [rules.maxLength(255)]),
+      })
+      return await request.validate({
+      schema: emailScehma,
+      messages: {
+        'email.required': 'Name is required',
+      }
+    })
+    }
+
+    u.merge({
+      first_name: data.first_name,
+      last_name: data.last_name,
+      email: data.email,
+      is_active: await this.trueCheck(request.input('is_active')),
+      is_admin: await this.trueCheck(request.input('is_admin')),
+      can_edit: await this.trueCheck(request.input('can_edit'))
+    })
+
+    await u.save()
+    session.flash('notification', 'User Updated')
+    const allUsers = await users.all()
+    const maint = 'show'
+
+    return view.render('auth/register', {allUsers, maint})
+
+  }
+
   private async validateInput(request) {
     const valSchema = schema.create({
       first_name: schema.string({ trim: true }, [rules.maxLength(150), rules.required()]),
@@ -73,6 +117,25 @@ export default class AuthController {
         rules.email(),
         rules.unique( {table: 'users', column: 'email'})]),
       password: schema.string({trim:true}, [rules.maxLength(255)]),
+    })
+
+    return await request.validate({
+      schema: valSchema,
+      messages: {
+        'first_name.required': 'Name is required',
+        'last_name.required': 'Name allows upto 150 characters',
+        'email.required': 'Valid email required',
+      },
+    })
+  }
+
+  private async validateUpdate(request) {
+    const valSchema = schema.create({
+      first_name: schema.string({ trim: true }, [rules.maxLength(150), rules.required()]),
+      last_name:  schema.string({ trim: true }, [rules.maxLength(150), rules.required()]),
+      email: schema.string({trim: true}, [rules.maxLength(255),
+        rules.email(),
+        ]),
     })
 
     return await request.validate({

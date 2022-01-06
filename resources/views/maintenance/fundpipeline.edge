@@ -1,0 +1,254 @@
+@layout('layouts.adminDashboard')
+
+@section('content')
+<div class="container-fluid">
+<div>
+  @if(flashMessages.has('notification'))
+  <div class="alert alert-success">{{ flashMessages.get('notification') }}</div>
+  @endif
+</div>
+<div class="row">
+
+  <div class="col-md-6">
+    <div class="card shadow mb-4">
+      <div
+        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Fund Pipeline</h6>
+      </div>
+      <div class="card-body">
+        <table class="table table-striped">
+          <TR>
+            <th>ID</th>
+            <th>Ticker</th>
+            <th>Status</th>
+            <th>Options</th>
+          </TR>
+          @each(t in pipelinefunds)
+          <tr>
+            <td>{{ t.id }} </td>
+            <td>{{ t.ticker }}</td>
+            <td>{{t.status }}</td>
+            <td><a href="{{ `/pipeline/${t.id}/edit` }}"><i class="fas fa-pencil-alt"></i></a></td>
+          </tr>
+          @end
+        </table>
+      </div>
+
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card shadow mb-4">
+      <div
+        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Fund Pipeline</h6>
+      </div>
+      <div class="card-body">
+        <form
+          @if(e_fund)
+          action=" {{ `/pipeline/${e_fund.id}?_method=PATCH`}}"
+          @else
+          action="/pipeline"
+          @end
+          method="post"
+          enctype="multipart/form-data">
+          {{ csrfField() }}
+          <div class="form-group">
+            <label for="fund_id">Fund</label>
+            <select name="fund_id" id="fund_id" class="form-control">
+              @each(f in funds)
+              <option value="{{f.id}}"
+              @if(e_fund)
+              @if(f.id == e_fund.id)
+                      selected
+              @end
+              @end
+              >
+                {{f.ticker}}
+              </option>
+              @end
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="status">Status</label>
+            <select name="status" id="status" class="form-control">
+              <option value="prospect"
+                      @if(e_fund)
+                        @if(f.status == `prospect`)
+                        selected
+                        @end
+                      @end
+              >
+                Prospect
+              </option>
+              <option value="prelaunch"
+                      @if(e_fund)
+                      @if(f.status == `prelaunch`)
+                      selected
+                      @end
+                      @end
+
+              >
+                Client/Prelaunch
+              </option>
+              <option value="other"
+                      @if(e_fund)
+                      @if(f.status == `other`)
+                      selected
+                      @end
+                      @end
+              >
+                Other
+              </option>
+              <option value="launched"
+                      @if(e_fund)
+                      @if(f.status == `launched`)
+                      selected
+                      @end
+                      @end
+              >
+                Launched
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="strategy">Strategy</label>
+            <input type="text"
+                   name="strategy"
+                   @if(e_fund)
+                   value="{{e_fund.strategy ||''}}"
+                   @endif
+                   class="form-control"
+                   id="strategy"
+                   placeholder="Strategy">
+          </div>
+          <div class="row">
+          <div class="form-group col-md-6">
+            <label for="client_questionnaire_sent">Client Questionnaire Sent</label>
+            <input type="date"
+                   name="client_questionnaire_sent"
+                   @if(e_fund)
+                   value="{{e_fund.client_questionnaire_sent ||''}}"
+                   @endif
+                   class="form-control"
+                   id="client_questionnaire_sent"
+                   placeholder="Client Questionnaire Sent">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="client_questionnaire_received">Client Questionnaire Received</label>
+            <input type="date"
+                   name="client_questionnaire_received"
+                   @if(e_fund)
+                   value="{{e_fund.client_questionnaire_recieved ||''}}"
+                   @endif
+                   class="form-control"
+                   id="client_questionnaire_received"
+                   placeholder="Client Questionnaire Received">
+          </div>
+          </div>
+          <div class="row">
+          <div class="form-group col-md-6">
+            <label for="client_sent_sample_portfolio_data">Received Sample Portfolio Data</label>
+            <input type="date"
+                   name="client_sent_sample_portfolio_data"
+                   @if(e_fund)
+                   value="{{e_fund.client_sent_sample_portfolio_data ||''}}"
+                   @endif
+                   class="form-control"
+                   id="client_sent_sample_portfolio_data"
+                   placeholder="Received Sample Portfolio Data">
+          </div>
+            <div class="form-group col-md-6">
+              <label for="license_sponsorship">License Sponsorship</label>
+              <input type="date"
+                     name="license_sponsorship"
+                     @if(e_fund)
+                     value="{{e_fund.license_sponsorship ||''}}"
+                     @endif
+                     class="form-control"
+                     id="license_sponsorship"
+                     placeholder="License Sponsorship">
+            </div>
+      </div>
+          <div class="form-group ">
+            <label for="proposal_sent">Proposal Sent</label>
+            <input type="date"
+                   name="proposal_sent"
+                   @if(e_fund)
+                   value="{{e_fund.proposal_sent ||''}}"
+                   @endif
+                   class="form-control"
+                   id="proposal_sent"
+                   placeholder="Proposal Sent">
+          </div>
+          <div class="row">
+          <div class="form-group col-md-6">
+            <label for="diligence_sent">Due Diligence Sent</label>
+            <input type="date"
+                   name="diligence_sent"
+                   @if(e_fund)
+                   value="{{e_fund.diligence_sent ||''}}"
+                   @endif
+                   class="form-control"
+                   id="diligence_sent"
+                   placeholder="Due Diligence Sent">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="diligence_received">Due Diligence Received</label>
+            <input type="date"
+                   name="diligence_received"
+                   @if(e_fund)
+                   value="{{e_fund.diligence_received ||''}}"
+                   @endif
+                   class="form-control"
+                   id="diligence_received"
+                   placeholder="Due Diligence Received">
+          </div>
+      </div>
+
+
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label for="psa_form_sent">PSA Sent</label>
+              <input type="date"
+                     name="psa_form_sent"
+                     @if(e_fund)
+                     value="{{e_fund.psa_form_sent ||''}}"
+                     @endif
+                     class="form-control"
+                     id="psa_form_sent"
+                     placeholder="PSA Sent">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="psa_form_complete">PSA Complete</label>
+              <input type="date"
+                     name="psa_form_complete"
+                     @if(e_fund)
+                     value="{{e_fund.psa_form_complete ||''}}"
+                     @endif
+                     class="form-control"
+                     id="psa_form_complete"
+                     placeholder="PSA Complete">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="sec_comments">SEC Comments</label>
+            <textarea class="form-control" name="sec_comments" id="sec_comments">{{sec_comments ||''}}</textarea>
+          </div>
+          <div class="form-group">
+            <label for="notes">Notes</label>
+            <textarea class="form-control" name="notes" id="notes">{{notes ||''}}</textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Submit</button>
+          @if(flashMessages.has('errors.title'))
+          <p class="alert-danger">
+            {{ flashMessages.get('errors.title')}}
+          </p>
+          @endif
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+@endsection

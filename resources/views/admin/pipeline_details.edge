@@ -1,0 +1,28 @@
+@layout('layouts.adminDashboard')
+
+@section('content')
+
+<div class="container-fluid">
+<h6>Fund Pipeline Details</h6>
+<div class="row">
+  <div class="col-md-6">
+    Fund Name: {{ p[0].fund.fund_name }} {{p[0].id}}
+  </div>
+  <div class="col-md-6">
+    Ticker: {{p[0].ticker}}
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    Status: <span style="text-transform:capitalize">{{p[0].status}}</span>
+  </div>
+  <div class="col-md-6">
+    Strategy: {{p[0].strategy}}
+  </div>
+</div>
+
+
+
+</div><!//--end container-->
+
+@endsection

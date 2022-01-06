@@ -65,7 +65,6 @@ export default class AuthMiddleware {
     next: () => Promise<void>,
     customGuards: (keyof GuardsList)[]
   ) {
-    console.log('AM I always here')
     /**
      * Uses the user defined guards or the default guard mentioned in
      * the config file

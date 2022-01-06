@@ -64,9 +64,15 @@
         <h6 class="m-0 font-weight-bold text-primary">Register User</h6>
       </div>
       <div class="card-body">
-        <form action="/register" method="post">
+        <form
+          @if(cuser)
+          action=" {{ `/register/${cuser.id}?_method=PATCH`}}"
+          @else
+          action="/register"
+          @end
+          method="post"
+          enctype="multipart/form-data">
           {{ csrfField() }}
-
 
         <div>
           <div class="form-group">
@@ -76,13 +82,15 @@
                 class="form-control {{ flashMessages.get('errors.first_name') ? 'is-danger' : '' }}"
                 name="first_name"
                 id="first_name"
-                value="{{ flashMessages.get('first_name') || '' }}"
+                @if(cuser)
+                 value="{{cuser.first_name ||''}}"
+                @endif
                 placeholder="First Name">
             </div>
 
-            @if (flashMessages.has('errors.name'))
+            @if (flashMessages.has('errors.first_name'))
             <p class="help is-danger">
-              {{ flashMessages.get('errors.name') }}
+              {{ flashMessages.get('errors.first_name') }}
             </p>
             @endif
           </div>
@@ -94,7 +102,9 @@
                 class="form-control {{ flashMessages.get('errors.last_name') ? 'is-danger' : '' }}"
                 name="last_name"
                 id="last_name"
-                value="{{ flashMessages.get('last_name') || '' }}"
+                @if(cuser)
+                 value="{{cuser.last_name ||''}}"
+                @endif
                 placeholder="Last Name">
             </div>
 
@@ -112,7 +122,9 @@
                 type="email"
                 class="input form-control {{ flashMessages.get('errors.email') ? 'is-danger' : '' }}"
                 name="email"
-                value="{{ flashMessages.get('email') || '' }}"
+                @if(cuser)
+                value="{{cuser.email ||''}}"
+                @endif
                 placeholder="Email">
             </div>
 
@@ -154,15 +166,33 @@
             @endif
           </div>
           <div class="form-check">
-            <input id="active" type="checkbox" name="is_active" value="1" class="form-check-input">
+            <input id="active" type="checkbox" name="is_active" value="1" class="form-check-input"
+                   @if(cuser)
+                   @if(cuser.is_active)
+                   checked
+                   @end
+                   @endif
+            >
             <label for="active" class="form-check-label">Active</label>
           </div>
           <div class="form-check">
-            <input id="admin" type="checkbox" name="is_admin" value="1" class="form-check-input">
+            <input id="admin" type="checkbox" name="is_admin" value="1" class="form-check-input"
+            @if(cuser)
+            @if(cuser.is_admin)
+              checked
+            @end
+            @endif
+            >
             <label for="admin" class="form-check-label">Admin</label>
           </div>
           <div class="form-check">
-            <input id="can_edit" type="checkbox" name="can_edit" value="1" class="form-check-input">
+            <input id="can_edit" type="checkbox" name="can_edit" value="1" class="form-check-input"
+                   @if(cuser)
+                   @if(cuser.can_edit)
+                   checked
+                   @end
+                   @endif
+            >
             <label for="can_edit" class="form-check-label">Allow Full Edit Permissions</label>
           </div>
           <button type="submit" class="btn btn-primary">Submit</button>

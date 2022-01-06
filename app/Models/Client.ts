@@ -21,6 +21,9 @@ export default class Client extends BaseModel {
   public zip: string
 
   @column()
+  public country: string
+
+  @column()
   public phone: string
 
   @column()

@@ -23,6 +23,7 @@ export default class ClientsController {
     return view.render('client/index', {data, states, maint})
   }
   public async store ({request, session, response}: HttpContextContract) {
+  console.log('IN LOG')
 
     let dataUrl = ''
     if (request.file('upload')) {
@@ -32,17 +33,24 @@ export default class ClientsController {
       dataUrl = data.url
     }
 
-        await Client.create({
-      name : request.input('name'),
-      address: request.input('address'),
-    //  city: request.input('city'),
-    //  state: request.input('state'),
-    //   zip: request.input('zip'),
-      phone: request.input('phone'),
+    console.log('I Bet that data url is null')
+
+    const data = await this.validateInput(request)
+
+    console.log(data)
+
+    await Client.create({
+      name: data.name,
+      address: data.address,
+      city: data.city,
+      state: data.state,
+      zip: data.zip,
+      phone: data.phone,
+      country: data.country,
       logo_file:  dataUrl,
       primary_contact_name:   request.input('primary_contact_name'),
       primary_contact_phone:  request.input('primary_contact_phone'),
-      primary_contact_email:   request.input('primary_contact_email'),
+      primary_contact_email:   data.primary_contact_email,
       website:   request.input('website'),
       etf_website:  request.input('etf_website'),
     })
@@ -83,15 +91,16 @@ export default class ClientsController {
     c.merge({
       name: data.name,
       address: data.address,
-     // city: data.city,
-     // state: data.state,
-     // zip: data.zip,
-      phone: request.input('phone'),
+      city: data.city,
+      state: data.state,
+      zip: data.zip,
+      phone: data.phone,
       primary_contact_name:   request.input('primary_contact_name'),
       primary_contact_phone:  request.input('primary_contact_phone'),
-      primary_contact_email:   request.input('primary_contact_email'),
+      primary_contact_email:  data.primary_contact_email,
       website:   request.input('website'),
       etf_website:  request.input('etf_website'),
+      country: data.country
     })
 
      await c.save()
@@ -108,10 +117,12 @@ export default class ClientsController {
     const valSchema = schema.create({
       name: schema.string({ trim: true }, [rules.maxLength(150), rules.required()]),
       address: schema.string({trim: true}, [rules.maxLength(255)]),
-     /* city: schema.string({trim: true}, [rules.maxLength(255)]),
+      city: schema.string({trim: true}, [rules.maxLength(255)]),
       state: schema.string({trim: true}, [rules.maxLength(2)]),
       zip: schema.string({trim: true}, [rules.maxLength(10)]),
-     */
+      primary_contact_email: schema.string({trim: true}, [rules.maxLength(150), rules.email()]),
+      country: schema.string({trim: true}, [rules.maxLength(150)])
+
     })
 
     return await request.validate({

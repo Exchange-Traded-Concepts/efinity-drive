@@ -124,6 +124,30 @@
       @end
     </select>
   </div>
+  <div class="row">
+  <div class="form-group col-md-6" >
+    <label for="zip">Zip Code</label>
+    <input type="text"
+           name="zip"
+           class="form-control"
+           id="zip"
+           @if(client)
+           value="{{ client.zip || ''}}"
+           @endif
+           placeholder="Zip Code">
+  </div>
+  <div class="form-group col-md-6">
+    <label for="country">Country</label>
+    <input type="text"
+           name="country"
+           class="form-control"
+           id="country"
+           @if(client)
+           value="{{ client.country || 'USA'}}"
+           @endif
+           placeholder="Country">
+  </div>
+  </div> <!-- //End Row -->
   <div class="form-group">
     <label for="logo">Logo</label>
     <input type="file"
@@ -159,7 +183,19 @@
            placeholder="Primary Contact Phone">
   </div>
   <div class="form-group">
-    <label for="website">Website</label>
+    <label for="primary_contact_email">Primary Contact Email</label>
+    <input type="text"
+           name="primary_contact_email"
+           class="form-control"
+           id="primary_contact_email"
+           @if(client)
+           value="{{ client.primary_contact_email || ''}}"
+           @endif
+           placeholder="Primary Contact Email">
+  </div>
+  <div class="row">
+  <div class="form-group col-md-6">
+    <label for="website">Primary Website</label>
     <input type="text"
            name="website"
            class="form-control"
@@ -167,7 +203,20 @@
            @if(client)
             value="{{ client.website || ''}}"
            @endif
-           placeholder="Website">
+           placeholder="Primary Website">
+  </div>
+    <div class="form-group col-md-6">
+      <label for="etf_website">ETF Website</label>
+      <input type="text"
+             name="etf_website"
+             class="form-control"
+             id="etf_website"
+             @if(client)
+             value="{{ client.etf_website || ''}}"
+             @endif
+             placeholder="ETF Website">
+    </div>
+
   </div>
    <button type="submit" class="btn btn-primary">Submit</button>
 
