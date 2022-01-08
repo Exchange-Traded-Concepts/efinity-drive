@@ -63,6 +63,22 @@
                    placeholder="Title">
           </div>
           <div class="form-group">
+            <label for="fund_id">Fund</label>
+            <select name="fund_id" id="fund_id" class="form-control">
+              @each(f in funds)
+              <option value="{{f.id}}"
+                      @if(u_task)
+                      @if(f.id == u_task.fund_id)
+                      selected
+                      @end
+                      @end
+              >
+                {{f.ticker}}
+              </option>
+              @end
+            </select>
+          </div>
+          <div class="form-group">
             <label for="description">Description</label>
             <input type="text" class="form-control"
                    id="description"

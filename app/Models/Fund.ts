@@ -1,11 +1,14 @@
 import { DateTime } from 'luxon'
-import { BaseModel,
-         column,
-          belongsTo,
-          BelongsTo,} from '@ioc:Adonis/Lucid/Orm'
+import {
+  BaseModel,
+  column,
+  belongsTo,
+  BelongsTo, hasMany, HasMany,
+} from '@ioc:Adonis/Lucid/Orm'
 import Client from "App/Models/Client";
 import Custodian from "App/Models/Custodian";
 import Distributor from "App/Models/Distributor";
+import Task from "App/Models/Task";
 
 export default class Fund extends BaseModel {
   @column({ isPrimary: true })
@@ -25,6 +28,9 @@ export default class Fund extends BaseModel {
   public distributorId: number
   @belongsTo(()=> Distributor)
   public distributor: BelongsTo<typeof Distributor>
+
+  @hasMany(() => Task)
+  public tasks: HasMany<typeof Task>
 
   @column()
   public ticker: string

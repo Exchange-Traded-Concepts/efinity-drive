@@ -88,8 +88,14 @@ Route.group(() => {
   Route.patch('/pipeline/:id', 'FundsPipelinesController.update')
 }).middleware('editAdmin')
 
+Route.group(() => {
+  Route.get('/tasks', 'TasksController.index')
+  Route.post('/tasks', 'TasksController.create')
+  Route.get('/tasks/:id/edit', 'TasksController.edit')
+  Route.patch('tasks/:id', 'TasksController.update')
+}).middleware('isAdmin')
 
-Route.get('/tasks', 'TasksController.index').middleware('isAdmin')
+
 Route.get('/admin_funds', 'FundsController.show').middleware('isAdmin')
 Route.get('/admin_clients', 'ClientsController.show').middleware('isAdmin')
 Route.get('/your_tasks', 'TasksController.show').middleware('isAdmin')

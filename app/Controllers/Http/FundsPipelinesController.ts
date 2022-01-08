@@ -1,6 +1,9 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import fundPipeline from "App/Models/FundPipeline";
 import Fund from "App/Models/Fund";
+import Database from "@ioc:Adonis/Lucid/Database";
+import FundPipeline from "App/Models/FundPipeline";
+import Task from "App/Models/Task";
 
 
 export default class FundsPipelinesController {
@@ -10,7 +13,9 @@ export default class FundsPipelinesController {
       .preload('custodian')
       .preload('distributor')
 
-    const pipelinefunds = fundPipeline.all()
+   const pipelinefunds = fundPipeline.all()
+
+
 
     return view.render('maintenance/fundpipeline', {funds, pipelinefunds})
   }
@@ -19,7 +24,7 @@ export default class FundsPipelinesController {
 
   public async store({request, response, session}: HttpContextContract) {
     await fundPipeline.create({
-      fundId: request.input('fund_id'),
+      fund_id: request.input('fund_id'),
       status: request.input('status'),
       client_questionnaire_sent: request.input('client_questionnaire_sent'),
       client_questionnaire_completed: request.input('client_questionnaire_completed'),
@@ -41,9 +46,8 @@ export default class FundsPipelinesController {
   }
 
   public async show({view}: HttpContextContract){
-    const pipefunds = await fundPipeline.query()
+    const pipefunds = await FundPipeline.query()
       .preload('fund')
-
     return view.render('admin/fundpipeline', {pipefunds})
 }
 
@@ -54,14 +58,22 @@ export default class FundsPipelinesController {
   public async destroy({}: HttpContextContract) {}
 
   public async details({params, view}: HttpContextContract){
-    //const p = await fundPipeline.findOrFail(params.id).preload('fund')
+     let p = await Database.rawQuery('SELECT clients.*, funds.*, fp.id, fp.fund_id, fp.status, DATE_FORMAT(fp.client_questionnaire_sent, "%c/%e/%Y") as cqs,' +
+       ' DATE_FORMAT(fp.client_questionnaire_completed, "%c/%e/%Y") as cqc, DATE_FORMAT(fp.client_sent_sample_portfolio_data, "%c/%e/%Y") as csspd,' +
+       ' fp.portfolio_notes, DATE_FORMAT(fp.proposal_sent, "%c/%e/%Y") as proposal_sent , DATE_FORMAT(fp.license_sponsorship, "%c/%e/%Y") as license_sponsorship,' +
+       '  DATE_FORMAT(fp.psa_form_sent, "%c/%e/%Y") as pfs, DATE_FORMAT(fp.psa_form_complete, "%c/%e/%Y") as pfc, ' +
+       'DATE_FORMAT(fp.diligence_sent, "%c/%e/%Y") as ds, DATE_FORMAT(fp.diligence_received, "%c/%e/%Y") as dr, DATE_FORMAT(fp.launch_date, "%c/%e/%Y") as ld,' +
+       'fp.strategy, fp.sec_comments, notes FROM fund_pipelines fp, clients, funds WHERE fp.fund_id = funds.id AND funds.client_id = clients.id AND fp.id =? ', [params.id]
+     )
+    p = p[0][0]
 
-    const p = await fundPipeline.query().preload('fund', (pipelineQuery) => {
-      pipelineQuery.where('id', params.id)
-    })
-    console.log(p[0])
+    const tasks = await Task.query()
+      .preload('assignedTo')
+      .preload('createdBy')
+      .where('fund_id', p.fund_id)
 
-    return view.render('admin/pipeline_details', {p})
+    console.log(tasks)
+    return view.render('admin/pipeline_details', {p, tasks})
 
 
   }

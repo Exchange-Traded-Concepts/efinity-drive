@@ -14,9 +14,12 @@ export default class Task extends BaseModel {
   public description: string
 
   @column()
-  public assignedTo: number
-  @belongsTo(()=> users)
-  public assigned_to : BelongsTo<typeof users>
+  public assigned_to : number
+  @belongsTo(()=> users, {
+    foreignKey: 'assigned_to',
+    localKey: 'id'
+  })
+  public assignedTo : BelongsTo<typeof users>
 
   @column()
   public fundId: number
@@ -24,12 +27,21 @@ export default class Task extends BaseModel {
   public fund_id : BelongsTo<typeof Fund>
 
   @column()
-  public createdBy: number
-  @belongsTo(()=> users)
-  public created_by : BelongsTo<typeof users>
+  public created_by: number
+  @belongsTo(()=> users, {
+    foreignKey: 'created_by',
+    localKey: 'id'
+  })
+  public createdBy : BelongsTo<typeof users>
+
+  @column.dateTime()
+  public target_completion_date: DateTime
+
+  @column.dateTime()
+  public completion_date: DateTime
 
   @column()
-  public target_completion_date: DateTime
+  public completed: boolean
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

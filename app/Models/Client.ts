@@ -1,5 +1,7 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import {BaseModel, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
+import Fund from "App/Models/Fund";
+
 
 export default class Client extends BaseModel {
   @column({ isPrimary: true })
@@ -43,6 +45,9 @@ export default class Client extends BaseModel {
 
   @column()
   public etf_website: string
+
+  @hasMany( () => Fund)
+  public funds: HasMany<typeof Fund >
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

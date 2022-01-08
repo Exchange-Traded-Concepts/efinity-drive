@@ -3,26 +3,115 @@
 @section('content')
 
 <div class="container-fluid">
-<h6>Fund Pipeline Details</h6>
+<div class="card shadow mb-4">
+  <div
+    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+    <h6 class="m-0 font-weight-bold text-primary">Pipeline Details</h6>
+  </div>
+  <div class="card-body">
 <div class="row">
   <div class="col-md-6">
-    Fund Name: {{ p[0].fund.fund_name }} {{p[0].id}}
+    Fund Name: {{ p.fund_name }}
   </div>
   <div class="col-md-6">
-    Ticker: {{p[0].ticker}}
+    Ticker: {{p.ticker}}
   </div>
 </div>
 <div class="row">
   <div class="col-md-6">
-    Status: <span style="text-transform:capitalize">{{p[0].status}}</span>
+    Status: <span style="text-transform:capitalize">{{p.status}}</span>
   </div>
   <div class="col-md-6">
-    Strategy: {{p[0].strategy}}
+    Strategy: {{p.strategy}}
   </div>
 </div>
 
+    <div class="row">
+      <div class="col-md-6">
+        Client Questionnaire Sent: {{p.cqs}}
+      </div>
+      <div class="col-md-6">
+        Client Questionnaire Received: {{ p.cqs }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        Client Sent Sample Portfolio Data: {{p.csspd}}
+      </div>
+      <div class="col-md-6">
+        License/Sponsorship: {{ p.license_sponsorship }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        Client Sent Sample Portfolio Data: {{p.pfs}}
+      </div>
+      <div class="col-md-6">
+        License/Sponsorship: {{ p.pfc }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        SEC Notes: {{p.sec_notes}}
+      </div>
+      <div class="col-md-6">
+        Notes: {{ p.notes }}
+      </div>
+    </div>
+
+</div>
+</div>
 
 
-</div><!//--end container-->
+<div class="card shadow mb-4">
+  <div
+    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+    <h6 class="m-0 font-weight-bold text-primary">Fund Tasks</h6>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <table class="table table-striped">
+        <tr>
+          <th class="">
+            Title
+          </th>
+          <th>Description</th>
+          <th>Assigned To</th>
+          <th>Created By</th>
+          <th>Target Completion Date</th>
+          <th>Status</th>
+        </tr>
+      @each(t in tasks)
+        <tr>
+          <td>
+        {{ t.title }}
+          </td>
+          <td>
+        {{ t.description }}
+          </td>
+          <td>
+        {{ t.assignedTo.first_name}} {{t.assignedTo.last_name}}
+          </td>
+          <td>
+            {{t.createdBy.first_name}} {{t.createdBy.last_name}}
+          </td>
+          <td>
+            {{ t.target_completion_date.toFormat('M/d/yyyy') }}
+          </td>
+          <td>
+            {{ t.completion_date }}
+          </td>
+
+        </tr>
+      @end
+      </table>
+    </div>
+  </div>
+    </div>
+
+  </div><!//--end container-->
 
 @endsection

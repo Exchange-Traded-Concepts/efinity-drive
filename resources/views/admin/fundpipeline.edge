@@ -50,13 +50,29 @@
             <td><a href="{{ `/fund_pipeline/${d.id}` }}">{{d.fund.fund_name||''}}</a></td>
             <td> {{ d.fund.ticker ||''}}</td>
             <td>{{d.status || ''}}</td>
-            <td>{{d.trust|| ''}}</td>
+            <td>{{d.fund.trust|| ''}}</td>
             <td>{{d.strategy || ''}}</td>
-            <td>{{d.client_questionnaire_sent ||''}}</td>
             <td>
-              {{d.client_questionnaire_completed || ''}}
+              @if(d.client_questionnaire_sent)
+              {{d.client_questionnaire_sent.toFormat('M/d/yyyy') ||''}}
+              @else
+              &nbsp;
+              @end
             </td>
-            <td>{{d.client_sent_sample_portfolio_data || ''}}</td>
+            <td>
+              @if(d.client_questionnaire_completed )
+              {{d.client_questionnaire_completed.toFormat('M/d/yyyy') ||''}}
+              @else
+              &nbsp;
+              @end
+            </td>
+            <td>
+              @if(d.client_sent_sample_portfolio_data )
+              {{d.client_sent_sample_portfolio_data.toFormat('M/d/yyyy') ||''}}
+              @else
+              &nbsp;
+              @end
+            </td>
             <td></td>
             <td></td>
             <td></td>

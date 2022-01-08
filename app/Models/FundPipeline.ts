@@ -7,41 +7,44 @@ export default class FundPipeline extends BaseModel {
   public id: number
 
   @column()
-  public fundId: number
-  @belongsTo(()=> Fund)
+  public fund_id: number
+  @belongsTo(()=> Fund, {
+    foreignKey: 'fund_id',
+    localKey: 'id'
+  })
   public fund : BelongsTo<typeof Fund>
 
   @column()
   public status: string
 
-  @column()
+  @column.dateTime()
   public client_questionnaire_sent: DateTime
 
-  @column()
+  @column.dateTime()
   public client_questionnaire_completed: DateTime
 
-  @column()
+  @column.dateTime()
   public client_sent_sample_portfolio_data: DateTime
 
   @column()
   public portfolio_notes: string
 
-  @column()
+  @column.dateTime()
   public proposal_sent: DateTime
 
-  @column()
+  @column.dateTime()
   public license_sponsorship: DateTime
 
-  @column()
+  @column.dateTime()
   public psa_form_sent: DateTime
 
-  @column()
+  @column.dateTime()
   public psa_form_complete: DateTime
 
-  @column()
+  @column.dateTime()
   public diligence_sent: DateTime
 
-  @column()
+  @column.dateTime()
   public diligence_received: DateTime
 
   @column()
