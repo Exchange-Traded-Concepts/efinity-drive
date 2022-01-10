@@ -118,7 +118,8 @@
     <div class="sidebar-heading">
       Addons
     </div>
-
+  @if(auth)
+    @if(auth.user.can_edit)
     <li class="nav-item {{ active }}">
       <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseMaintenance"
          aria-expanded="true" aria-controls="collapseMaintenance">
@@ -139,6 +140,8 @@
         </div>
       </div>
     </li>
+     @endif
+    @endif
 
     <!-- Nav Item - Pages Collapse Menu
     <li class="nav-item active">
