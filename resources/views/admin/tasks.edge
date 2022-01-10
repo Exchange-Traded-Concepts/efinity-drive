@@ -21,9 +21,9 @@
          @if(tasks)
           @each(t in tasks)
           <tr>
-            <td>@{{t.title}}</td>
-            <td>@{{t.created_by}}</td>
-            <td>@{{t.target_completion_date}}</td>
+            <td>{{t.title}}</td>
+            <td>{{t.created_by.first_name}} {{t.created_by.last_name}}</td>
+            <td>{{t.target_completion_date}}</td>
           </tr>
           @endeach
           @end

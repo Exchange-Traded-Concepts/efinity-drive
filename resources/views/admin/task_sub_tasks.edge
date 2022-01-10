@@ -1,0 +1,75 @@
+@layout('layouts.adminDashboard')
+
+@section('content')
+
+<div class="container-fluid">
+
+<div class="row">
+
+  <div class="col-md-12">
+    <div class="card shadow mb-4">
+      <div
+        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Fund Pipeline</h6>
+        <div class="dropdown no-arrow">
+          <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+          </a>
+          <div class="dropdown-menu dropdow0n-menu-right shadow animated--fade-in"
+               aria-labelledby="dropdownMenuLink">
+            <div class="dropdown-header">Admin:</div>
+            <a class="dropdown-item" href="/pipeline">Add/Edit Pipeline</a>
+            <!--  <a class="dropdown-item" href="#">Another action</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Something else here</a>
+            -->
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+<div class="card-body">
+  <div class="row">
+    <table class="table table-striped">
+      <tr>
+        <th class="">
+          Title
+        </th>
+        <th>Description</th>
+        <th>Assigned To</th>
+        <th>Created By</th>
+        <th>Target Completion Date</th>
+        <th>Status</th>
+      </tr>
+      @each(t in subTasks)
+      <tr>
+        <td>
+          {{ t.title }}
+        </td>
+        <td>
+          {{ t.description }}
+        </td>
+        <td>
+          {{ t.assignedTo.first_name}} {{t.assignedTo.last_name}}
+        </td>
+        <td>
+          {{t.createdBy.first_name}} {{t.createdBy.last_name}}
+        </td>
+        <td>
+          {{ t.target_completion_date.toFormat('M/d/yyyy') }}
+        </td>
+        <td>
+          {{ t.completion_date }}
+        </td>
+
+      </tr>
+      @end
+    </table>
+  </div>
+</div>
+</div>
+    </div>
+  </div>
+</div>
+</div>
+   @enddection

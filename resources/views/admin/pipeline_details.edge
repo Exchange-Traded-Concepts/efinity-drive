@@ -87,7 +87,7 @@
       @each(t in tasks)
         <tr>
           <td>
-        {{ t.title }}
+            <a href=" {{`/task_sub_tasks/${t.id}`  }} ">{{ t.title }}</a>
           </td>
           <td>
         {{ t.description }}

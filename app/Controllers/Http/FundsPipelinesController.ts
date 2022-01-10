@@ -2,8 +2,8 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import fundPipeline from "App/Models/FundPipeline";
 import Fund from "App/Models/Fund";
 import Database from "@ioc:Adonis/Lucid/Database";
-import FundPipeline from "App/Models/FundPipeline";
 import Task from "App/Models/Task";
+
 
 
 export default class FundsPipelinesController {
@@ -13,11 +13,8 @@ export default class FundsPipelinesController {
       .preload('custodian')
       .preload('distributor')
 
-   const pipelinefunds = fundPipeline.all()
-
-
-
-    return view.render('maintenance/fundpipeline', {funds, pipelinefunds})
+    const pipelinefunds = fundPipeline.all()
+   return view.render('maintenance/fundpipeline', {funds, pipelinefunds})
   }
 
   public async create({}: HttpContextContract) {}
@@ -46,16 +43,52 @@ export default class FundsPipelinesController {
   }
 
   public async show({view}: HttpContextContract){
-    const pipefunds = await FundPipeline.query()
+    const pipefunds = await fundPipeline.query()
       .preload('fund')
     return view.render('admin/fundpipeline', {pipefunds})
 }
 
-  public async edit({}: HttpContextContract) {}
+  public async edit({view, params}: HttpContextContract) {
+    const pipefund = await fundPipeline.findBy('id',params.id)
+    const funds = await Fund.all();
 
-  public async update({}: HttpContextContract) {}
+    return view.render('maintenance/fundpipeline', {pipefund, funds })
+  }
 
-  public async destroy({}: HttpContextContract) {}
+  public async update({request, view, params}: HttpContextContract) {
+    const  funds = await Fund.all();
+    const fundpipeline = await fundPipeline.findOrFail( params.id)
+    const pipefunds = await fundPipeline.all()
+
+    fundpipeline.merge({
+      fund_id: request.input('fund_id'),
+      status: request.input('status'),
+      client_questionnaire_sent: request.input('client_questionnaire_sent'),
+      client_questionnaire_completed: request.input('client_questionnaire_completed'),
+      client_sent_sample_portfolio_data: request.input('client_sent_sample_portfolio_data'),
+      portfolio_notes: request.input('portfolio_notes'),
+      proposal_sent: request.input('proposal_sent'),
+      license_sponsorship: request.input('license_sponsorship'),
+      psa_form_sent: request.input('psa_form_sent'),
+      psa_form_complete: request.input('psa_form_sent'),
+      diligence_sent: request.input('diligence_sent'),
+      diligence_received: request.input('diligence_received'),
+      strategy: request.input('strategy'),
+      sec_comments:request.input('sec_comments'),
+      launch_date: request.input('launch_date'),
+
+    })
+    return  view.render('admin/fundpipeline', {pipefunds, funds})
+  }
+
+  public async destroy({params, session, response}: HttpContextContract) {
+    const pipefund = await fundPipeline.findOrFail(params.id)
+    await pipefund.delete()
+    session.flash('notification', 'Fund Pipeline Deleted')
+
+    return response.redirect('back')
+
+  }
 
   public async details({params, view}: HttpContextContract){
      let p = await Database.rawQuery('SELECT clients.*, funds.*, fp.id, fp.fund_id, fp.status, DATE_FORMAT(fp.client_questionnaire_sent, "%c/%e/%Y") as cqs,' +
