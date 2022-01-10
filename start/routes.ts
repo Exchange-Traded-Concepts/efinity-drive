@@ -45,8 +45,8 @@ Route.get('/dashboard', async ({view})  => {
 
  */
 
-Route.get('/register', 'AuthController.showRegister').middleware('isAdmin')
-Route.post('/register', 'AuthController.register').middleware('isAdmin')
+Route.get('/register', 'AuthController.showRegister')
+Route.post('/register', 'AuthController.register')
 Route.get('/register/:id/edit', 'AuthController.edit').middleware('editAdmin')
 Route.patch('/register/:id', 'AuthController.update').middleware('editAdmin')
 
