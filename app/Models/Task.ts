@@ -1,7 +1,8 @@
 import { DateTime } from 'luxon'
-import {BaseModel, BelongsTo, belongsTo, column} from '@ioc:Adonis/Lucid/Orm'
+import {BaseModel, BelongsTo, belongsTo, column, hasMany, HasMany} from '@ioc:Adonis/Lucid/Orm'
 import users from "App/Models/users";
 import Fund from "App/Models/Fund";
+import SubTask from "App/Models/SubTask";
 
 export default class Task extends BaseModel {
   @column({ isPrimary: true })
@@ -42,6 +43,9 @@ export default class Task extends BaseModel {
 
   @column()
   public completed: boolean
+
+  @hasMany(()=> SubTask)
+  public subtasks: HasMany<typeof SubTask>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
