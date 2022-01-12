@@ -2,6 +2,7 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import SubTask from "App/Models/SubTask";
 import FileUpload from "App/utils/fileUploader";
 
+
 export default class SubTasksController {
   public async index({}: HttpContextContract) {}
 
@@ -25,6 +26,7 @@ export default class SubTasksController {
       task_id: request.input('task_id'),
       target_completion_date: request.input('target_completion_date'),
       completion_date: request.input('completion_date'),
+      document_name: request.input('document_name'),
       document_url: docurl,
       notes: request.input('notes')
     })
@@ -43,9 +45,46 @@ export default class SubTasksController {
     return view.render('admim/task_sub_tasks', {subTasks})
   }
 
-  public async edit({}: HttpContextContract) {}
+  public async edit({ view, params }: HttpContextContract) {
 
-  public async update({}: HttpContextContract) {}
+    const subTask =    await SubTask.findBy('id',params.id)
+    return view.render('client/index', { subTask })
+
+  }
+
+  public async update({params, view, request, auth}: HttpContextContract) {
+
+    const st = await SubTask.findOrFail( params.id)
+
+    let docurl = ''
+    if (request.input('document_url')){
+      const data = await FileUpload.uploadToS3(request.file('upload'), 'uploads',  st.document_url)
+      console.log(data.url)
+      docurl = data.url
+
+      st.merge({
+        document_url : docurl
+      })
+      await st.save()
+    }
+
+    st.merge({
+      title: request.input('title'),
+      description: request.input('description'),
+      assigned_to: request.input('assigned_to'),
+      // @ts-ignore
+      created_by: auth.user.id,
+      task_id: request.input('task_id'),
+      target_completion_date: request.input('target_completion_date'),
+      completion_date: request.input('completion_date'),
+      document_name: request.input('document_name'),
+      notes: request.input('notes')
+    })
+
+    await st.save()
+
+    return view.render('maint/subtask')
+  }
 
   public async destroy({}: HttpContextContract) {}
 }

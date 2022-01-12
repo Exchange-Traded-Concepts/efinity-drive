@@ -40,6 +40,12 @@ export default class SubTask extends BaseModel {
   @column.dateTime()
   public target_completion_date : DateTime
 
+  @column.dateTime()
+  public completion_date: DateTime
+
+  @column()
+  public document_name: string
+
   @column()
   public document_url: string
 
