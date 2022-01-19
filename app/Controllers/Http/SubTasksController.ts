@@ -1,6 +1,8 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import SubTask from "App/Models/SubTask";
 import FileUpload from "App/utils/fileUploader";
+import users from "App/Models/users";
+import Task from "App/Models/Task";
 
 
 export default class SubTasksController {
@@ -38,17 +40,25 @@ export default class SubTasksController {
   public async show({params, view}: HttpContextContract) {
 
     const subTasks = await SubTask.query()
-      .preload('taskId')
       .preload('createdBy')
       .preload('assignedTo')
       .where('task_id', params.task_id)
-    return view.render('admim/task_sub_tasks', {subTasks})
+    const task = await Task.findBy('id', params.task_id)
+    return view.render('admin/task_sub_tasks', {subTasks, task})
   }
 
   public async edit({ view, params }: HttpContextContract) {
 
     const subTask =    await SubTask.findBy('id',params.id)
     return view.render('client/index', { subTask })
+
+  }
+
+  public async add_subtask_to_task({params, view}: HttpContextContract){
+
+    const etcUsers = await users.all()
+    return view.render('maintenance/subtask', { params, etcUsers })
+
 
   }
 

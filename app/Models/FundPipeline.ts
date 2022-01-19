@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
 import {BaseModel, BelongsTo, belongsTo, column} from '@ioc:Adonis/Lucid/Orm'
 import Fund from "App/Models/Fund";
+import Trust from "App/Models/Trust";
 
 export default class FundPipeline extends BaseModel {
   @column({ isPrimary: true })
@@ -55,6 +56,35 @@ export default class FundPipeline extends BaseModel {
 
   @column()
   public launch_date: string
+
+  @column.dateTime()
+  public sub_advisor_agreement: DateTime
+
+  @column.dateTime()
+  public target_launch_date: DateTime
+
+  @column()
+  public trust_id: number
+  @belongsTo(()=> Trust, {
+    foreignKey: 'trust_id',
+    localKey: 'id'
+  })
+  public trust : BelongsTo<typeof Trust>
+
+  @column.dateTime()
+  public fifteenc_approval : DateTime
+
+  @column()
+  public four_ninety_five_status: string
+
+  @column.dateTime()
+  public four_ninety_five_effective_date : DateTime
+
+  @column()
+  public role : string
+
+  @column.dateTime()
+  public code_of_ethics_complete : DateTime
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

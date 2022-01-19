@@ -30,12 +30,12 @@ export default class SubTask extends BaseModel {
   public createdBy: BelongsTo<typeof users>
 
   @column()
-  public task_id: number
+  public taskId: number
   @belongsTo(()=> Task, {
     foreignKey: 'task_id',
     localKey: 'id'
   })
-  public taskId: BelongsTo<typeof Task>
+  public task_id: BelongsTo<typeof Task>
 
   @column.dateTime()
   public target_completion_date : DateTime

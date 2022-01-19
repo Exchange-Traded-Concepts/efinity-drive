@@ -17,13 +17,15 @@
             <th>Task Title</th>
             <th>Assigned BY</th>
             <th>Target Completion Date</th>
+            <th>Add Sub Task</th>
           </tr>
          @if(tasks)
           @each(t in tasks)
           <tr>
             <td>{{t.title}}</td>
             <td>{{t.created_by.first_name}} {{t.created_by.last_name}}</td>
-            <td>{{t.target_completion_date}}</td>
+            <td>{{t.target_completion_date.toFormat('M/d/yyyy')}}</td>
+            <td><a href="{{ `/add_sub_tasks/${t.id}` }}">Add Sub Task</a></td>
           </tr>
           @endeach
           @end

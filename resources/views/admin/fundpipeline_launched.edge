@@ -1,0 +1,92 @@
+@layout('layouts.adminDashboard')
+
+@section('content')
+
+<div class="container-fluid">
+
+<div class="row">
+
+  <div class="col-md-12">
+    <div class="card shadow mb-4">
+      <div
+        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Fund Pipeline</h6>
+        <div class="dropdown no-arrow">
+          <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+          </a>
+          <div class="dropdown-menu dropdow0n-menu-right shadow animated--fade-in"
+               aria-labelledby="dropdownMenuLink">
+            <div class="dropdown-header">Admin:</div>
+            <a class="dropdown-item" href="/pipeline">Add/Edit Pipeline</a>
+            <!--  <a class="dropdown-item" href="#">Another action</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Something else here</a>
+            -->
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <table class="table table-striped">
+          <tr>
+            <th>Fund Name</th>
+            <th>Ticker</th>
+            <th>Status</th>
+            <th>Trust</th>
+            <th>Strategy</th>
+            <th>Questionnaire Sent</th>
+            <th>Questionnaire Received</th>
+            <th>Sample Portfolio Sent</th>
+            <th>Proposal Sent</th>
+            <th>License Agreement</th>
+            <th>Due Diligence Initiated</th>
+            <th>Due Diligence Complete</th>
+            <th>Launch Date</th>
+          </tr>
+          @each(d in pipefunds)
+
+          <tr>
+            <td><a href="{{ `/fund_pipeline/${d.id}` }}">{{d.fund.fund_name||''}}</a></td>
+            <td> {{ d.fund.ticker ||''}}</td>
+            <td>{{d.status || ''}}</td>
+            <td>{{d.fund.trust|| ''}}</td>
+            <td>{{d.strategy || ''}}</td>
+            <td>
+              @if(d.client_questionnaire_sent)
+              {{d.client_questionnaire_sent.toFormat('M/d/yyyy') ||''}}
+              @else
+              &nbsp;
+              @end
+            </td>
+            <td>
+              @if(d.client_questionnaire_completed )
+              {{d.client_questionnaire_completed.toFormat('M/d/yyyy') ||''}}
+              @else
+              &nbsp;
+              @end
+            </td>
+            <td>
+              @if(d.client_sent_sample_portfolio_data )
+              {{d.client_sent_sample_portfolio_data.toFormat('M/d/yyyy') ||''}}
+              @else
+              &nbsp;
+              @end
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <tdh></tdh>
+            <td></td>
+          </tr>
+          @end
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>
+
+
+@endsection

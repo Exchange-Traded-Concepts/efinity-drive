@@ -2,6 +2,31 @@
 
 @section('content')
 
+
+<ul class="block w-11/12 my-4 mx-auto" x-data="{selected:null}">
+  <li class="flex align-center flex-col">
+    <h4 @click="selected !== 10 ? selected = 10 : selected = null"
+        class="cursor-pointer">Accordion item 1</h4>
+    <p x-show="selected == 10" class="border py-4 px-2">
+      This is made with Alpine JS and Tailwind CSS
+    </p>
+  </li>
+  <li class="flex align-center flex-col">
+    <h4 @click="selected !== 11 ? selected = 11 : selected = null"
+        class="cursor-pointer px-5 py-3 bg-indigo-400 text-white text-center inline-block hover:opacity-75 hover:shadow hover:-mb-3">Accordion item 2</h4>
+    <p x-show="selected == 11" class="border py-4 px-2">
+      There's no external CSS or JS
+    </p>
+    <p x-show="selected == 11">This is a test </p>
+  </li>
+  <li class="flex align-center flex-col">
+    <h4 @click="selected !== 12 ? selected = 12 : selected = null"
+        :class="{'cursor-pointer px-5 py-3 bg-indigo-500 text-white text-center inline-block hover:opacity-75 hover:shadow hover:-mb-3': true, 'rounded-b': selected != 2}">Accordion item 3</h4>
+    <p x-show="selected == 12" :class="{'border py-4 px-2': true, 'rounded-b': selected == 2}">
+      Pretty cool huh?
+    </p>
+  </li>
+</ul>
 <div class="container-fluid">
 <div class="card shadow mb-4">
   <div
@@ -73,11 +98,12 @@
   </div>
   <div class="card-body">
     <div class="row">
-      <table class="table table-striped">
+      <table class="table table-striped"  x-data="{selected:null}">
         <tr>
-          <th class="">
+          <th class="" >
             Title
           </th>
+          <th></th>
           <th>Description</th>
           <th>Assigned To</th>
           <th>Created By</th>
@@ -88,9 +114,17 @@
         <tr>
           <td>
             <a href=" {{`/task_sub_tasks/${t.id}`  }} ">{{ t.title }}</a>
+
           </td>
+          @if(t.subtasks )
+          <td @click=" {{ `selected !== ${ t.id } ? selected = ${ t.id } : selected = null` }} " >
+            <i class="fas fa-arrow-circle-right"></i>
+          </td>
+            @else
+            <td></td>
+            @end
           <td>
-        {{ t.description }}
+            {{ t.description }}
           </td>
           <td>
         {{ t.assignedTo.first_name}} {{t.assignedTo.last_name}}
@@ -106,7 +140,19 @@
           </td>
 
         </tr>
-      @end
+
+        @if(t.subtasks)
+        @each(st in t.subtasks)
+        <tr x-show="{{ `selected == ${t.id}` }}">
+          <td colspan="6" >
+
+          <p  x-transition><i class="fas fa-arrow-circle-right"></i> {{st.title}}</p>
+
+         </td>
+        </tr>
+        @end
+        @end
+        @end
       </table>
     </div>
   </div>

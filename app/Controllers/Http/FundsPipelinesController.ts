@@ -42,11 +42,23 @@ export default class FundsPipelinesController {
     return response.redirect('back')
   }
 
-  public async show({view}: HttpContextContract){
+  public async show({view, params}: HttpContextContract){
     const pipefunds = await fundPipeline.query()
-      .preload('fund')
-    return view.render('admin/fundpipeline', {pipefunds})
-}
+      .preload('fund').where('status', params.status)
+    const pipe = 'show'
+    if (params.status === 'prelaunch'){
+      return view.render('admin/fundpipeline', {pipefunds, pipe})
+    }
+    else if(params.status === 'prospect'){
+      return view.render('admin/fundpipeline_prospect', {pipefunds, pipe})
+    }
+    else if(params.status === 'launched'){
+      return view.render('admin/fundpipeline_launched', {pipefunds, pipe})
+    }
+    else if(params.status === 'other'){
+      return view.render('admin/fundpipeline_other', {pipefunds, pipe})
+    }
+  }
 
   public async edit({view, params}: HttpContextContract) {
     const pipefund = await fundPipeline.findBy('id',params.id)
@@ -103,6 +115,7 @@ export default class FundsPipelinesController {
     const tasks = await Task.query()
       .preload('assignedTo')
       .preload('createdBy')
+      .preload('subtasks')
       .where('fund_id', p.fund_id)
 
     console.log(tasks)

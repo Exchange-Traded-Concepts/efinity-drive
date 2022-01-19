@@ -97,7 +97,7 @@ Route.group(() => {
 
 Route.group(() => {
   Route.get('/sub_tasks', 'SubTasksController.index')
-  Route.post('/sub_tasks', 'SubTasksController.create')
+  Route.post('/sub_tasks', 'SubTasksController.store')
   Route.get('/sub_tasks/:id/edit', 'SubTasksController.edit')
   Route.patch('sub_tasks/:id', 'SubTasksController.update')
 }).middleware('isAdmin')
@@ -106,6 +106,7 @@ Route.group(() => {
 Route.get('/admin_funds', 'FundsController.show').middleware('isAdmin')
 Route.get('/admin_clients', 'ClientsController.show').middleware('isAdmin')
 Route.get('/your_tasks', 'TasksController.show').middleware('isAdmin')
-Route.get('/fund_pipeline', 'FundsPipelinesController.show').middleware('isAdmin')
+Route.get('/fund_pipeline/:status', 'FundsPipelinesController.show').middleware('isAdmin')
 Route.get('/task_sub_tasks/:task_id', 'SubTasksController.show').middleware('isAdmin')
+Route.get('/add_sub_tasks/:task_id', 'SubTasksController.add_subtask_to_task').middleware('isAdmin')
 Route.get('/fund_pipeline/:id', 'FundsPipelinesController.details').middleware('isAdmin')

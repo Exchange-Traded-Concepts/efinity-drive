@@ -13,7 +13,7 @@
     <div class="card shadow mb-4">
       <div
         class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-        <h6 class="m-0 font-weight-bold text-primary">My Sub Tasks for Task {{subTasks.taskId.title}}</h6>
+        <h6 class="m-0 font-weight-bold text-primary">My Sub Tasks for Task</h6>
       </div>
       <div class="card-body">
         <table class="table table-striped">
@@ -44,10 +44,10 @@
       </div>
       <div class="card-body">
         <form
-          @if(u_task)
-          action=" {{ `/tasks/${t.id}?_method=PATCH`}}"
+          @if(subTask)
+          action=" {{ `/sub_tasks/${t.id}?_method=PATCH`}}"
           @else
-          action="/tasks"
+          action="/sub_tasks"
           @end
           method="post"
           enctype="multipart/form-data">
@@ -57,34 +57,18 @@
             <input type="text" class="form-control {{ flashMessages.has('errors.name') ? 'alert-danger' :'' }}"
                    id="title"
                    name="title"
-                   @if(u_task)
-                   value="{{u_task.title ||''}}"
+                   @if(subTask)
+                   value="{{subTask.title ||''}}"
                    @endif
                    placeholder="Title">
-          </div>
-          <div class="form-group">
-            <label for="fund_id">Fund</label>
-            <select name="fund_id" id="fund_id" class="form-control">
-              @each(f in funds)
-              <option value="{{f.id}}"
-                      @if(u_task)
-                      @if(f.id == u_task.fund_id)
-                      selected
-                      @end
-                      @end
-              >
-                {{f.ticker}}
-              </option>
-              @end
-            </select>
           </div>
           <div class="form-group">
             <label for="description">Description</label>
             <input type="text" class="form-control"
                    id="description"
                    name="description"
-                   @if(u_task)
-                   value="{{u_task.description ||''}}"
+                   @if(subTask)
+                   value="{{subTask.description ||''}}"
                    @endif
                    placeholder="Description">
           </div>
@@ -102,14 +86,33 @@
             <label for="target_completion_date">Target Completion Date</label>
             <input type="date"
                    name="target_completion_date"
-                   @if(u_task)
-                   value="{{u_task.target_completion_date ||''}}"
+                   @if(subTask)
+                   value="{{subTask.target_completion_date ||''}}"
                    @endif
                    class="form-control"
                    id="target_completion_date"
                    placeholder="Target Completion Date">
           </div>
-
+          <div class="form-group">
+            <label for="completion_date">Completion Date</label>
+            <input type="date"
+                   name="completion_date"
+                   @if(subTask)
+                   value="{{subTask.completion_date ||''}}"
+                   @endif
+                   class="form-control"
+                   id="completion_date"
+                   placeholder="Completion Date">
+          </div>
+          <div class="form-group">
+            <label for="completion_date">Completion Date</label>
+            <textarea name="notes" class="form-control">
+              @if(subTask)
+                {{subTask.notes ||''}}
+              @end
+            </textarea>
+          </div>
+        <input name="task_id" type="hidden" value="{{ params.task_id || subTask.id}}">
           <button type="submit" class="btn btn-primary">Submit</button>
           @if(flashMessages.has('errors.title'))
           <p class="alert-danger">
