@@ -1,6 +1,5 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import ClientContact from "App/Models/ClientContact";
-import {rules, schema} from "@ioc:Adonis/Core/Validator";
 
 export default class ClientContactsController {
   public async index({params, view}: HttpContextContract) {
@@ -36,25 +35,5 @@ export default class ClientContactsController {
 
   public async destroy({}: HttpContextContract) {}
 
-  private async validateInput(request) {
-    const valSchema = schema.create({
-      name: schema.string({ trim: true }, [rules.maxLength(150), rules.required()]),
-      role: schema.string({trim: true}, [rules.maxLength(255)]),
-     /* email: schema.string({trim: true}, [rules.maxLength(255), rules.email() || '' ]),
-      phone: schema.string({trim: true}, [rules.maxLength(2)]),
-      notes: schema.string({trim: true}, [rules.maxLength(10)]),
-
-      */
-    })
-
-    return await request.validate({
-      schema: valSchema,
-      messages: {
-        'name.required': 'Name is required',
-        'name.maxLength': 'Name allows upto 150 characters',
-        'role.maxlength': '255',
-      },
-    })
-  }
 
 }
