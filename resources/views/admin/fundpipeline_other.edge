@@ -10,7 +10,7 @@
     <div class="card shadow mb-4">
       <div
         class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-        <h6 class="m-0 font-weight-bold text-primary">Fund Pipeline</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Fund Pipeline <span style="text-transform: capitalize;">{{ status }}</span></h6>
         <div class="dropdown no-arrow">
           <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -28,28 +28,24 @@
         </div>
       </div>
       <div class="card-body">
-        <table class="table table-striped">
+        <div class="table-responsive">
+        <table class="table table-striped table-responsive">
           <tr>
+            <th>Client</th>
             <th>Fund Name</th>
             <th>Ticker</th>
-            <th>Status</th>
             <th>Trust</th>
             <th>Strategy</th>
-            <th>Questionnaire Sent</th>
-            <th>Questionnaire Received</th>
-            <th>Sample Portfolio Sent</th>
-            <th>Proposal Sent</th>
-            <th>License Agreement</th>
-            <th>Due Diligence Initiated</th>
-            <th>Due Diligence Complete</th>
-            <th>Launch Date</th>
+            <th>Change</th>
+            <th>Timing</th>
+            <th>D.D. Complete</th>
+            <th>Target Launch Date</th>
           </tr>
           @each(d in pipefunds)
-
           <tr>
-            <td><a href="{{ `/fund_pipeline_details/${d.id}` }}">{{d.fund.fund_name||''}}</a></td>
+            <td>Client</td>
+            <td><a href="{{ `/fund_pipeline_details/${d.fund.id}` }}">{{d.fund.fund_name||''}}</a></td>
             <td> {{ d.fund.ticker ||''}}</td>
-            <td>{{d.status || ''}}</td>
             <td>{{d.fund.trust|| ''}}</td>
             <td>{{d.strategy || ''}}</td>
             <td>
@@ -68,19 +64,23 @@
             </td>
             <td>
               @if(d.client_sent_sample_portfolio_data )
-              {{d.client_sent_sample_portfolio_data.toFormat('M/d/yyyy') ||''}}
+              {{d.diligence_received.toFormat('M/d/yyyy') ||''}}
               @else
               &nbsp;
               @end
             </td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <tdh></tdh>
-            <td></td>
+            <td>
+              @if(d.target_completion_date )
+              {{d.target_completion_date.toFormat('M/d/yyyy') ||''}}
+              @else
+              &nbsp;
+              @end
+            </td>
+
           </tr>
           @end
         </table>
+        </div>
       </div>
 
     </div>

@@ -10,7 +10,7 @@
     <div class="card shadow mb-4">
       <div
         class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-        <h6 class="m-0 font-weight-bold text-primary">Fund Pipeline</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Fund Pipeline {{ status }}</h6>
         <div class="dropdown no-arrow">
           <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -28,29 +28,29 @@
         </div>
       </div>
       <div class="card-body">
-        <table class="table table-striped">
+        <div class="table-responsive">
+        <table class="table table-striped table-responsive">
           <tr>
+            <th>Client</th>
             <th>Fund Name</th>
             <th>Ticker</th>
-            <th>Status</th>
             <th>Trust</th>
             <th>Role</th>
             <th>Strategy</th>
             <th>Questionnaire Sent</th>
             <th>Questionnaire Received</th>
-            <th>Sample Portfolio Sent</th>
+            <th>Sample Portfolio</th>
             <th>Proposal Sent</th>
             <th>License Agreement</th>
             <th>Sub Advisor Agreement</th>
             <th>Target Launch Date</th>
-            <th>Notes</th>
           </tr>
           @each(d in pipefunds)
 
           <tr>
-            <td><a href="{{ `/fund_pipeline_details/${d.id}` }}">{{d.fund.fund_name||''}}</a></td>
+            <td>Client</td>
+            <td><a href="{{ `/fund_pipeline_details/${d.fund.id}` }}">{{d.fund.fund_name||''}}</a></td>
             <td> {{ d.fund.ticker ||''}}</td>
-            <td>{{d.status || ''}}</td>
             <td>{{d.fund.trust|| ''}}</td>
             <td>{{d.strategy || ''}}</td>
             <td>
@@ -75,24 +75,16 @@
               @end
             </td>
             <td>
-              @if(d.client_sent_sample_portfolio_data )
-              {{d.proposal_sent.toFormat('M/d/yyyy') ||''}}
-              @else
-              &nbsp;
-              @end
-            </td>
-            <td>
-              @if(d.license_sponsorship)
+              @if(d.license_sponsorship )
               {{d.license_sponsorship.toFormat('M/d/yyyy') ||''}}
               @else
-              &nbsp;
               @end
             </td>
             <td>
-              @if(d.sub_advisor_agreement)
+             @if(d.sub_advisor_agreement)
               {{d.sub_advisor_agreement.toFormat('M/d/yyyy') ||''}}
               @else
-              &nbsp;
+              &nbsp;&nbsp;
               @end
             </td>
             <td>
@@ -102,17 +94,11 @@
               &nbsp;
               @end
             </td>
-            <td>
-              @if(d.notes)
-              {{d.notes}}
-              @else
-              &nbsp;
-              @end
-            </td>
-          </tr>
+                 </tr>
           @end
         </table>
       </div>
+        </div>
 
     </div>
   </div>

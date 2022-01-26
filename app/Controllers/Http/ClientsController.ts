@@ -4,7 +4,6 @@ import Client from "App/Models/Client";
 import FileUpload from "App/utils/fileUploader";
 import States from "App/utils/USState";
 import {rules, schema} from "@ioc:Adonis/Core/Validator";
-//import Database from "@ioc:Adonis/Lucid/Database";
 
 export default class ClientsController {
 
@@ -13,7 +12,7 @@ export default class ClientsController {
     //const contacts = await Database.query().from('company_contacts').select('*').orderBy('office_location', 'desc')
     //  .orderBy('last_name')
 
-    const data = await Client.all();
+    const data = await Client.query().orderBy('name');
     const states = await States.state_hash()
     const maint = 'show'
 
@@ -107,6 +106,11 @@ export default class ClientsController {
     session.flash('notification', 'Client Updated')
     return response.redirect('back', )
 
+  }
+
+  public async details({view, params }: HttpContextContract){
+    const data = await Client.query().preload('funds').preload('clientContacts').where('id', params.client_id)
+    return view.render('admin/client_details', {data})
   }
 
 

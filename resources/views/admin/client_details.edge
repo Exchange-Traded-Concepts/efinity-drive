@@ -1,0 +1,181 @@
+@layout('layouts.adminDashboard')
+
+@section('content')
+<div class="container-fluid">
+<div class="card shadow mb-4">
+  <div
+    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+    <h6 class="m-0 font-weight-bold text-primary">Client Details</h6>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-6">
+         Name: {{ data[0].name }}
+      </div>
+      <div class="col-md-6">
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+
+      </div>
+      <div class="col-md-6">
+
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+
+      </div>
+      <div class="col-md-6">
+
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        xx
+      </div>
+      <div class="col-md-6">
+        yy
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        Client Sent Sample Portfolio Data:
+      </div>
+      <div class="col-md-6">
+        License/Sponsorship:
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        SEC Notes:
+      </div>
+      <div class="col-md-6">
+        Notes:
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<div class="card shadow mb-4">
+  <div
+    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+    <h6 class="m-0 font-weight-bold text-primary">Funds</h6>
+
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="table-responsive">
+        <table class="table table-striped" >
+          <tr>
+            <th class="" >
+              Name
+            </th>
+            <th></th>
+            <th>Ticker</th>
+            <th>Assigned To</th>
+            <th>Created By</th>
+            <th>Target Completion Date</th>
+            <th>Status</th>
+          </tr>
+          @each(f in data[0].funds)
+          <tr>
+            <td>
+              <a href=" {{`/fund_pipeline_details/${f.id}`  }} ">{{ f.fund_name }}</a>
+
+            </td>
+            <td>
+
+            </td>
+            <td>
+
+            </td>
+            <td>
+
+            </td>
+            <td>
+
+            </td>
+            <td>
+
+            </td>
+
+          </tr>
+
+         @end
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="card shadow mb-4">
+  <div
+    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+    <h6 class="m-0 font-weight-bold text-primary">Client Contacts</h6>
+    @if(auth.user.can_edit)
+    <div class="dropdown no-arrow">
+      <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+      </a>
+      <div class="dropdown-menu dropdow0n-menu-right shadow animated--fade-in"
+           aria-labelledby="dropdownMenuLink">
+        <div class="dropdown-header">Admin:</div>
+        <a class="dropdown-item" href="{{ `/client_contacts/${data[0].id}` }}">Add/Edit Contact</a>
+        <!--  <a class="dropdown-item" href="#">Another action</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Something else here</a>
+        -->
+      </div>
+    </div>
+    @endif
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="table-responsive">
+        <table class="table table-striped" >
+          <tr>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Secondary Email</th>
+            <th>Notes</th>
+          </tr>
+          @each(cc in data[0].clientContacts)
+          <tr>
+            <td>
+              {{cc.name}}
+            </td>
+            <td>
+              {{ cc.role }}
+            </td>
+            <td>
+              <a href="{{ `mailto:${cc.email}` }}" target="_blank">{{cc.email}}</a>
+            </td>
+            <td>
+              {{cc.phone}}
+            </td>
+            <td>
+              {{cc.secondary_email}}
+            </td>
+          </tr>
+          @end
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!//--end container-->
+
+@endsection

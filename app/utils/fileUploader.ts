@@ -19,7 +19,7 @@ export default class FileUpload {
 
   static async uploadToS3 (file, folder, oldPath) {
     // If oldPath parameter is set then, delete the old picture
-    console.log({file})
+    // console.log({file})
     if (oldPath) {
       const exists = await Drive.use('s3').exists(oldPath)
       if (exists) {
@@ -33,8 +33,8 @@ export default class FileUpload {
 
     // Sets the path and move the file
     const filePath = `${path.resolve(`./tmp/${folder}`)}/${fileName}`
-    console.log(filePath)
-    console.log(Application.tmpPath(folder),"=======>",path.resolve(`./tmp/${folder}`))
+    //console.log(filePath)
+    //console.log(Application.tmpPath(folder),"=======>",path.resolve(`./tmp/${folder}`))
     await file.move(Application.tmpPath('uploads'), { name: fileName, overwrite: true })
 
     // Creates a readable stream from file and stores its size
@@ -46,6 +46,7 @@ export default class FileUpload {
     await Drive.use('s3').put(s3Path, buffers, { ACL: 'public-read', ContentType: `${file.type}/${file.subtype}` })
     const fileUrl = await Drive.use('s3').getUrl(s3Path)
     const fileStats = await Drive.use('s3').getStats(s3Path)
+    const contents = await Drive.use('s3').get(s3Path)
     // Destroy the readable stream and delete the file from tmp path
     await fileStream.destroy()
     await Drive.delete(filePath)
@@ -54,7 +55,14 @@ export default class FileUpload {
       name: fileName,
       path: s3Path,
       stats: fileStats,
-      url: fileUrl
+      url: fileUrl,
+      ext:contents,
     }
   }
+
+  static async DeleteFile(filePath){
+    console.log(filePath)
+    await Drive.use('s3').delete(filePath)
+  }
+
 }

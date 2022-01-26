@@ -1,0 +1,144 @@
+@layout('layouts.adminDashboard')
+
+@section('content')
+<div class="container-fluid">
+<div>
+  @if(flashMessages.has('notification'))
+  <div class="alert alert-success">{{ flashMessages.get('notification') }}</div>
+  @endif
+</div>
+<div class="row">
+
+  <div class="col-md-6">
+    <div class="card shadow mb-4">
+      <div
+        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Client Contact</h6>
+      </div>
+      <div class="card-body">
+        <table class="table table-striped">
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Options</th>
+          </tr>
+          @each(d in data)
+          <tr>
+            <td>
+              {{ d.id }}
+            </td>
+            <td>
+              {{ d.name }}
+            </td>
+            <td>
+              {{d.role}}
+            </td>
+            <td>
+              {{d.email}}
+            </td>
+            <td>
+              {{d.phone}}
+            </td>
+            <td>
+              <a href="{{ `/client_contact/${d.id}/edit` }}">Edit</a><br>
+            </td>
+          </tr>
+          @end
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card shadow mb-4">
+      <div
+        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Client Contact</h6>
+      </div>
+      <div class="card-body">
+        <form
+          @if(cc)
+          action=" {{ `/client_contact/${cc.id}?_method=PATCH`}}"
+          @else
+          action="/client_contact"
+          @end
+          method="post"
+          enctype="multipart/form-data">
+          {{ csrfField() }}
+          <input type="hidden" name="client_id" value="{{ client_id }}">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control {{ flashMessages.has('errors.name') ? 'alert-danger' :'' }}"
+                   id="name"
+                   name="name"
+                   @if(custo)
+                   value="{{custo.name ||''}}"
+                   @endif
+                   placeholder="Name">
+          </div>
+          <div class="form-group">
+            <label for="role">Role</label>
+            <input type="text" class="form-control"
+                   id="role"
+                   name="role"
+                   @if(custo)
+                   value="{{cc.address ||''}}"
+                   @endif
+                   placeholder="Role">
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="text"
+                   class="form-control"
+                   id="email"
+                   @if(cc)
+                   value="{{cc.email ||''}}"
+                   @endif
+                   name="email"
+                   placeholder="Email">
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="text"
+                   name="phone"
+                   @if(cc)
+                   value="{{cc.phone ||''}}"
+                   @endif
+                   class="form-control"
+                   id="phone"
+                   placeholder="Phone">
+          </div>
+          <div class="form-group">
+            <label for="secondary_email">Secondary Email</label>
+            <input type="text"
+                   name="secondary_email"
+                   @if(cc)
+                   value="{{cc.secondary_email ||''}}"
+                   @endif
+                   class="form-control"
+                   id="secondary_email"
+                   placeholder="Secondary Email">
+          </div>
+          <div class="form-group">
+            <textarea name="notes" class="form-control">{{notes || ''}}</textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Submit</button>
+          @if(flashMessages.has('errors.title'))
+          <p class="alert-danger">
+            {{ flashMessages.get('errors.title')}}
+          </p>
+          @endif
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+@endsection

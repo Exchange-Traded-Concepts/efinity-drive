@@ -1,0 +1,109 @@
+@layout('layouts.adminDashboard')
+
+@section('content')
+<div class="container-fluid">
+<div>
+  @if(flashMessages.has('notification'))
+  <div class="alert alert-success">{{ flashMessages.get('notification') }}</div>
+  @endif
+</div>
+<div class="row">
+
+  <div class="col-md-6">
+    <div class="card shadow mb-4">
+      <div
+        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Fund Documents</h6>
+      </div>
+      <div class="card-body">
+        <table class="table table-striped">
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>URL</th>
+            <th>Size</th>
+            <th>Options</th>
+          </tr>
+          @each(d in FundDocuments)
+          <tr>
+            <td>
+              {{ d.id }}
+            </td>
+            <td>
+              {{ d.name }}
+            </td>
+            <td>
+              @if(d.url)
+              <a href="{{d.url}}" target="_blank">File</a>
+              @end
+            </td>
+            <td>
+              {{d.size}}
+            </td>
+            <td>
+              <a href="{{ `/fund_documents/${d.id}/edit` }}">Edit</a> <a href="{{ `/fund_documents/${d.id}/delete` }}">X</a> <br>
+            </td>
+          </tr>
+          @end
+        </table>
+      </div>
+
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card shadow mb-4">
+      <div
+        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">{{ fundc[0].fund_name }} {{ fundc[0].ticker }}</h6>
+      </div>
+      <div class="card-body">
+        <form
+          @if(custo)
+          action=" {{ `/fund_documents/${doc.id}?_method=PATCH`}}"
+          @else
+          action="/fund_documents"
+          @end
+          method="post"
+          enctype="multipart/form-data">
+          {{ csrfField() }}
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control {{ flashMessages.has('errors.name') ? 'alert-danger' :'' }}"
+                   id="name"
+                   name="name"
+                   @if(doc)
+                   value="{{doc.name ||''}}"
+                   @endif
+                   placeholder="Name">
+          </div>
+          <input type="hidden" name="fund_id" value="{{ fund_id }}">
+          <div class="form-group">
+            <label for="document">Document</label>
+            <input type="file"
+                   class="form-control"
+                   id="document"
+                   name="upload"
+                   @if(client)
+                   value="{{ doc.url || ''}}"
+                   @endif
+                   placeholder="Document">
+          </div>
+
+
+
+
+          <button type="submit" class="btn btn-primary">Submit</button>
+          @if(flashMessages.has('errors.title'))
+          <p class="alert-danger">
+            {{ flashMessages.get('errors.title')}}
+          </p>
+          @endif
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+@endsection

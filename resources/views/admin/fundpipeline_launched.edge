@@ -10,7 +10,7 @@
     <div class="card shadow mb-4">
       <div
         class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-        <h6 class="m-0 font-weight-bold text-primary">Fund Pipeline</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Fund Pipeline <span style="text-transform: capitalize">{{ status }}</span></h6>
         <div class="dropdown no-arrow">
           <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -28,6 +28,7 @@
         </div>
       </div>
       <div class="card-body">
+        <div class="table-responsive">
         <table class="table table-striped">
           <tr>
             <th>Fund Name</th>
@@ -47,7 +48,7 @@
           @each(d in pipefunds)
 
           <tr>
-            <td><a href="{{ `/fund_pipeline_details/${d.id}` }}">{{d.fund.fund_name||''}}</a></td>
+            <td><a href="{{ `/fund_pipeline_details/${d.fund.id}` }}">{{d.fund.fund_name||''}}</a></td>
             <td> {{ d.fund.ticker ||''}}</td>
             <td>{{d.status || ''}}</td>
             <td>{{d.fund.trust|| ''}}</td>
@@ -81,6 +82,7 @@
           </tr>
           @end
         </table>
+        </div>
       </div>
 
     </div>

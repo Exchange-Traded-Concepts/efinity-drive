@@ -16,7 +16,8 @@
         <h6 class="m-0 font-weight-bold text-primary">Funds</h6>
       </div>
       <div class="card-body">
-        <table class="table table-striped">
+        <div class="table-responsive">
+        <table class="table table-striped ">
           <tr>
             <th>Fund Name</th>
             <th>Ticker</th>
@@ -29,7 +30,7 @@
         @each(d in funds)
 
           <tr>
-            <td>{{d.fund_name}}</td>
+            <td><a href="{{ `/fund_pipeline_details/${d.id}`}}">{{d.fund_name}}</a></td>
             <td> {{ d.ticker }}</td>
             <td>{{d.trust}}</td>
             <td>{{d.exchange}}</td>
@@ -46,6 +47,7 @@
 
         @end
         </table>
+        </div>
       </div>
 
     </div>

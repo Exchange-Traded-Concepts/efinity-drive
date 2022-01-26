@@ -69,9 +69,11 @@
   <div
     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
     <h6 class="m-0 font-weight-bold text-primary">Fund Tasks</h6>
+
   </div>
   <div class="card-body">
     <div class="row">
+      <div class="table-responsive">
       <table class="table table-striped"  x-data="{selected:null}">
         <tr>
           <th class="" >
@@ -128,10 +130,65 @@
         @end
         @end
       </table>
+      </div>
     </div>
   </div>
     </div>
 
+
+<div class="card shadow mb-4">
+  <div
+    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+    <h6 class="m-0 font-weight-bold text-primary">Fund Documents</h6>
+    @if(auth.user.can_edit)
+    <div class="dropdown no-arrow">
+      <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+      </a>
+      <div class="dropdown-menu dropdow0n-menu-right shadow animated--fade-in"
+           aria-labelledby="dropdownMenuLink">
+        <div class="dropdown-header">Admin:</div>
+        <a class="dropdown-item" href="{{ `/fund_documents/${fund_id}` }}">Documents</a>
+        <!--  <a class="dropdown-item" href="#">Another action</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Something else here</a>
+        -->
+      </div>
+    </div>
+    @endif
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="table-responsive">
+        <table class="table table-striped" >
+          <tr>
+            <th>Name</th>
+            <th>File</th>
+            <th>Type</th>
+            <th>Size</th>
+          </tr>
+          @each(d in docs)
+          <tr>
+            <td>
+              {{d.name}}
+            </td>
+            <td>
+              <a href="{{d.url}}" target="_blank">{{d.name}}</a>
+            </td>
+            <td>
+              {{d.type}}
+            </td>
+            <td>
+              {{d.size}}
+            </td>
+          </tr>
+          @end
+        </table>
+      </div>
+     </div>
+   </div>
+</div>
   </div><!//--end container-->
 
 @endsection

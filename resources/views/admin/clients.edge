@@ -30,7 +30,8 @@
       </div>
       <!-- Card Body -->
       <div class="card-body">
-        <table class="table table-striped">
+        <div class="table-responsive">
+        <table class="table table-striped ">
           <tr>
             <th>Name</th>
             <th>State</th>
@@ -45,7 +46,7 @@
           <tr>
             <td>
               @if(c.name)
-              {{c.name}}
+              <a href="{{ `/client_details/${c.id}` }}">{{c.name}}</a>
               @else
               &nbsp;
               @end
@@ -98,6 +99,7 @@
           @end
           @end
         </table>
+          </div>
       </div>
     </div>
     <!-- ./end col -->

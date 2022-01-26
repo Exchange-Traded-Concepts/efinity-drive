@@ -60,6 +60,13 @@ Route.group(()=> {
   Route.patch('/client/:id', 'ClientsController.update')
 }).middleware('auth')
 
+Route.group(()=> {
+  Route.get('/client_contact', 'ClientContactsController.index').middleware('isAdmin')
+  Route.post('/client_contact', 'ClientContactsController.store')
+  Route.get('/client_contact/:id/edit', 'ClientContactsController.edit')
+  Route.patch('/client_contact/:id', 'ClientContactsController.update')
+}).middleware('auth')
+
 Route.group(() => {
   Route.get('/custodian', 'CustodiansController.index')
   Route.post('/custodian', 'CustodiansController.store')
@@ -102,11 +109,22 @@ Route.group(() => {
   Route.patch('sub_tasks/:id', 'SubTasksController.update')
 }).middleware('isAdmin')
 
+Route.group(() => {
+  Route.get('/fund_documents/:fund_id', 'FundDocumentsController.index')
+  Route.post('/fund_documents', 'FundDocumentsController.store')
+  Route.get('/fund_documents/:id/edit', 'FundDocumentsController.edit')
+  Route.patch('/fund_documents/:id', 'FundDocumentsController.update')
+  Route.get('/fund_documents/:id/delete', 'FundDocumentsController.destroy')
+}).middleware('editAdmin')
+
 
 Route.get('/admin_funds', 'FundsController.show').middleware('isAdmin')
 Route.get('/admin_clients', 'ClientsController.show').middleware('isAdmin')
+Route.get('/client_details/:client_id', 'ClientsController.details').middleware('isAdmin')
+Route.get('/client_contacts/:client_id', 'ClientContactsController.index').middleware('isAdmin')
 Route.get('/your_tasks', 'TasksController.show').middleware('isAdmin')
 Route.get('/fund_pipeline/:status', 'FundsPipelinesController.show').middleware('isAdmin')
 Route.get('/task_sub_tasks/:task_id', 'SubTasksController.show').middleware('isAdmin')
 Route.get('/add_sub_tasks/:task_id', 'SubTasksController.add_subtask_to_task').middleware('isAdmin')
 Route.get('/fund_pipeline_details/:id', 'FundsPipelinesController.details').middleware('isAdmin')
+

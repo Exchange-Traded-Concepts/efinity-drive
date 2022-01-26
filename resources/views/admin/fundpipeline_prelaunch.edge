@@ -10,7 +10,7 @@
     <div class="card shadow mb-4">
       <div
         class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-        <h6 class="m-0 font-weight-bold text-primary">Fund Pipeline</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Fund Pipeline <span style="text-transform: capitalize">{{ status }}</h6>
         <div class="dropdown no-arrow">
           <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -28,59 +28,72 @@
         </div>
       </div>
       <div class="card-body">
-        <table class="table table-striped">
+        <div class="table-responsive">
+        <table class="table table-striped table-responsive">
           <tr>
             <th>Fund Name</th>
             <th>Ticker</th>
-            <th>Status</th>
             <th>Trust</th>
+            <th>PEA</th>
+            <th>15c</th>
+            <th>495(a) Status</th>
+            <th>Role</th>
+            <th>D. D. Initiated</th>
+            <th>D. D. Complete</th>
+            <th>Code of Ethics</th>
             <th>Strategy</th>
-            <th>Questionnaire Sent</th>
-            <th>Questionnaire Received</th>
-            <th>Sample Portfolio Sent</th>
-            <th>Proposal Sent</th>
-            <th>License Agreement</th>
-            <th>Due Diligence Initiated</th>
-            <th>Due Diligence Complete</th>
-            <th>Launch Date</th>
+            <th>Target Launch Date</th>
           </tr>
           @each(d in pipefunds)
 
           <tr>
-            <td><a href="{{ `/fund_pipeline_details/${d.id}` }}">{{d.fund.fund_name||''}}</a></td>
+            <td><a href="{{ `/fund_pipeline_details/${d.fund.id}` }}">{{d.fund.fund_name||''}}</a></td>
             <td> {{ d.fund.ticker ||''}}</td>
-            <td>{{d.status || ''}}</td>
             <td>{{d.fund.trust|| ''}}</td>
-            <td>{{d.strategy || ''}}</td>
+            <td>{{d.pea_pproval || ''}}</td>
+            <td>{{d.fifteenc_approval || ''}}</td>
+            <td>{{d.four_ninety_five_status || ''}}
+              @if(d.four_ninety_five_effective_date)
+                -
+              {{ d.four_ninety_five_effective_date }}
+              @end
+            </td>
             <td>
-              @if(d.client_questionnaire_sent)
-              {{d.client_questionnaire_sent.toFormat('M/d/yyyy') ||''}}
+              {{d.role || ''}}
+            </td>
+            <td>
+              @if(d.diligence_sent)
+              {{d.diligence_sent.toFormat('M/d/yyyy') ||''}}
               @else
               &nbsp;
               @end
             </td>
             <td>
-              @if(d.client_questionnaire_completed )
-              {{d.client_questionnaire_completed.toFormat('M/d/yyyy') ||''}}
+              @if(d.diligence_received)
+              {{d.diligence_received.toFormat('M/d/yyyy') ||''}}
               @else
               &nbsp;
               @end
             </td>
             <td>
-              @if(d.client_sent_sample_portfolio_data )
-              {{d.client_sent_sample_portfolio_data.toFormat('M/d/yyyy') ||''}}
+              @if(d.code_of_ethics_complete )
+              {{d.code_of_ethics_complete.toFormat('M/d/yyyy') ||''}}
               @else
               &nbsp;
               @end
             </td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <tdh></tdh>
-            <td></td>
+            <td>{{d.strategy}}</td>
+            <td>
+              @if(d.target_launch_date)
+              {{d.target_launch_date.toFormat('M/d/yyyy')}}
+              @else
+              &nbsp;
+              @end
+            </td>
           </tr>
           @end
         </table>
+        </div>
       </div>
 
     </div>

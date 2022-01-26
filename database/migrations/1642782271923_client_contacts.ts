@@ -1,22 +1,22 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
-export default class Clients extends BaseSchema {
-  protected tableName = 'clients'
+export default class ClientContacts extends BaseSchema {
+  protected tableName = 'client_contacts'
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-
+      table
+        .integer('client_id')
+        .unsigned()
+        .references('clients.id')
+        .onDelete('CASCADE') // delete profile when user is deleted
       table.string('name')
-      table.string('address')
+      table.string('role')
+      table.string('email')
       table.string('phone')
-      table.string('logo_file')
-      table.string('primary_contact_name')
-      table.string('primary_contact_role')
-      table.string('primary_contact_phone')
-      table.string('primary_contact_email')
-      table.string('website')
-      table.string('etf_website')
+      table.string('secondary_email')
+      table.text('notes')
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */

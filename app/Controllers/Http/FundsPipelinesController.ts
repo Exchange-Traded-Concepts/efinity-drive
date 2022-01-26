@@ -3,6 +3,7 @@ import fundPipeline from "App/Models/FundPipeline";
 import Fund from "App/Models/Fund";
 import Database from "@ioc:Adonis/Lucid/Database";
 import Task from "App/Models/Task";
+import FundDocument from "App/Models/FundDocument";
 
 
 
@@ -46,17 +47,18 @@ export default class FundsPipelinesController {
     const pipefunds = await fundPipeline.query()
       .preload('fund').where('status', params.status)
     const pipe = 'show'
+    const status = params.status
     if (params.status === 'prelaunch'){
-      return view.render('admin/fundpipeline', {pipefunds, pipe})
+      return view.render('admin/fundpipeline_prelaunch', {pipefunds, pipe, status})
     }
     else if(params.status === 'prospect'){
-      return view.render('admin/fundpipeline_prospect', {pipefunds, pipe})
+      return view.render('admin/fundpipeline_prospect', {pipefunds, pipe , status})
     }
     else if(params.status === 'launched'){
-      return view.render('admin/fundpipeline_launched', {pipefunds, pipe})
+      return view.render('admin/fundpipeline_launched', {pipefunds, pipe , status})
     }
     else if(params.status === 'other'){
-      return view.render('admin/fundpipeline_other', {pipefunds, pipe})
+      return view.render('admin/fundpipeline_other', {pipefunds, pipe , status})
     }
   }
 
@@ -108,7 +110,7 @@ export default class FundsPipelinesController {
        ' fp.portfolio_notes, DATE_FORMAT(fp.proposal_sent, "%c/%e/%Y") as proposal_sent , DATE_FORMAT(fp.license_sponsorship, "%c/%e/%Y") as license_sponsorship,' +
        '  DATE_FORMAT(fp.psa_form_sent, "%c/%e/%Y") as pfs, DATE_FORMAT(fp.psa_form_complete, "%c/%e/%Y") as pfc, ' +
        'DATE_FORMAT(fp.diligence_sent, "%c/%e/%Y") as ds, DATE_FORMAT(fp.diligence_received, "%c/%e/%Y") as dr, DATE_FORMAT(fp.launch_date, "%c/%e/%Y") as ld,' +
-       'fp.strategy, fp.sec_comments, notes FROM fund_pipelines fp, clients, funds WHERE fp.fund_id = funds.id AND funds.client_id = clients.id AND fp.id =? ', [params.id]
+       'fp.strategy, fp.sec_comments, notes FROM fund_pipelines fp, clients, funds WHERE fp.fund_id = funds.id AND funds.client_id = clients.id AND funds.id =? ', [params.id]
      )
     p = p[0][0]
 
@@ -116,10 +118,16 @@ export default class FundsPipelinesController {
       .preload('assignedTo')
       .preload('createdBy')
       .preload('subtasks')
-      .where('fund_id', p.fund_id)
+      .where('fund_id', params.id)
+
+
+    const docs = await FundDocument.query().preload('createdBy')
+            .where('fund_id', params.id)
+
+    const fund_id = params.id
 
     console.log(tasks)
-    return view.render('admin/pipeline_details', {p, tasks})
+    return view.render('admin/pipeline_details', {p, tasks, fund_id, docs})
 
 
   }
