@@ -47,11 +47,12 @@ export default class ClientsController {
       phone: data.phone,
       country: data.country,
       logo_file:  dataUrl,
-      primary_contact_name:   request.input('primary_contact_name'),
-      primary_contact_phone:  request.input('primary_contact_phone'),
+      primary_contact_name:   data.primary_contact_name,
+      primary_contact_phone:  data.primary_contact_phone,
       primary_contact_email:   data.primary_contact_email,
-      website:   request.input('website'),
-      etf_website:  request.input('etf_website'),
+      website:   data.website,
+      etf_website:  data.etf_website,
+
     })
 
     session.flash({notification: 'Client Added'})
@@ -93,13 +94,14 @@ export default class ClientsController {
       city: data.city,
       state: data.state,
       zip: data.zip,
+      country: data.country,
       phone: data.phone,
-      primary_contact_name:   request.input('primary_contact_name'),
-      primary_contact_phone:  request.input('primary_contact_phone'),
+      primary_contact_role: data.primary_contact_role,
+      primary_contact_name:   data.primary_contact_name,
+      primary_contact_phone:  data.primary_contact_phone,
       primary_contact_email:  data.primary_contact_email,
-      website:   request.input('website'),
-      etf_website:  request.input('etf_website'),
-      country: data.country
+      website:  data.website,
+      etf_website:  data.etf_website,
     })
 
      await c.save()
@@ -118,15 +120,20 @@ export default class ClientsController {
   }
 
   private async validateInput(request) {
+
     const valSchema = schema.create({
       name: schema.string({ trim: true }, [rules.maxLength(150), rules.required()]),
-      address: schema.string({trim: true}, [rules.maxLength(255)]),
-      city: schema.string({trim: true}, [rules.maxLength(255)]),
-      state: schema.string({trim: true}, [rules.maxLength(2)]),
-      zip: schema.string({trim: true}, [rules.maxLength(10)]),
-      primary_contact_email: schema.string({trim: true}, [rules.maxLength(150), rules.email()]),
-      country: schema.string({trim: true}, [rules.maxLength(150)])
-
+      address: schema.string.optional({trim: true}, [rules.maxLength(255)]),
+      city: schema.string.optional({trim: true}, [rules.maxLength(255)]),
+      state: schema.string({trim: true}, [rules.maxLength(3)]),
+      zip: schema.string.optional({trim: true}, [rules.maxLength(10)]),
+      primary_contact_role: schema.string.optional({trim:true}, [rules.maxLength(200)]),
+      primary_contact_name: schema.string.optional({trim: true}, [rules.maxLength(200)]),
+      primary_contact_phone: schema.string.optional({trim: true}),
+      primary_contact_email: schema.string.optional({trim: true}, [rules.maxLength(150), rules.email()]),
+      country: schema.string.optional({trim: true}, [rules.maxLength(150)]),
+      website: schema.string.optional({trim: true}),
+      etf_website : schema.string.optional({trim: true})
     })
 
     return await request.validate({
