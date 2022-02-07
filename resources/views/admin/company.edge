@@ -2,6 +2,11 @@
 
 @section('content')
 <div class="container-fluid">
+<div>
+  @if(flashMessages.has('notification'))
+  <div class="alert alert-success">{{ flashMessages.get('notification') }}</div>
+  @endif
+</div>
 <div class="row">
   <div class="col-md-12">
     <!-- card -->
@@ -20,6 +25,7 @@
                aria-labelledby="dropdownMenuLink">
             <div class="dropdown-header">Admin:</div>
             <a class="dropdown-item" href="/company_contacts">Add Contact</a>
+            <a href="#" onclick="dd()">DD</a>
             <!--  <a class="dropdown-item" href="#">Another action</a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="#">Something else here</a>
@@ -30,14 +36,17 @@
       </div>
       <!-- Card Body -->
       <div class="card-body">
-        <div class="table-responsive">
+        <div class="table-responsive" x-data="data()" class="p-4">
         <table class="table table-striped">
+          <thead>
           <tr>
-            <th>Name, Title</th>
-            <th>Office</th>
-            <th>Other</th>
-            <th>Location</th>
+            <th @click="sortByColumn" class="cursor-pointer select-none">Name</th>
+            <th @click="sortByColumn" class="cursor-pointer select-none">Office</th>
+            <th @click="sortByColumn" class="cursor-pointer select-none">Other</th>
+            <th @click="sortByColumn" class="cursor-pointer select-none">Location</th>
           </tr>
+          </thead>
+          <tbody  x-ref="tbody">
           @if(contacts)
           @each(c in contacts)
           <tr>
@@ -56,6 +65,7 @@
 
           @end
           @end
+          </tbody>
         </table>
        </div>
       </div>

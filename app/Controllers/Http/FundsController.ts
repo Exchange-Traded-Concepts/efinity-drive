@@ -101,33 +101,23 @@ export default class FundsController {
 
   private async validateInput(request) {
     const valSchema = schema.create({
-      fund_name: schema.string({ trim: true }, [rules.maxLength(150), rules.required()]),
-      ticker: schema.string( {trim: true},[rules.maxLength(5), rules.required()]),
+      fund_name: schema.string.optional({ trim: true }, [rules.maxLength(150)]),
+      ticker: schema.string.optional( {trim: true},[rules.maxLength(5), rules.required()]),
       client_id: schema.number( [ rules.required()]),
-      distributor_id: schema.number([ rules.required()]),
-      custodian_id: schema.number([ rules.required()]),
-      trust: schema.string({ trim: true }, [rules.maxLength(100), rules.required()]),
-      fiscal_year_end: schema.string({ trim: true }, [rules.maxLength(100), rules.required()]),
-      dividend_frequency: schema.string({ trim: true }, [rules.maxLength(100)]),
-      fund_website: schema.string({ trim: true }, [rules.maxLength(100)]),
-      exchange: schema.string({trim: true}, [rules.maxLength(100)]),
-      prospectus_date: schema.string({trim:true}),
+      distributor_id: schema.number.optional(),
+      custodian_id: schema.number.optional(),
+      trust: schema.string.optional({ trim: true }, [rules.maxLength(100)]),
+      fiscal_year_end: schema.string.optional({ trim: true }, [rules.maxLength(100)]),
+      dividend_frequency: schema.string.optional({ trim: true }, [rules.maxLength(100)]),
+      fund_website: schema.string.optional({ trim: true }, [rules.maxLength(100)]),
+      exchange: schema.string.optional({trim: true}, [rules.maxLength(100)]),
+      prospectus_date: schema.string.optional({trim:true}),
     })
 
     return await request.validate({
       schema: valSchema,
       messages: {
-        'fund_name.required': 'Fund Name is required',
         'fund_name.maxLength': 'Fund Name allows upto 150 characters',
-        'ticker.required': 'Ticker Symbol Required',
-        'ticker.maxLength': 'Ticker can only be up to 5 characters',
-        'client_id.required': 'A fund must belong to someone',
-        'custodian_id.required': 'A fund must have a custodian',
-        'distributor_id.required': 'A fund must have a distributor',
-        'trust.required': 'Trust is required',
-        'fiscal_year_end.required': 'Fiscal Year End required',
-        'prospectus_date.required' : 'Prospectus Date required',
-        'exchange.maxLength': 'Exchange can only be 100 characters'
       },
     })
   }

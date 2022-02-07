@@ -129,11 +129,11 @@ export default class ClientsController {
       zip: schema.string.optional({trim: true}, [rules.maxLength(10)]),
       primary_contact_role: schema.string.optional({trim:true}, [rules.maxLength(200)]),
       primary_contact_name: schema.string.optional({trim: true}, [rules.maxLength(200)]),
-      primary_contact_phone: schema.string.optional({trim: true}),
+      primary_contact_phone: schema.string.optional({trim: true}, [rules.maxLength(20)]),
       primary_contact_email: schema.string.optional({trim: true}, [rules.maxLength(150), rules.email()]),
       country: schema.string.optional({trim: true}, [rules.maxLength(150)]),
-      website: schema.string.optional({trim: true}),
-      etf_website : schema.string.optional({trim: true})
+      website: schema.string.optional({trim: true}, [rules.maxLength(150)]),
+      etf_website : schema.string.optional({trim: true}, [rules.maxLength(150)])
     })
 
     return await request.validate({
