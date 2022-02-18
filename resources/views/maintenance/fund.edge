@@ -313,7 +313,9 @@
               <input type="date"
                      name="four_eighty_five_effective_date"
                      @if(c_fund)
-                     value="{{c_fund.four_eighty_five_effective_date.toFormat('y-MM-dd') ||''}}"
+                      @if(c_fund.four_eighty_five_effective_date)
+                        value="{{c_fund.four_eighty_five_effective_date.toFormat('y-MM-dd') ||''}}"
+                      @endif
                      @endif
                      class="form-control"
                      id="four_eighty_five_effective_date"
@@ -326,7 +328,9 @@
               <input type="date"
                      name="client_questionnaire_sent"
                      @if(c_fund)
-                     value="{{c_fund.client_questionnaire_sent.toFormat('y-MM-dd') ||''}}"
+                      @if(c_fund.client_questionnaire_sent)
+                        value="{{c_fund.client_questionnaire_sent.toFormat('y-MM-dd') ||''}}"
+                      @endif
                      @endif
                      class="form-control"
                      id="client_questionnaire_sent"
@@ -337,7 +341,9 @@
               <input type="date"
                      name="client_questionnaire_completed"
                      @if(c_fund)
-                     value="{{c_fund.client_questionnaire_completed.toFormat('y-MM-dd') ||''}}"
+                      @if(c_fund.client_questionnaire_completed)
+                        value="{{c_fund.client_questionnaire_completed.toFormat('y-MM-dd') ||''}}"
+                      @endif
                      @endif
                      class="form-control"
                      id="client_questionnaire_completed"
@@ -350,7 +356,9 @@
               <input type="date"
                      name="client_sent_sample_portfolio_data"
                      @if(c_fund)
-                     value="{{c_fund.client_sent_sample_portfolio_data.toFormat('y-MM-dd') ||''}}"
+                      @if(c_fund.client_sent_sample_portfolio_data)
+                        value="{{c_fund.client_sent_sample_portfolio_data.toFormat('y-MM-dd') ||''}}"
+                      @endif
                      @endif
                      class="form-control"
                      id="client_sent_sample_portfolio_data"
@@ -361,7 +369,9 @@
               <input type="date"
                      name="license_sponsorship"
                      @if(c_fund)
-                     value="{{c_fund.license_sponsorship.toFormat('y-MM-dd') ||''}}"
+                      @if(c_fund.license_sponsorship)
+                        value="{{c_fund.license_sponsorship.toFormat('y-MM-dd') ||''}}"
+                      @endif
                      @endif
                      class="form-control"
                      id="license_sponsorship"
@@ -374,7 +384,9 @@
               <input type="date"
                      name="sub_advisor_agreement"
                      @if(c_fund)
-                     value="{{c_fund.sub_advisor_agreement.toFormat('y-MM-dd') ||''}}"
+                      @if(c_fund.sub_advisor_agreement)
+                        value="{{c_fund.sub_advisor_agreement.toFormat('y-MM-dd') ||''}}"
+                      @endif
                      @endif
                      class="form-control"
                      id="sub_advisor_agreement"
@@ -385,7 +397,9 @@
               <input type="date"
                      name="fifteenc_approval"
                      @if(c_fund)
-                     value="{{c_fund.fifteenc_approval.toFormat('y-MM-dd') ||''}}"
+                      @if(c_fund.fifteenc_approval)
+                        value="{{c_fund.fifteenc_approval.toFormat('y-MM-dd') ||''}}"
+                      @endif
                      @endif
                      class="form-control"
                      id="fifteenc_approval"
@@ -397,7 +411,9 @@
             <input type="date"
                    name="proposal_sent"
                    @if(c_fund)
-                   value="{{c_fund.proposal_sent.toFormat('y-MM-dd') ||''}}"
+                    @if(c_fund.proposal_sent)
+                      value="{{c_fund.proposal_sent.toFormat('y-MM-dd') ||''}}"
+                    @endif
                    @endif
                    class="form-control"
                    id="proposal_sent"
@@ -409,7 +425,9 @@
               <input type="date"
                      name="diligence_sent"
                      @if(c_fund)
-                     value="{{c_fund.diligence_sent.toFormat('y-MM-dd') ||''}}"
+                      @if(c_fund.diligence_sent)
+                        value="{{c_fund.diligence_sent.toFormat('y-MM-dd') ||''}}"
+                      @endif
                      @endif
                      class="form-control"
                      id="diligence_sent"
@@ -420,7 +438,9 @@
               <input type="date"
                      name="diligence_received"
                      @if(c_fund)
-                     value="{{c_fund.diligence_received.toFormat('y-MM-dd') ||''}}"
+                      @if(c_fund.diligence_received)
+                        value="{{c_fund.diligence_received.toFormat('y-MM-dd') ||''}}"
+                      @endif
                      @endif
                      class="form-control"
                      id="diligence_received"
@@ -435,7 +455,9 @@
               <input type="date"
                      name="psa_form_sent"
                      @if(c_fund)
-                     value="{{c_fund.psa_form_sent.toFormat('y-MM-dd') ||''}}"
+                      @if(c_fund.psa_form_sent)
+                        value="{{c_fund.psa_form_sent.toFormat('y-MM-dd') ||''}}"
+                      @endif
                      @endif
                      class="form-control"
                      id="psa_form_sent"
@@ -446,7 +468,9 @@
               <input type="date"
                      name="psa_form_complete"
                      @if(c_fund)
-                     value="{{c_fund.psa_form_complete.toFormat('y-MM-dd') ||''}}"
+                      @if(c_fund.psa_form_complete)
+                        value="{{c_fund.psa_form_complete.toFormat('y-MM-dd') ||''}}"
+                      @endif
                      @endif
                      class="form-control"
                      id="psa_form_complete"
