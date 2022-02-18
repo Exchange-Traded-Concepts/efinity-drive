@@ -1,0 +1,63 @@
+@layout('layouts.adminDashboard')
+
+@section('content')
+<div class="container-fluid">
+<div class="row">
+  <div class="col-md-12">
+    <div class="card shadow mb-4">
+      <div
+        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Client Contact</h6>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive" class="p-4">
+        <table class="table table-striped" id="sortTable">
+          <thead>
+          <tr>
+            <th>ID</th>
+            <th onclick="sortTable(1)" class="cursor-pointer select-none">First Name</th>
+            <th onclick="sortTable(2)" class="cursor-pointer select-none">Last Name</th>
+            <th onclick="sortTable(3)" class="cursor-pointer select-none">Company</th>
+            <th onclick="sortTable(4)" class="cursor-pointer select-none">Role</th>
+            <th onclick="sortTable(5)" class="cursor-pointer select-none">Email</th>
+            <th>Phone</th>
+            <th>Options</th>
+          </tr>
+          </thead>
+          @each(d in clientContacts)
+          <tr>
+            <td>
+              {{ d.id }}
+            </td>
+            <td>
+              {{ d.first_name ||'' }}
+            </td>
+            <td>
+              {{d.last_name ||''}}
+            </td>
+            <td>
+              {{d.client.name}}
+            </td>
+            <td>
+              {{d.role ||''}}
+            </td>
+            <td>
+              {{d.email ||''}}
+            </td>
+            <td>
+              {{d.phone ||''}}
+            </td>
+            <td>
+              <a href="{{ `/client_contact/${d.id}/edit` }}">Edit</a><br>
+            </td>
+          </tr>
+          @end
+        </table>
+      </div>
+        </div>
+
+    </div>
+  </div>
+</div>
+</div>
+@endsection

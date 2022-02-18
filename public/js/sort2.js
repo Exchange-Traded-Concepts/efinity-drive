@@ -3,7 +3,8 @@ function sortTable(n) {
 
   var  rows, cls, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
 
-  var sel = "thead th:nth-child(" + (n + 1) + ")",  classList = table.querySelector(sel).classList;
+  var sel = "thead th:nth-child(" + (n + 1) + ")",
+      classList = table.querySelector(sel).classList;
 
   if (classList) {
     if (classList.contains("date")) {

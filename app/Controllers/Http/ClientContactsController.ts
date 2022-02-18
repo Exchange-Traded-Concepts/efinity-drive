@@ -18,14 +18,14 @@ export default class ClientContactsController {
   public async store({request, session, response}: HttpContextContract) {
     //const data = await this.validateInput(request)
     await ClientContact.create({
-      first_name: request.input('name'),
-      last_name: request.input('name'),
+      first_name: request.input('first_name'),
+      last_name: request.input('last_name'),
       clientId: request.input('client_id'),
       role: request.input('role'),
       email: request.input('email'),
       phone:request.input('phone'),
       secondary_email: request.input('secondary_email'),
-      notes : request.input('notes')
+      notes : request.input('notes'),
 
     })
     session.flash('notification', 'Contact saved.')
@@ -33,7 +33,11 @@ export default class ClientContactsController {
 
   }
 
-  public async show({}: HttpContextContract) {}
+  public async show({view}: HttpContextContract) {
+    const clientContacts = await ClientContact.query()
+      .preload('client')
+    return view.render('admin/client_contacts', {clientContacts})
+  }
 
   public async edit({}: HttpContextContract) {}
 

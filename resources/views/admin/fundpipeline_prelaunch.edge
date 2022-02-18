@@ -36,7 +36,7 @@
             <th>Trust</th>
             <th>PEA</th>
             <th>15c</th>
-            <th>495(a) Status</th>
+            <th>485(a) Status</th>
             <th>Role</th>
             <th>D. D. Initiated</th>
             <th>D. D. Complete</th>
@@ -51,11 +51,15 @@
             <td> {{ d.ticker ||''}}</td>
             <td>{{d.trust|| ''}}</td>
             <td>{{d.pea || ''}}</td>
-            <td>{{d.fifteenc_approval || ''}}</td>
+            <td>
+              @if(d.fifteenc_approval)
+              {{d.fifteenc_approval.toFormat('M/d/yyyy') || ''}}
+              @end
+            </td>
             <td>{{d.four_eighty_five_status || ''}}
               @if(d.four_eighty_five_effective_date)
                 -
-              {{ d.four_eighty_five_effective_date }}
+              {{ d.four_eighty_five_effective_date.toFormat('M/d/yyyy')}}
               @end
             </td>
             <td>
@@ -82,7 +86,7 @@
               &nbsp;
               @end
             </td>
-            <td>{{d.strategy}}</td>
+            <td>{{d.strategy ||''}}</td>
             <td>
               @if(d.target_launch_date)
               {{d.target_launch_date.toFormat('M/d/yyyy')}}
