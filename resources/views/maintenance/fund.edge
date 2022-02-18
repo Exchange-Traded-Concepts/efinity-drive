@@ -261,7 +261,9 @@
                <input type="date"
                       name="target_launch_date"
                       @if(c_fund)
-                      value="{{c_fund.target_launch_date.toFormat('y-M-d')}}"
+                        @if(c_fund.target_launch_date)
+                          value="{{c_fund.target_launch_date.toFormat('y-M-d')}}"
+                        @endif
                       @endif
                       class="form-control"
                       id="target_launch_date"
