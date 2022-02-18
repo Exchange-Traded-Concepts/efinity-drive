@@ -122,6 +122,30 @@
                    placeholder="Strategy">
           </div>
           <div class="row">
+            <div class="form-group col-md-6">
+              <label for="four_ninety_five_status">485(c) Status</label>
+              <input type="text"
+                     name="four_ninety_five_status"
+                     @if(e_fund)
+                     value="{{e_fund.client_questionnaire_sent ||''}}"
+                     @endif
+                     class="form-control"
+                     id="four_ninety_five_status"
+                     placeholder="485(C) Status">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="four_ninety_five_effective_date">485(C) Effective Date </label>
+              <input type="date"
+                     name="four_ninety_five_effective_date"
+                     @if(e_fund)
+                     value="{{e_fund.four_ninety_five_effective_date ||''}}"
+                     @endif
+                     class="form-control"
+                     id="four_ninety_five_effective_date"
+                     placeholder="485(C) Effective Date">
+            </div>
+          </div>
+          <div class="row">
           <div class="form-group col-md-6">
             <label for="client_questionnaire_sent">Client Questionnaire Sent</label>
             <input type="date"

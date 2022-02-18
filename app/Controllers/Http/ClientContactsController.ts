@@ -1,10 +1,15 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import ClientContact from "App/Models/ClientContact";
+import Client from "App/Models/Client";
+
 
 export default class ClientContactsController {
   public async index({params, view}: HttpContextContract) {
 
-    return view.render('maintenance/clientcontact', {client_id : params.client_id})
+    const clients = await Client.query();
+    const clientContacts = await ClientContact.query()
+
+    return view.render('maintenance/clientcontact', {client_id : params.client_id, clients, clientContacts})
 
   }
 
@@ -13,7 +18,8 @@ export default class ClientContactsController {
   public async store({request, session, response}: HttpContextContract) {
     //const data = await this.validateInput(request)
     await ClientContact.create({
-      name: request.input('name'),
+      first_name: request.input('name'),
+      last_name: request.input('name'),
       clientId: request.input('client_id'),
       role: request.input('role'),
       email: request.input('email'),

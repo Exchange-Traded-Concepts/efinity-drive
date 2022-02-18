@@ -47,15 +47,15 @@
           @each(d in pipefunds)
 
           <tr>
-            <td><a href="{{ `/fund_pipeline_details/${d.fund.id}` }}">{{d.fund.fund_name||''}}</a></td>
-            <td> {{ d.fund.ticker ||''}}</td>
-            <td>{{d.fund.trust|| ''}}</td>
-            <td>{{d.pea_pproval || ''}}</td>
+            <td><a href="{{ `/fund_pipeline_details/${d.id}` }}">{{d.fund_name||''}}</a></td>
+            <td> {{ d.ticker ||''}}</td>
+            <td>{{d.trust|| ''}}</td>
+            <td>{{d.pea || ''}}</td>
             <td>{{d.fifteenc_approval || ''}}</td>
-            <td>{{d.four_ninety_five_status || ''}}
-              @if(d.four_ninety_five_effective_date)
+            <td>{{d.four_eighty_five_status || ''}}
+              @if(d.four_eighty_five_effective_date)
                 -
-              {{ d.four_ninety_five_effective_date }}
+              {{ d.four_eighty_five_effective_date }}
               @end
             </td>
             <td>

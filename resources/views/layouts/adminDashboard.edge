@@ -132,7 +132,7 @@
     <div class="sidebar-heading">
       Addons
     </div>
-  @if(auth)
+  @if(auth.user)
     @if(auth.user.can_edit)
     <li class="nav-item {{ active }}">
       <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseMaintenance"
@@ -484,7 +484,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
 <script src="/js/sb-admin-2.js"></script>
-<script src="/js/sort.js"></script>
+<script src="/js/sort2.js"></script>
 
 
 </body>

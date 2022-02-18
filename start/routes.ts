@@ -45,10 +45,10 @@ Route.get('/dashboard', async ({view})  => {
 
  */
 
-Route.get('/register', 'AuthController.showRegister').middleware('isAdmin')
-Route.post('/register', 'AuthController.register').middleware('isAdmin')
-Route.get('/register/:id/edit', 'AuthController.edit').middleware('editAdmin')
-Route.patch('/register/:id', 'AuthController.update').middleware('editAdmin')
+Route.get('/register', 'AuthController.showRegister') // .middleware('isAdmin')
+Route.post('/register', 'AuthController.register') //.middleware('isAdmin')
+Route.get('/register/:id/edit', 'AuthController.edit') //.middleware('editAdmin')
+Route.patch('/register/:id', 'AuthController.update') //.middleware('editAdmin')
 
 Route.post('/login', 'AuthController.login')
 Route.get('/logout', 'AuthController.logout').middleware('auth')
@@ -123,8 +123,8 @@ Route.get('/admin_clients', 'ClientsController.show').middleware('isAdmin')
 Route.get('/client_details/:client_id', 'ClientsController.details').middleware('isAdmin')
 Route.get('/client_contacts/:client_id', 'ClientContactsController.index').middleware('isAdmin')
 Route.get('/your_tasks', 'TasksController.show').middleware('isAdmin')
-Route.get('/fund_pipeline/:status', 'FundsPipelinesController.show').middleware('isAdmin')
+Route.get('/fund_pipeline/:status', 'FundsController.showPipeline').middleware('isAdmin')
 Route.get('/task_sub_tasks/:task_id', 'SubTasksController.show').middleware('isAdmin')
 Route.get('/add_sub_tasks/:task_id', 'SubTasksController.add_subtask_to_task').middleware('isAdmin')
-Route.get('/fund_pipeline_details/:id', 'FundsPipelinesController.details').middleware('isAdmin')
+Route.get('/fund_pipeline_details/:id', 'FundsController.details').middleware('isAdmin')
 

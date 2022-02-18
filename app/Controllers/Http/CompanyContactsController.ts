@@ -10,7 +10,7 @@ export default class CompanyContactsController {
   public async show({view}: HttpContextContract){
     const contacts = await Database.query().from('company_contacts').select('*').orderBy('office_location', 'desc')
       .orderBy('last_name')
-    return view.render('admin/company', {contacts})
+    return view.render('admin/company2', {contacts})
   }
 
   public async index ({ view, session, auth }: HttpContextContract){

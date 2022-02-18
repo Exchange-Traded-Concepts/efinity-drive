@@ -44,9 +44,9 @@
           @each(d in pipefunds)
           <tr>
             <td>Client</td>
-            <td><a href="{{ `/fund_pipeline_details/${d.fund.id}` }}">{{d.fund.fund_name||''}}</a></td>
-            <td> {{ d.fund.ticker ||''}}</td>
-            <td>{{d.fund.trust|| ''}}</td>
+            <td><a href="{{ `/fund_pipeline_details/${d.id}` }}">{{d.fund_name||''}}</a></td>
+            <td> {{ d.ticker ||''}}</td>
+            <td>{{d.trust|| ''}}</td>
             <td>{{d.strategy || ''}}</td>
             <td>
               @if(d.client_questionnaire_sent)

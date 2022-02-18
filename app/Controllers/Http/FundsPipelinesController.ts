@@ -15,6 +15,11 @@ export default class FundsPipelinesController {
       .preload('distributor')
 
     const pipelinefunds = fundPipeline.all()
+
+    console.log(8 / 2 * (2+2))
+
+    console.log('^^^^^^^^^^^^^^')
+
    return view.render('maintenance/fundpipeline', {funds, pipelinefunds})
   }
 

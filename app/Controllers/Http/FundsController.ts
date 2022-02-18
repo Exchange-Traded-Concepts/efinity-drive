@@ -4,6 +4,9 @@ import Fund from "App/Models/Fund";
 import Custodian from "App/Models/Custodian";
 import Client from "App/Models/Client";
 import Distributor from "App/Models/Distributor";
+import Task from "App/Models/Task";
+import FundDocument from "App/Models/FundDocument";
+
 
 export default class FundsController {
   public async index({view}: HttpContextContract) {
@@ -29,6 +32,31 @@ export default class FundsController {
 
   }
 
+  public async showPipeline({view, params}: HttpContextContract) {
+
+    const pipefunds = await Fund.query()
+      .preload('client')
+      .preload('client')
+      .preload('custodian')
+      .preload('distributor')
+      .where('status', params.status)
+    const pipe = 'show'
+    const status = params.status
+    if (params.status === 'prelaunch'){
+      return view.render('admin/fundpipeline_prelaunch', {pipefunds, pipe, status})
+    }
+    else if(params.status === 'prospect'){
+      return view.render('admin/fundpipeline_prospect', {pipefunds, pipe , status})
+    }
+    else if(params.status === 'launched'){
+      return view.render('admin/fundpipeline_launched', {pipefunds, pipe , status})
+    }
+    else if(params.status === 'other'){
+      return view.render('admin/fundpipeline_other', {pipefunds, pipe , status})
+    }
+
+  }
+
   public async create({  }: HttpContextContract) {
 
 
@@ -48,6 +76,29 @@ export default class FundsController {
       fund_website: data.fund_website,
       exchange: data.exchange,
       prospectus_date: data.prospectus_date,
+
+      status: data.status,
+      client_questionnaire_sent: data.client_questionnaire_sent,
+      client_questionnaire_completed: data.client_questionnaire_completed,
+      client_sent_sample_portfolio_data: data.client_sent_sample_portfolio_data,
+      portfolio_notes: data.portfolio_notes,
+      proposal_sent: data.proposal_sent,
+      license_sponsorship: data.license_sponsorship,
+      psa_form_sent: data.psa_form_sent,
+      psa_form_complete: data.psa_form_complete,
+      diligence_sent: data.diligence_sent,
+      diligence_received: data.diligence_received,
+      strategy: data.strategy,
+      sec_comments:data.sec_comments,
+      launch_date: data.launch_date,
+      fifteenc_approval : data.fifteenc_approval,
+      four_eighty_five_status: data.four_eighty_five_status,
+      four_eighty_five_effective_date : data.four_eighty_five_effective_date,
+      role : data.role,
+      pea: data.pea,
+      notes: data.notes,
+      sub_advisor_agreement: data.sub_advisor_agreement,
+      target_launch_date: data.target_launch_date
     })
     session.flash('notification', 'Fund saved.')
     return response.redirect().back()
@@ -88,6 +139,29 @@ export default class FundsController {
       fund_website: data.fund_website,
       exchange: data.exchange,
       prospectus_date: data.prospectus_date,
+
+      status: data.status,
+      client_questionnaire_sent: data.client_questionnaire_sent,
+      client_questionnaire_completed: data.client_questionnaire_completed,
+      client_sent_sample_portfolio_data: data.client_sent_sample_portfolio_data,
+      portfolio_notes: data.portfolio_notes,
+      proposal_sent: data.proposal_sent,
+      license_sponsorship: data.license_sponsorship,
+      psa_form_sent: data.psa_form_sent,
+      psa_form_complete: data.psa_form_complete,
+      diligence_sent: data.diligence_sent,
+      diligence_received: data.diligence_received,
+      strategy: data.strategy,
+      sec_comments:data.sec_comments,
+      launch_date: data.launch_date,
+      fifteenc_approval : data.fifteenc_approval,
+      four_eighty_five_status: data.four_eighty_five_status,
+      four_eighty_five_effective_date : data.four_eighty_five_effective_date,
+      role : data.role,
+      pea: data.pea,
+      notes: data.notes,
+      sub_advisor_agreement: data.sub_advisor_agreement,
+      target_launch_date: data.target_launch_date
     })
 
     await fund.save()
@@ -112,7 +186,31 @@ export default class FundsController {
       fund_website: schema.string.optional({ trim: true }, [rules.maxLength(100)]),
       exchange: schema.string.optional({trim: true}, [rules.maxLength(100)]),
       prospectus_date: schema.string.optional({trim:true}),
-    })
+
+      status: schema.string.optional({trim:true}),
+      client_questionnaire_sent: schema.string.optional({trim:true}),
+      client_questionnaire_completed: schema.string.optional({trim:true}),
+      client_sent_sample_portfolio_data: schema.string.optional({trim:true}),
+      portfolio_notes: schema.string.optional({trim:true}),
+      proposal_sent: schema.string.optional({trim:true}),
+      license_sponsorship: schema.string.optional({trim:true}),
+      psa_form_sent: schema.string.optional({trim:true}),
+      psa_form_complete: schema.string.optional({trim:true}),
+      diligence_sent: schema.string.optional({trim:true}),
+      diligence_received: schema.string.optional({trim:true}),
+      strategy: schema.string.optional({trim:true}),
+      sec_comments:schema.string.optional({trim:true}),
+      launch_date: schema.string.optional({trim:true}),
+      fifteenc_approval : schema.string.optional({trim:true}),
+      four_eighty_five_status: schema.string.optional({trim:true}),
+      four_eighty_five_effective_date : schema.string.optional({trim:true}),
+      role : schema.string.optional({trim:true}),
+      pea: schema.string.optional({trim:true}),
+      notes: schema.string.optional({trim:true}),
+      sub_advisor_agreement: schema.string.optional({trim:true}),
+      target_launch_date: schema.string.optional({trim:true}),
+
+       })
 
     return await request.validate({
       schema: valSchema,
@@ -121,6 +219,43 @@ export default class FundsController {
       },
     })
   }
+
+  public async details({params, view}: HttpContextContract){
+  /*  let p = await Database.rawQuery('SELECT clients.*, funds.*, fp.id, fp.fund_id, fp.status, DATE_FORMAT(fp.client_questionnaire_sent, "%c/%e/%Y") as cqs,' +
+      ' DATE_FORMAT(fp.client_questionnaire_completed, "%c/%e/%Y") as cqc, DATE_FORMAT(fp.client_sent_sample_portfolio_data, "%c/%e/%Y") as csspd,' +
+      ' fp.portfolio_notes, DATE_FORMAT(fp.proposal_sent, "%c/%e/%Y") as proposal_sent , DATE_FORMAT(fp.license_sponsorship, "%c/%e/%Y") as license_sponsorship,' +
+      '  DATE_FORMAT(fp.psa_form_sent, "%c/%e/%Y") as pfs, DATE_FORMAT(fp.psa_form_complete, "%c/%e/%Y") as pfc, ' +
+      'DATE_FORMAT(fp.diligence_sent, "%c/%e/%Y") as ds, DATE_FORMAT(fp.diligence_received, "%c/%e/%Y") as dr, DATE_FORMAT(fp.launch_date, "%c/%e/%Y") as ld,' +
+      'fp.strategy, fp.sec_comments, notes FROM fund_pipelines fp, clients, funds WHERE fp.fund_id = funds.id AND funds.client_id = clients.id AND funds.id =? ', [params.id]
+    )
+    p = p[0][0]
+*/
+
+    const p = Fund.query()
+      .preload('client')
+      .preload('client')
+      .preload('custodian')
+      .preload('distributor')
+      .where('id', params.id)
+
+
+    const tasks = await Task.query()
+      .preload('assignedTo')
+      .preload('createdBy')
+      .preload('subtasks')
+      .where('fund_id', params.id)
+
+    const docs = await FundDocument.query().preload('createdBy')
+      .where('fund_id', params.id)
+
+    const fund_id = params.id
+
+    console.log(tasks)
+    return view.render('admin/pipeline_details', {p, tasks, fund_id, docs})
+
+
+  }
+
  public async short_date(return_date) {
    let date = new Date(return_date);
    let year = date.getFullYear();

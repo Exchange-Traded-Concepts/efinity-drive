@@ -16,18 +16,26 @@
         <h6 class="m-0 font-weight-bold text-primary">Funds</h6>
       </div>
       <div class="card-body">
-        <table class="table table-striped">
+        <table class="table table-striped" id="sortTable">
+          <thead>
           <TR>
             <th>ID</th>
-            <th>Fund Name</th>
-            <th>Ticker</th>
+            <th onclick="sortTable(1)" class="cursor-pointer select-none">Fund Name</th>
+            <th onclick="sortTable(2)" class="cursor-pointer select-none">Ticker</th>
+            <th onclick="sortTable(3)" class="cursor-pointer select-none date">Target Launch Date</th>
             <th>Options</th>
           </TR>
+          </thead>
         @each(d in funds)
           <tr>
           <td>{{ d.id }} </td>
           <td>{{ d.fund_name }}</td>
           <td>{{d.ticker }}</td>
+           <td>
+             @if(d.target_launch_date)
+             {{d.target_launch_date.toFormat('D') || ''}}
+              @end
+           </td>
           <td><a href="{{ `/funds/${d.id}/edit` }}"><i class="fas fa-pencil-alt"></i></a></td>
           </tr>
         @end
@@ -58,7 +66,9 @@
           method="post"
           enctype="multipart/form-data">
           {{ csrfField() }}
-          <div class="form-group">
+
+          <div class="form-group row">
+          <div class="col-md-10">
             <label for="name">Fund Name</label>
             <input type="text" class="form-control {{ flashMessages.has('errors.name') ? 'alert-danger' :'' }}"
                    id="name"
@@ -68,7 +78,27 @@
                    @endif
                    placeholder="Fund Name">
           </div>
-
+          <div class="col-md-2">
+            <div class="form-group">
+              <label for="name">Color</label>
+              <input type="color" class="form-control" name="color">
+            </div>
+          </div>
+          </div>
+          <div class="form-group">
+            <label for="Company">Company</label>
+            <select name="client_id" class="form-control" id="Company" aria-describedby="client">
+              @each(c in clients)
+              <option value="{{ c.id }}"
+                      @if(c_fund)
+                      @if(c.id == c_fund.clientId)
+                      selected
+                      @endif
+                      @endif
+              > {{ c.name }}</option>
+              @end
+            </select>
+          </div>
           <div class="form-group row">
             <div class="col-md-6">
             <label for="ticker">Ticker</label>
@@ -91,22 +121,53 @@
                    id="exchange"
                    placeholder="Exchange">
           </div>
+
           </div>
           <div class="form-group">
-            <label for="Company">Company</label>
-            <select name="client_id" class="form-control" id="Company" aria-describedby="client">
-              @each(c in clients)
-              <option value="{{ c.id }}"
+            <label for="status">Status</label>
+            <select name="status" id="status" class="form-control">
+              <option value="prospect"
                       @if(c_fund)
-                      @if(c.id == c_fund.clientId)
+                      @if(c_fund.status == `prospect`)
                       selected
-                      @endif
-                      @endif
-              > {{ c.name }}</option>
-              @end
+                      @end
+                      @end
+              >
+                Prospect
+              </option>
+              <option value="prelaunch"
+                      @if(c_fund)
+                      @if(c_fund.status == `prelaunch`)
+                      selected
+                      @end
+                      @end
+
+              >
+                Client/Prelaunch
+              </option>
+              <option value="other"
+                      @if(c_fund)
+                      @if(c_fund.status == `other`)
+                      selected
+                      @end
+                      @end
+              >
+                Other
+              </option>
+              <option value="launched"
+                      @if(c_fund)
+                      @if(c_fund.status == `launched`)
+                      selected
+                      @end
+                      @end
+              >
+                Launched
+              </option>
             </select>
           </div>
-          <div class="form-group">
+
+          <div class="form-group row">
+            <div class="col-md-6">
             <label for="custodian">Custodian</label>
             <select name="custodian_id" class="form-control" id="custodian" aria-describedby="custodian">
               @each(cu in custodians)
@@ -120,7 +181,8 @@
               @end
             </select>
           </div>
-          <div class="form-group">
+
+          <div class="form-group col-md-6" >
             <label for="distributor">Distributor</label>
             <select name="distributor_id" class="form-control" id="distributor" aria-describedby="distributor">
               @each(di in distributors)
@@ -133,6 +195,7 @@
               > {{ di.name }}</option>
               @end
             </select>
+          </div>
           </div>
           <div class="form-group row">
             <div class="col-md-6">
@@ -159,7 +222,30 @@
                    placeholder="Fiscal Year End">
           </div>
             </div>
-            <div class="form-group">
+          <div class="form-group">
+            <label for="strategy">Strategy</label>
+            <input type="text"
+                   name="strategy"
+                   @if(c_fund)
+                   value="{{c_fund.strategy ||''}}"
+                   @endif
+                   class="form-control"
+                   id="strategy"
+                   placeholder="Strategy">
+          </div>
+          <div class="form-group">
+            <label for="role">Role</label>
+            <input type="text"
+                   name="role"
+                   @if(c_fund)
+                   value="{{c_fund.role ||''}}"
+                   @endif
+                   class="form-control"
+                   id="role"
+                   placeholder="Role">
+          </div>
+            <div class="form-group row">
+              <div class="col-md-6">
               <label for="fund_website">Fund Website</label>
               <input type="text"
                      name="fund_website"
@@ -170,6 +256,19 @@
                      id="fund_website"
                      placeholder="Fund Website">
             </div>
+             <div class="col-md-6">
+               <label for="target_launch_date">Target Launch Date</label>
+               <input type="date"
+                      name="target_launch_date"
+                      @if(c_fund)
+                      value="{{c_fund.target_launch_date.toFormat('y-M-d')}}"
+                      @endif
+                      class="form-control"
+                      id="target_launch_date"
+                      placeholder="Target Launch Date">
+
+             </div>
+             </div>
           <div class="form-group row">
             <div class="col-md-6">
             <label for="Dividend Frequency">Dividend Frequency</label>
@@ -193,6 +292,178 @@
                    id="prospectus_date"
                    placeholder="Prospectus Date">
           </div>
+          </div>
+
+          <!---------------------------////////////////////////  ---->
+
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label for="four_eighty_five_status">485(C) Status</label>
+              <input type="text"
+                     name="four_eighty_five_status"
+                     @if(c_fund)
+                      value="{{ c_fund.four_eighty_five_status }}"
+                     @endif
+                     class="form-control"
+                     id="four_eighty_five_status"
+                     placeholder="485(C) Status">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="four_eighty_five_effective_date">485(C) Effective Date </label>
+              <input type="date"
+                     name="four_eighty_five_effective_date"
+                     @if(c_fund)
+                     value="{{c_fund.four_eighty_five_effective_date.toFormat('y-MM-dd') ||''}}"
+                     @endif
+                     class="form-control"
+                     id="four_eighty_five_effective_date"
+                     placeholder="485(C) Effective Date">
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label for="client_questionnaire_sent">Client Questionnaire Sent</label>
+              <input type="date"
+                     name="client_questionnaire_sent"
+                     @if(c_fund)
+                     value="{{c_fund.client_questionnaire_sent.toFormat('y-MM-dd') ||''}}"
+                     @endif
+                     class="form-control"
+                     id="client_questionnaire_sent"
+                     placeholder="Client Questionnaire Sent">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="client_questionnaire_completed">Client Questionnaire Received</label>
+              <input type="date"
+                     name="client_questionnaire_completed"
+                     @if(c_fund)
+                     value="{{c_fund.client_questionnaire_completed.toFormat('y-MM-dd') ||''}}"
+                     @endif
+                     class="form-control"
+                     id="client_questionnaire_completed"
+                     placeholder="Client Questionnaire Received">
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label for="client_sent_sample_portfolio_data">Received Sample Portfolio Data</label>
+              <input type="date"
+                     name="client_sent_sample_portfolio_data"
+                     @if(c_fund)
+                     value="{{c_fund.client_sent_sample_portfolio_data.toFormat('y-MM-dd') ||''}}"
+                     @endif
+                     class="form-control"
+                     id="client_sent_sample_portfolio_data"
+                     placeholder="Received Sample Portfolio Data">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="license_sponsorship">License Sponsorship</label>
+              <input type="date"
+                     name="license_sponsorship"
+                     @if(c_fund)
+                     value="{{c_fund.license_sponsorship.toFormat('y-MM-dd') ||''}}"
+                     @endif
+                     class="form-control"
+                     id="license_sponsorship"
+                     placeholder="License Sponsorship">
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label for="sub_advisor_agreement">Sub Advisor Agreement</label>
+              <input type="date"
+                     name="sub_advisor_agreement"
+                     @if(c_fund)
+                     value="{{c_fund.sub_advisor_agreement.toFormat('y-MM-dd') ||''}}"
+                     @endif
+                     class="form-control"
+                     id="sub_advisor_agreement"
+                     placeholder="Sub Advisor Agreement">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="fifteenc_approval">15 (C) Approval</label>
+              <input type="date"
+                     name="fifteenc_approval"
+                     @if(c_fund)
+                     value="{{c_fund.fifteenc_approval.toFormat('y-MM-dd') ||''}}"
+                     @endif
+                     class="form-control"
+                     id="fifteenc_approval"
+                     placeholder="15(C) Approval">
+            </div>
+          </div>
+          <div class="form-group ">
+            <label for="proposal_sent">Proposal Sent</label>
+            <input type="date"
+                   name="proposal_sent"
+                   @if(c_fund)
+                   value="{{c_fund.proposal_sent.toFormat('y-MM-dd') ||''}}"
+                   @endif
+                   class="form-control"
+                   id="proposal_sent"
+                   placeholder="Proposal Sent">
+          </div>
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label for="diligence_sent">Due Diligence Sent</label>
+              <input type="date"
+                     name="diligence_sent"
+                     @if(c_fund)
+                     value="{{c_fund.diligence_sent.toFormat('y-MM-dd') ||''}}"
+                     @endif
+                     class="form-control"
+                     id="diligence_sent"
+                     placeholder="Due Diligence Sent">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="diligence_received">Due Diligence Received</label>
+              <input type="date"
+                     name="diligence_received"
+                     @if(c_fund)
+                     value="{{c_fund.diligence_received.toFormat('y-MM-dd') ||''}}"
+                     @endif
+                     class="form-control"
+                     id="diligence_received"
+                     placeholder="Due Diligence Received">
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label for="psa_form_sent">PSA Sent</label>
+              <input type="date"
+                     name="psa_form_sent"
+                     @if(c_fund)
+                     value="{{c_fund.psa_form_sent.toFormat('y-MM-dd') ||''}}"
+                     @endif
+                     class="form-control"
+                     id="psa_form_sent"
+                     placeholder="PSA Sent">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="psa_form_complete">PSA Complete</label>
+              <input type="date"
+                     name="psa_form_complete"
+                     @if(c_fund)
+                     value="{{c_fund.psa_form_complete.toFormat('y-MM-dd') ||''}}"
+                     @endif
+                     class="form-control"
+                     id="psa_form_complete"
+                     placeholder="PSA Complete">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="sec_comments">Portfolio Notes</label>
+            <textarea class="form-control" name="portfolio_notes" id="portfolio_notes">{{portfolio_notes ||''}}</textarea>
+          </div>
+          <div class="form-group">
+            <label for="sec_comments">SEC Comments</label>
+            <textarea class="form-control" name="sec_comments" id="sec_comments">{{sec_comments ||''}}</textarea>
+          </div>
+          <div class="form-group">
+            <label for="notes">Notes</label>
+            <textarea class="form-control" name="notes" id="notes">{{notes ||''}}</textarea>
           </div>
 
           <button type="submit" class="btn btn-primary">Submit</button>

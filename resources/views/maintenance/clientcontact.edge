@@ -19,28 +19,32 @@
         <table class="table table-striped">
           <tr>
             <th>ID</th>
-            <th>Name</th>
-            <th>Role</th>
-            <th>Email</th>
+            <th onclick="sortTable(1)" class="cursor-pointer select-none">First Name</th>
+            <th onclick="sortTable(2)" class="cursor-pointer select-none">Last Name</th>
+            <th onclick="sortTable(3)" class="cursor-pointer select-none">Role</th>
+            <th onclick="sortTable(4)" class="cursor-pointer select-none">Email</th>
             <th>Phone</th>
             <th>Options</th>
           </tr>
-          @each(d in data)
+          @each(d in clientContacts)
           <tr>
             <td>
               {{ d.id }}
             </td>
             <td>
-              {{ d.name }}
+              {{ d.first_name ||'' }}
             </td>
             <td>
-              {{d.role}}
+              {{d.last_name ||''}}
             </td>
             <td>
-              {{d.email}}
+              {{d.role ||''}}
             </td>
             <td>
-              {{d.phone}}
+              {{d.email ||''}}
+            </td>
+            <td>
+              {{d.phone ||''}}
             </td>
             <td>
               <a href="{{ `/client_contact/${d.id}/edit` }}">Edit</a><br>
@@ -70,15 +74,41 @@
           enctype="multipart/form-data">
           {{ csrfField() }}
           <input type="hidden" name="client_id" value="{{ client_id }}">
-          <div class="form-group">
-            <label for="name">Name</label>
+          <div class="form-group row">
+            <div class="col-md-6">
+            <label for="first_name">First Name</label>
             <input type="text" class="form-control {{ flashMessages.has('errors.name') ? 'alert-danger' :'' }}"
-                   id="name"
-                   name="name"
+                   id="first_name"
+                   name="first_name"
                    @if(custo)
-                   value="{{custo.name ||''}}"
+                    value="{{cc.first_name ||''}}"
                    @endif
-                   placeholder="Name">
+                   placeholder="First Name">
+          </div>
+            <div class="col-md-6">
+              <label for="last_name">Last Name</label>
+              <input type="text" class="form-control {{ flashMessages.has('errors.name') ? 'alert-danger' :'' }}"
+                     id="last_name"
+                     name="last_name"
+                     @if(custo)
+                     value="{{cc.last_name ||''}}"
+                     @endif
+                     placeholder="Last Name">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="Company">Company</label>
+            <select name="client_id" class="form-control" id="Company" aria-describedby="client">
+              @each(c in clients)
+              <option value="{{ c.id }}"
+                      @if(client_id)
+                        @if(c.id == client_id)
+                          selected
+                        @endif
+                      @endif
+              > {{ c.name }}</option>
+              @end
+            </select>
           </div>
           <div class="form-group">
             <label for="role">Role</label>

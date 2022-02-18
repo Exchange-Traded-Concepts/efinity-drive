@@ -12,7 +12,10 @@ export default class ClientContact extends BaseModel {
   public client : BelongsTo<typeof Client>
 
   @column()
-  public name: string
+  public first_name: string
+
+  @column()
+  public last_name: string
 
   @column()
   public role : string
