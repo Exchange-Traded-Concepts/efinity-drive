@@ -1,9 +1,14 @@
-function sortTable(n) {
-  let table = document.getElementById("sortTable");
+function sortTable(n, tName) {
 
-  var  rows, cls, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+   let table = document.getElementById("sortTable");
 
-  var sel = "thead th:nth-child(" + (n + 1) + ")",
+   if(tName) {
+     table = document.getElementById(tName);
+   }
+
+  let  rows, cls, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+
+  let sel = "thead th:nth-child(" + (n + 1) + ")",
       classList = table.querySelector(sel).classList;
 
   if (classList) {

@@ -1,4 +1,4 @@
-@layout('layouts.adminDashboard')
+@layout('layouts/adminDashboard')
 
 @section('content')
 <div class="container-fluid">
@@ -79,7 +79,7 @@
             <input type="text" class="form-control {{ flashMessages.has('errors.name') ? 'alert-danger' :'' }}"
                    id="first_name"
                    name="first_name"
-                   @if(custo)
+                   @if(cc)
                     value="{{cc.first_name ||''}}"
                    @endif
                    placeholder="First Name">
@@ -89,7 +89,7 @@
               <input type="text" class="form-control {{ flashMessages.has('errors.name') ? 'alert-danger' :'' }}"
                      id="last_name"
                      name="last_name"
-                     @if(custo)
+                     @if(cc)
                      value="{{cc.last_name ||''}}"
                      @endif
                      placeholder="Last Name">
@@ -114,8 +114,8 @@
             <input type="text" class="form-control"
                    id="role"
                    name="role"
-                   @if(custo)
-                   value="{{cc.address ||''}}"
+                   @if(cc)
+                   value="{{cc.role ||''}}"
                    @endif
                    placeholder="Role">
           </div>

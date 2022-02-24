@@ -4,6 +4,8 @@ import Client from "App/Models/Client";
 import FileUpload from "App/utils/fileUploader";
 import States from "App/utils/USState";
 import {rules, schema} from "@ioc:Adonis/Core/Validator";
+import Fund from "App/Models/Fund";
+import ClientContact from "App/Models/ClientContact";
 
 export default class ClientsController {
 
@@ -111,8 +113,18 @@ export default class ClientsController {
   }
 
   public async details({view, params }: HttpContextContract){
-    const data = await Client.query().preload('funds').preload('clientContacts').where('id', params.client_id)
-    return view.render('admin/client_details', {data})
+    const data = await Client.query()
+      .preload('funds')
+      .preload('clientContacts')
+      .where('id', params.client_id)
+
+    const funds = await Fund.query()
+      .preload('custodian')
+      .preload('distributor')
+      .where('client_id', params.client_id)
+
+    const contacts = ClientContact.query().where('client_id', params.client_id)
+    return view.render('admin/client_details', {data, funds, contacts})
   }
 
 

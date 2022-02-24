@@ -27,9 +27,10 @@
           </div>
         </div>
       </div>
-      <div class="card-body">
-        <div class="table-responsive">
-        <table class="table table-striped table-responsive">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-striped" id="sortTable">
+          <thead>
           <tr>
             <th>Client</th>
             <th>Fund Name</th>
@@ -41,6 +42,7 @@
             <th>D.D. Complete</th>
             <th>Target Launch Date</th>
           </tr>
+          </thead>
           @each(d in pipefunds)
           <tr>
             <td>Client</td>

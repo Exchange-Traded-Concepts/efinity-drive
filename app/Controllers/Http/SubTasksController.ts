@@ -57,7 +57,13 @@ export default class SubTasksController {
   public async add_subtask_to_task({params, view}: HttpContextContract){
 
     const etcUsers = await users.all()
-    return view.render('maintenance/subtask', { params, etcUsers })
+    const tasks = await Task.query()
+      .preload('createdBy')
+      .preload('subtasks', (assignedToQuery) => {assignedToQuery.preload('assignedTo').preload('createdBy')})
+      .preload('assignedTo')
+      .preload('createdBy')
+      .where('id', params.task_id).orderBy('target_completion_date')
+    return view.render('maintenance/subtask', { params, etcUsers, tasks })
 
 
   }

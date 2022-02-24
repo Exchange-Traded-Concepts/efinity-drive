@@ -39,9 +39,36 @@ export default class ClientContactsController {
     return view.render('admin/client_contacts', {clientContacts})
   }
 
-  public async edit({}: HttpContextContract) {}
+  public async edit({view, params}: HttpContextContract) {
 
-  public async update({}: HttpContextContract) {}
+    const cc = await ClientContact.findBy('id', params.id )
+    const clients = await Client.query();
+    const clientContacts = await ClientContact.query()
+    // @ts-ignore
+    let client_id = cc.clientId
+    return view.render('maintenance/clientcontact', {cc, client_id, clients, clientContacts})
+  }
+
+  public async update({params, request, response, session}: HttpContextContract) {
+
+    const c = await ClientContact.findOrFail( params.id)
+
+    c.merge({
+      first_name: request.input('first_name'),
+      last_name: request.input('last_name'),
+      clientId: request.input('client_id'),
+      role: request.input('role'),
+      email: request.input('email'),
+      phone:request.input('phone'),
+      secondary_email: request.input('secondary_email'),
+      notes : request.input('notes'),
+    })
+
+    await c.save()
+    session.flash('notification', 'Client Contact Updated')
+    return response.redirect('back', )
+
+  }
 
   public async destroy({}: HttpContextContract) {}
 

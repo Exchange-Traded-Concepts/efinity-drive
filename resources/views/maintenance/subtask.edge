@@ -1,4 +1,4 @@
-@layout('layouts.adminDashboard')
+@layout('layouts/adminDashboard')
 
 @section('content')
 <div class="container-fluid">
@@ -13,25 +13,85 @@
     <div class="card shadow mb-4">
       <div
         class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-        <h6 class="m-0 font-weight-bold text-primary">My Sub Tasks for Task</h6>
+        <h6 class="m-0 font-weight-bold text-primary">My Tasks</h6>
+        <div class="dropdown no-arrow">
+          <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+          </a>
+          <div class="dropdown-menu dropdow0n-menu-right shadow animated--fade-in"
+               aria-labelledby="dropdownMenuLink">
+            <div class="dropdown-header">Admin:</div>
+            <a class="dropdown-item" href="/tasks_add">Add Task</a>
+            <!--  <a class="dropdown-item" href="#">Another action</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Something else here</a>
+            -->
+          </div>
+        </div>
       </div>
       <div class="card-body">
-        <table class="table table-striped">
+        <table class="table table-striped" x-data="{selected:null}" id="sortTable">
+          <thead>
           <TR>
             <th>ID</th>
-            <th>Title</th>
+            <th></th>
+            <th onclick="sortTable(2)" class="cursor-pointer select-none">Title</th>
+            <th>Description</th>
             <th>Assigned By</th>
+            <th>Assigned To</th>
+            <th onclick="sortTable(6)" class="cursor-pointer select-none date">Target Completion Date</th>
             <th>Options</th>
           </TR>
-          @each(t in subTasks)
+          </thead>
+          @each(t in tasks)
           <tr>
             <td>{{ t.id }} </td>
+            @if(t.subtasks != '')
+            <td @click=" {{ `selected !== ${ t.id } ? selected = ${ t.id } : selected = null` }} " >
+              <i class="fas fa-arrow-circle-right" style="cursor: pointer; color: #0f6848"></i>
+            </td>
+            @else
+            <td></td>
+            @end
             <td>{{ t.title }}</td>
-            <td>{{t.createdBy.first_name }} {{t.createdBy.last_name}}</td>
+            <td>{{t.description}}</td>
+            <td>
+              {{t.createdBy.first_name}} {{t.createdBy.last_name}}
+            </td>
+            <td>
+              {{t.assignedTo.first_name}} {{t.assignedTo.last_name}}
+            </td>
+            <td>
+              @if(t.target_completion_date)
+              {{t.target_completion_date.toFormat('M/d/y')}}
+              @end
+            </td>
             <td><a href="{{ `/tasks/${t.id}/edit` }}"><i class="fas fa-pencil-alt"></i></a></td>
           </tr>
+          @if(t.subtasks)
+          @each(st in t.subtasks)
+          <tr x-show="{{ `selected == ${t.id}` }}" class="sub" style="background-color: #1c294e; color: #b3e4ec">
+            <td>
+              <p><i class="fas fa-arrow-circle-right" style="color: #FFFFFF"></i></p>
+            </td>
+            <td></td>
+            <td>{{st.title}}</td>
+            <td>{{st.description}}</td>
+            <td>
+              {{st.createdBy.first_name}} {{st.createdBy.last_name}}
+            </td>
+            <td>
+              {{st.assignedTo.first_name}} {{st.assignedTo.last_name}}
+            </td>
+            <td>{{st.target_completion_date.toFormat('M/d/y')}}</td>
+            <td></td>
+          </tr>
+          @end
+          @end
           @end
         </table>
+
       </div>
 
     </div>
@@ -94,21 +154,10 @@
                    placeholder="Target Completion Date">
           </div>
           <div class="form-group">
-            <label for="completion_date">Completion Date</label>
-            <input type="date"
-                   name="completion_date"
-                   @if(subTask)
-                   value="{{subTask.completion_date ||''}}"
-                   @endif
-                   class="form-control"
-                   id="completion_date"
-                   placeholder="Completion Date">
-          </div>
-          <div class="form-group">
-            <label for="completion_date">Completion Date</label>
-            <textarea name="notes" class="form-control">
+            <label for="notes">Notes</label>
+            <textarea name="notes" class="form-control" id="notes">
               @if(subTask)
-                {{subTask.notes ||''}}
+              {{subTask.notes ||''}}
               @end
             </textarea>
           </div>

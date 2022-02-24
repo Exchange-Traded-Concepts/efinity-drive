@@ -1,4 +1,4 @@
-@layout('layouts.adminDashboard')
+@layout('layouts/adminDashboard')
 
 @section('content')
 <div class="container-fluid">
@@ -42,10 +42,10 @@
               {{d.role ||''}}
             </td>
             <td>
-              {{d.email ||''}}
+              <a href="{{`mailto:${d.email}` }}">{{d.email ||''}}</a>
             </td>
             <td>
-              {{d.phone ||''}}
+              <a href="{{`tel:${d.phone}`}}">{{d.phone ||''}}</a>
             </td>
             <td>
               <a href="{{ `/client_contact/${d.id}/edit` }}">Edit</a><br>

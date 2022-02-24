@@ -19,6 +19,7 @@ export default class DashboardController {
 
   public async index ({ view, auth}: HttpContextContract){
 
+
     const axios = require('axios');
 
     const navId = 26
@@ -42,6 +43,7 @@ export default class DashboardController {
       .where('assigned_to', auth.user.id)
       .andWhere('completed', 0)
       .orderBy('target_completion_date')
+      .limit(5)
 
     return view.render('admin/dashboard', {d, tasks})
   }

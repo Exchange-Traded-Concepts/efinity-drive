@@ -238,12 +238,20 @@ export default class FundsController {
       .preload('distributor')
       .where('id', params.id)
 
-
+/*
     const tasks = await Task.query()
       .preload('assignedTo')
       .preload('createdBy')
       .preload('subtasks')
       .where('fund_id', params.id)
+*/
+    const tasks = await Task.query()
+      .preload('createdBy')
+      .preload('subtasks', (assignedToQuery) => {assignedToQuery.preload('assignedTo').preload('createdBy')})
+      .preload('assignedTo')
+      .preload('createdBy')
+      .where('fund_id', params.id)
+      .orderBy('target_completion_date')
 
     const docs = await FundDocument.query().preload('createdBy')
       .where('fund_id', params.id)

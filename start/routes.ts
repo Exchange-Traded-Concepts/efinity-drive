@@ -36,7 +36,7 @@ Route.group(() => {
   Route.get('/company_contacts/:id/delete', 'CompanyContactsController.destroy')
 }).middleware('isAdmin')
 
-Route.get('/dashboard', 'DashboardController.index')
+Route.get('/dashboard', 'DashboardController.index').middleware('isAdmin')
 
 /*
 Route.get('/dashboard', async ({view})  => {
@@ -97,6 +97,7 @@ Route.group(() => {
 
 Route.group(() => {
   Route.get('/tasks', 'TasksController.index')
+  Route.get('/tasks_add', 'TasksController.add')
   Route.post('/tasks', 'TasksController.create')
   Route.get('/tasks/:id/edit', 'TasksController.edit')
   Route.patch('tasks/:id', 'TasksController.update')
