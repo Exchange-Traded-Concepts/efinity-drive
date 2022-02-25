@@ -35,9 +35,10 @@ export default class DashboardController {
 
     let d = await makeGetRequest(navId);
 
-
     const tasks = await Task.query()
-      .preload('subtasks')
+      .preload('createdBy')
+      .preload('subtasks', (assignedToQuery) => {assignedToQuery.preload('assignedTo').preload('createdBy')})
+      .preload('assignedTo')
       .preload('createdBy')
       // @ts-ignore
       .where('assigned_to', auth.user.id)

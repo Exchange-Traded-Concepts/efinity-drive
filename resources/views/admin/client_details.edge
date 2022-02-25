@@ -172,22 +172,46 @@
             <th>Secondary Email</th>
             <th>Notes</th>
           </tr>
+          <tr>
+            <td>
+              {{data[0].primary_contact_name ||''}}
+            </td>
+            <td>
+              {{ data[0].primary_contact_role||'' }}
+            </td>
+            <td>
+              <a href="{{ `mailto:${data[0].primary_contact_email}` }}" target="_blank">{{data[0].primary_contact_email ||''}}</a>
+            </td>
+            <td>
+              {{data[0].primary_contact_phone ||'' }}
+            </td>
+            <td>
+              &nbsp;
+            </td>
+            <td>
+              &nbsp;
+            </td>
+          </tr>
+
           @each(cc in data[0].clientContacts)
           <tr>
             <td>
-              {{cc.name}}
+              {{cc.first_name ||''}} {{cc.last_name ||''}}
             </td>
             <td>
-              {{ cc.role }}
+              {{ cc.role ||''}}
             </td>
             <td>
-              <a href="{{ `mailto:${cc.email}` }}" target="_blank">{{cc.email}}</a>
+              <a href="{{ `mailto:${cc.email}` }}" target="_blank">{{cc.email ||''}}</a>
             </td>
             <td>
-              {{cc.phone}}
+              {{cc.phone ||''}}
             </td>
             <td>
-              {{cc.secondary_email}}
+              {{cc.secondary_email ||''}}
+            </td>
+            <td>
+              {{cc.notes ||''}}
             </td>
           </tr>
           @end

@@ -119,6 +119,9 @@ export default class FundsPipelinesController {
      )
     p = p[0][0]
 
+    console.log('HERE')
+    console.log(p)
+
     const tasks = await Task.query()
       .preload('assignedTo')
       .preload('createdBy')

@@ -1,63 +1,63 @@
-@layout('layouts.adminDashboard')
+@layout('layouts/adminDashboard')
 
 @section('content')
 <div class="container-fluid">
 <div class="card shadow mb-4">
   <div
     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-    <h6 class="m-0 font-weight-bold text-primary">Pipeline Details</h6>
+    <h6 class="m-0 font-weight-bold text-primary">Fund Details</h6>
   </div>
   <div class="card-body">
 <div class="row">
   <div class="col-md-6">
-    Fund Name: {{ p.fund_name }}
+    Fund Name: {{ p[0].fund_name }}
   </div>
   <div class="col-md-6">
-    Ticker: {{p.ticker}}
+    Ticker: {{p[0].ticker}}
   </div>
 </div>
 <div class="row">
   <div class="col-md-6">
-    Status: <span style="text-transform:capitalize">{{p.status}}</span>
+    Status: <span style="text-transform:capitalize">{{p[0].status}}</span>
   </div>
   <div class="col-md-6">
-    Strategy: {{p.strategy}}
+    Strategy: {{p[0].strategy}}
   </div>
 </div>
 
     <div class="row">
       <div class="col-md-6">
-        Client Questionnaire Sent: {{p.cqs}}
+        Client Questionnaire Sent: {{p[0].cqs}}
       </div>
       <div class="col-md-6">
-        Client Questionnaire Received: {{ p.cqs }}
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-6">
-        Client Sent Sample Portfolio Data: {{p.csspd}}
-      </div>
-      <div class="col-md-6">
-        License/Sponsorship: {{ p.license_sponsorship }}
+        Client Questionnaire Received: {{ p[0].cqs }}
       </div>
     </div>
 
     <div class="row">
       <div class="col-md-6">
-        Client Sent Sample Portfolio Data: {{p.pfs}}
+        Client Sent Sample Portfolio Data: {{p[0].csspd}}
       </div>
       <div class="col-md-6">
-        License/Sponsorship: {{ p.pfc }}
+        License/Sponsorship: {{ p[0].license_sponsorship }}
       </div>
     </div>
 
     <div class="row">
       <div class="col-md-6">
-        SEC Notes: {{p.sec_notes}}
+        Client Sent Sample Portfolio Data: {{p[0].pfs}}
       </div>
       <div class="col-md-6">
-        Notes: {{ p.notes }}
+        License/Sponsorship: {{ p[0].pfc }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        SEC Notes: {{p[0].sec_notes}}
+      </div>
+      <div class="col-md-6">
+        Notes: {{ p[0].notes }}
       </div>
     </div>
 

@@ -231,20 +231,15 @@ export default class FundsController {
     p = p[0][0]
 */
 
-    const p = Fund.query()
+    const p = await Fund.query()
       .preload('client')
       .preload('client')
       .preload('custodian')
       .preload('distributor')
       .where('id', params.id)
 
-/*
-    const tasks = await Task.query()
-      .preload('assignedTo')
-      .preload('createdBy')
-      .preload('subtasks')
-      .where('fund_id', params.id)
-*/
+    console.log('here')
+    console.log(p)
     const tasks = await Task.query()
       .preload('createdBy')
       .preload('subtasks', (assignedToQuery) => {assignedToQuery.preload('assignedTo').preload('createdBy')})
@@ -258,7 +253,6 @@ export default class FundsController {
 
     const fund_id = params.id
 
-    console.log(tasks)
     return view.render('admin/pipeline_details', {p, tasks, fund_id, docs})
 
 
