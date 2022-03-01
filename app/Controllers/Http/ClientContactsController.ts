@@ -24,7 +24,7 @@ export default class ClientContactsController {
       role: request.input('role'),
       email: request.input('email'),
       phone:request.input('phone'),
-      secondary_email: request.input('secondary_email'),
+      secondary_phone: request.input('secondary_phone'),
       notes : request.input('notes'),
 
     })
@@ -60,7 +60,7 @@ export default class ClientContactsController {
       role: request.input('role'),
       email: request.input('email'),
       phone:request.input('phone'),
-      secondary_email: request.input('secondary_email'),
+      secondary_phone: request.input('secondary_phone'),
       notes : request.input('notes'),
     })
 

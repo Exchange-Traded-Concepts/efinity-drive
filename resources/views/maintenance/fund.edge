@@ -1,4 +1,4 @@
-@layout('layouts.adminDashboard')
+@layout('layouts/adminDashboard')
 
 @section('content')
 <div class="container-fluid">
@@ -173,7 +173,7 @@
               @each(cu in custodians)
               <option value="{{ cu.id }}"
                       @if(c_fund)
-                      @if(cu.id == c_fund.custodianId)
+                      @if(cu.id == c_fund.custodian_id)
                       selected
                       @endif
                       @endif
@@ -188,7 +188,7 @@
               @each(di in distributors)
               <option value="{{ di.id }}"
                       @if(c_fund)
-                      @if(di.id == c_fund.distributorId)
+                      @if(di.id == c_fund.distributor_id)
                       selected
                       @endif
                       @endif

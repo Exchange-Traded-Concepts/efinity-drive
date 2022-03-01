@@ -9,19 +9,23 @@ import ClientContact from "App/Models/ClientContact";
 
 export default class ClientsController {
 
-  public async index ({ view, session }: HttpContextContract){
+  public async index ({ view, session, params }: HttpContextContract){
 
     //const contacts = await Database.query().from('company_contacts').select('*').orderBy('office_location', 'desc')
     //  .orderBy('last_name')
 
-    const data = await Client.query().orderBy('name');
+    const data = await Client.query().where('client_type_id', params.client_type_id).orderBy('name');
     const states = await States.state_hash()
     const maint = 'show'
+
+    const client_type = {1: "client", 2: "distributor", 3: "custodian", 4:"vendor"}
+
+    console.log(client_type[1])
 
     session.get('area_code')
     // Write value
     session.put('area_code', 777)
-    return view.render('client/index', {data, states, maint})
+    return view.render('client/index', {data, states, maint, client_type_id : params.client_type_id, type: client_type[params.client_type_id]})
   }
   public async store ({request, session, response}: HttpContextContract) {
   console.log('IN LOG')
@@ -49,19 +53,14 @@ export default class ClientsController {
       phone: data.phone,
       country: data.country,
       logo_file:  dataUrl,
-      primary_contact_name:   data.primary_contact_name,
-      primary_contact_phone:  data.primary_contact_phone,
-      primary_contact_email:   data.primary_contact_email,
       website:   data.website,
-      etf_website:  data.etf_website,
-
+      client_type_id:  data.client_type_id,
     })
 
     session.flash({notification: 'Client Added'})
     return response.redirect('back')
 
   }
-
 
   public async create ({}: HttpContextContract) {
   }
@@ -72,6 +71,25 @@ export default class ClientsController {
     return view.render('admin/clients', {clients})
   }
 
+  public async clients ({view}: HttpContextContract) {
+    const clients = await Client.query().where('client_type_id', 1)
+    return view.render('admin/clients', {clients, client_type_id: 1})
+  }
+
+  public async distributor ({view}: HttpContextContract) {
+    const clients = await Client.query().where('client_type_id', 2)
+    return view.render('admin/clients', {clients, client_type_id: 2})
+  }
+
+  public async custodian ({view}: HttpContextContract) {
+    const clients = await Client.query().where('client_type_id', 3)
+    return view.render('admin/clients', {clients, client_type_id: 3})
+  }
+
+  public async vendor ({view}: HttpContextContract) {
+    const clients = await Client.query().where('client_type_id', 4)
+    return view.render('admin/clients', {clients, client_type_id: 4})
+  }
 
   public async edit ({view, params}: HttpContextContract) {
 
@@ -98,12 +116,8 @@ export default class ClientsController {
       zip: data.zip,
       country: data.country,
       phone: data.phone,
-      primary_contact_role: data.primary_contact_role,
-      primary_contact_name:   data.primary_contact_name,
-      primary_contact_phone:  data.primary_contact_phone,
-      primary_contact_email:  data.primary_contact_email,
       website:  data.website,
-      etf_website:  data.etf_website,
+      client_type_id:  data.client_type_id,
     })
 
      await c.save()
@@ -139,13 +153,9 @@ export default class ClientsController {
       city: schema.string.optional({trim: true}, [rules.maxLength(255)]),
       state: schema.string({trim: true}, [rules.maxLength(3)]),
       zip: schema.string.optional({trim: true}, [rules.maxLength(10)]),
-      primary_contact_role: schema.string.optional({trim:true}, [rules.maxLength(200)]),
-      primary_contact_name: schema.string.optional({trim: true}, [rules.maxLength(200)]),
-      primary_contact_phone: schema.string.optional({trim: true}, [rules.maxLength(20)]),
-      primary_contact_email: schema.string.optional({trim: true}, [rules.maxLength(150), rules.email()]),
       country: schema.string.optional({trim: true}, [rules.maxLength(150)]),
       website: schema.string.optional({trim: true}, [rules.maxLength(150)]),
-      etf_website : schema.string.optional({trim: true}, [rules.maxLength(150)])
+     client_type_id:schema.number.optional()
     })
 
     return await request.validate({

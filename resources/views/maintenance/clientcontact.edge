@@ -142,18 +142,23 @@
                    placeholder="Phone">
           </div>
           <div class="form-group">
-            <label for="secondary_email">Secondary Email</label>
+            <label for="secondary_phone">Secondary Phone</label>
             <input type="text"
-                   name="secondary_email"
+                   name="secondary_phone"
                    @if(cc)
-                   value="{{cc.secondary_email ||''}}"
+                   value="{{cc.secondary_phone ||''}}"
                    @endif
                    class="form-control"
-                   id="secondary_email"
-                   placeholder="Secondary Email">
+                   id="secondary_phone"
+                   placeholder="Secondary Phone">
           </div>
           <div class="form-group">
-            <textarea name="notes" class="form-control">{{notes || ''}}</textarea>
+            <label for="notes">Notes</label>
+            <textarea name="notes" id="notes" class="form-control">
+              @if(cc)
+                {{cc.notes || ''}}
+              @end
+            </textarea>
           </div>
 
           <button type="submit" class="btn btn-primary">Submit</button>

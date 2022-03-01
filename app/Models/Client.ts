@@ -33,22 +33,10 @@ export default class Client extends BaseModel {
   public logo_file: string
 
   @column()
-  public primary_contact_name: string
-
-  @column()
-  public primary_contact_role: string
-
-  @column()
-  public primary_contact_phone: string
-
-  @column()
-  public primary_contact_email: string
-
-  @column()
   public website: string
 
   @column()
-  public etf_website: string
+  public client_type_id: number
 
   @hasMany( () => Fund)
   public funds: HasMany<typeof Fund >

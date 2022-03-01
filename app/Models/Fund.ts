@@ -6,8 +6,6 @@ import {
   BelongsTo, hasMany, HasMany,
 } from '@ioc:Adonis/Lucid/Orm'
 import Client from "App/Models/Client";
-import Custodian from "App/Models/Custodian";
-import Distributor from "App/Models/Distributor";
 import Task from "App/Models/Task";
 
 export default class Fund extends BaseModel {
@@ -20,14 +18,20 @@ export default class Fund extends BaseModel {
   public client : BelongsTo<typeof Client>
 
   @column()
-  public custodianId: number
-  @belongsTo(() => Custodian)
-  public custodian : BelongsTo<typeof Custodian>
+  public custodian_id: number
+  @belongsTo(()=> Client, {
+    foreignKey: 'custodian_id',
+    localKey: 'id'
+  })
+  public custodian : BelongsTo<typeof Client>
 
   @column()
-  public distributorId: number
-  @belongsTo(()=> Distributor)
-  public distributor: BelongsTo<typeof Distributor>
+  public distributor_id: number
+  @belongsTo(()=> Client, {
+    foreignKey: 'distributor_id',
+    localKey: 'id'
+  })
+  public distributor : BelongsTo<typeof Client>
 
   @hasMany(() => Task)
   public tasks: HasMany<typeof Task>

@@ -1,9 +1,7 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import {rules, schema} from "@ioc:Adonis/Core/Validator";
 import Fund from "App/Models/Fund";
-import Custodian from "App/Models/Custodian";
 import Client from "App/Models/Client";
-import Distributor from "App/Models/Distributor";
 import Task from "App/Models/Task";
 import FundDocument from "App/Models/FundDocument";
 
@@ -14,11 +12,12 @@ export default class FundsController {
       .preload('client')
       .preload('custodian')
       .preload('distributor')
-    const custodians = await Custodian.all()
-    const clients = await Client.all()
-    const distributors = await Distributor.all()
+    const custodians = await Client.query().where('client_type_id', 3)
+    const clients = await Client.query().where('client_type_id', 1)
+    const distributors = await Client.query().where('client_type_id', 2)
     const maint = 'show'
 
+    console.log(funds[0].distributor)
     return view.render('maintenance/fund', {funds, custodians, clients, distributors, maint})
   }
 
@@ -28,6 +27,7 @@ export default class FundsController {
       .preload('client')
       .preload('custodian')
       .preload('distributor')
+
     return view.render('admin/funds', {funds})
 
   }
@@ -68,8 +68,8 @@ export default class FundsController {
       fund_name: data.fund_name,
       ticker: data.ticker,
       clientId: data.client_id,
-      distributorId: data.distributor_id,
-      custodianId : data.custodian_id,
+      distributor_id: data.distributor_id,
+      custodian_id : data.custodian_id,
       trust: data.trust,
       fiscal_year_end: data.fiscal_year_end,
       dividend_frequency: data.dividend_frequency,
@@ -109,9 +109,9 @@ export default class FundsController {
 
   public async edit({view,params}: HttpContextContract) {
     const funds = await Fund.query().preload('client')
-    const custodians = await Custodian.all()
-    const clients = await Client.all()
-    const distributors = await Distributor.all()
+    const custodians = await Client.query().where('client_type_id', 3)
+    const clients = await Client.query().where('client_type_id', 1)
+    const distributors = await Client.query().where('client_type_id', 2)
     const maint = 'show'
     const c_fund = await Fund.findOrFail(params.id)
     const p_date = await this.short_date(c_fund.prospectus_date)
@@ -131,8 +131,8 @@ export default class FundsController {
       fund_name: data.fund_name,
       ticker: data.ticker,
       clientId: data.client_id,
-      distributorId: data.distributor_id,
-      custodianId : data.custodian_id,
+      distributor_id: data.distributor_id,
+      custodian_id : data.custodian_id,
       trust: data.trust,
       fiscal_year_end: data.fiscal_year_end,
       dividend_frequency: data.dividend_frequency,
@@ -233,13 +233,10 @@ export default class FundsController {
 
     const p = await Fund.query()
       .preload('client')
-      .preload('client')
       .preload('custodian')
       .preload('distributor')
       .where('id', params.id)
 
-    console.log('here')
-    console.log(p)
     const tasks = await Task.query()
       .preload('createdBy')
       .preload('subtasks', (assignedToQuery) => {assignedToQuery.preload('assignedTo').preload('createdBy')})

@@ -1,54 +1,222 @@
 @layout('layouts/adminDashboard')
 
 @section('content')
+<style>
+.row{
+  line-height: 2rem;
+}
+</style>
+
 <div class="container-fluid">
 <div class="card shadow mb-4">
   <div
     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-    <h6 class="m-0 font-weight-bold text-primary">Fund Details</h6>
+    <h6 class="m-0 font-weight-bold text-primary"> {{ p[0].fund_name ||''}} Fund Details</h6>
+    @if(auth.user.can_edit)
+    <div class="dropdown no-arrow">
+      <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+      </a>
+      <div class="dropdown-menu dropdow0n-menu-right shadow animated--fade-in"
+           aria-labelledby="dropdownMenuLink">
+        <div class="dropdown-header">Admin:</div>
+        <a class="dropdown-item" href="{{`/funds/${p[0].id}/edit`}}">Edit Fund</a>
+        <!--  <a class="dropdown-item" href="#">Another action</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Something else here</a>
+        -->
+      </div>
+    </div>
+    @endif
   </div>
   <div class="card-body">
 <div class="row">
   <div class="col-md-6">
-    Fund Name: {{ p[0].fund_name }}
+    Ticker: {{p[0].ticker ||'' }}
   </div>
   <div class="col-md-6">
-    Ticker: {{p[0].ticker}}
+    Client: <a href="{{`/client_details/${p[0].client.id}` }}">{{p[0].client.name ||'' }}<a/>
   </div>
 </div>
 <div class="row">
   <div class="col-md-6">
-    Status: <span style="text-transform:capitalize">{{p[0].status}}</span>
+    Status: <span style="text-transform:capitalize">{{p[0].status || ''}}</span>
   </div>
   <div class="col-md-6">
-    Strategy: {{p[0].strategy}}
+    Strategy: {{p[0].strategy ||''}}
   </div>
 </div>
 
+
     <div class="row">
       <div class="col-md-6">
-        Client Questionnaire Sent: {{p[0].cqs}}
+        Distributor: {{p[0].distributor.name ||''}}
       </div>
       <div class="col-md-6">
-        Client Questionnaire Received: {{ p[0].cqs }}
+        Role: {{ p[0].role || '' }}
       </div>
     </div>
 
     <div class="row">
       <div class="col-md-6">
-        Client Sent Sample Portfolio Data: {{p[0].csspd}}
+        Custodian: {{p[0].custodian.name ||''}}
       </div>
       <div class="col-md-6">
-        License/Sponsorship: {{ p[0].license_sponsorship }}
+        Trust: {{ p[0].trust || '' }}
       </div>
     </div>
 
     <div class="row">
       <div class="col-md-6">
-        Client Sent Sample Portfolio Data: {{p[0].pfs}}
+        Exchange: {{p[0].exchange ||''}}
       </div>
       <div class="col-md-6">
-        License/Sponsorship: {{ p[0].pfc }}
+        Dividend Frequency: {{ p[0].dividend_frequency || '' }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        Fiscal Year End: {{p[0].fiscal_year_end ||''}}
+      </div>
+      <div class="col-md-6">
+        Prospectus Date:
+        @if(p[0].prospectus_date)
+          {{ p[0].prospectus_date.toFormat('M/d/y') || '' }}
+        @end
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        Sample Portfolio Data Received:
+        @if(p[0].client_sent_sample_portfolio_data)
+          {{p[0].client_sent_sample_portfolio_data.toFormat('M/d/y') ||''}}
+        @end
+      </div>
+      <div class="col-md-6">
+       Proposal Sent:
+        @if(p[0].proposal_sent)
+          {{ p[0].proposal_sent.toFormat('M/d/y') || '' }}
+        @end
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        Diligence Sent:
+        @if(p[0].diligence_sent)
+          {{p[0].diligence_sent.toFormat('M/d/y') ||''}}
+        @end
+      </div>
+      <div class="col-md-6">
+        485 Status: {{ p[0].four_eighty_five_status || '' }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        Diligence Received:
+        @if(p[0].diligence_received)
+          {{p[0].diligence_received.toFormat('M/d/y') ||''}}
+        @end
+      </div>
+      <div class="col-md-6">
+        485 Effective Date:
+        @if (p[0].four_eighty_five_effective_date)
+          {{ p[0].four_eighty_five_effective_date.toFormat('M/d/y') || '' }}
+        @end
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        Target Launch Date:
+        @if(p[0].target_launch_date)
+          {{p[0].target_launch_date.toFormat('M/d/y') ||''}}
+        @end
+      </div>
+      <div class="col-md-6">
+        Launch Date:
+        @if(p[0].launch_date)
+          {{ p[0].launch_date.toFormat('M/d/y') || '' }}
+        @end
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        15 (C) Approval:
+        @if(p[0].fifteenc_approval)
+          {{p[0].fifteenc_approval.toFormat('M/d/y') ||''}}
+        @end
+      </div>
+      <div class="col-md-6">
+        PEA:
+        @if(p[0].pea)
+          {{ p[0].pea.toFormat('M/d/y') || '' }}
+        @end
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        Client Questionnaire Sent:
+        @if(p[0].client_questionnaire_sent)
+          {{p[0].client_questionnaire_sent.toFormat('M/d/y') ||''}}
+        @end
+      </div>
+      <div class="col-md-6">
+        Client Questionnaire Received:
+        @if(p[0].client_questionnaire_completed)
+          {{ p[0].client_questionnaire_completed.toFormat('M/d/y') || '' }}
+        @end
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        PSA Form Sent:
+        @if(p[0].psa_form_sent)
+          {{p[0].psa_form_sent.toFormat('M/d/y')}}
+        @end
+      </div>
+      <div class="col-md-6">
+        License/Sponsorship:
+        @if(p[0].license_sponsorship)
+          {{ p[0].license_sponsorship.toFormat('M/d/y') }}
+        @end
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        PSA Form Received:
+        @if(p[0].psa_form_complete)
+          {{p[0].psa_form_complete.toFormat('M/d/y')}}
+        @end
+      </div>
+      <div class="col-md-6">
+        Sub Advisor Agreement:
+        @if( p[0].sub_advisor_agreement)
+          {{ p[0].sub_advisor_agreement.toFormat('M/d/y') }}
+        @end
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        Code of Ethics Complete:
+        @if(p[0].code_of_ethics_complete)
+        {{p[0].code_of_ethics_complete.toFormat('M/d/y')}}
+        @end
+      </div>
+      <div class="col-md-6">
+        Fund Website:
+        @if( p[0].fund_website)
+        {{ p[0].fund_website}}
+        @end
       </div>
     </div>
 

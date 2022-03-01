@@ -35,11 +35,8 @@
           <tr>
             <th>Name</th>
             <th>State</th>
-            <th>Phone</th>
-            <th>Primary Contact</th>
-            <th>Primary Contact Email</th>
             <th>Website</th>
-            <th>Fund Website</th>
+
           </tr>
           @if(clients)
           @each(c in clients)
@@ -59,36 +56,8 @@
               @end
             </td>
             <td>
-              @if(c.primary_contact_phone)
-              {{ c.primary_contact_phone }}
-              @else
-              &nbsp;
-              @end
-            </td>
-            <td>
-              @if(c.primary_contact_name)
-              {{c. primary_contact_name }}
-              @else
-              &nbsp;
-              @end
-            </td>
-            <td>
-              @if(c.primary_contact_email)
-              {{c.primary_contact_email}}
-              @else
-              &nbsp;
-              @end
-            </td>
-            <td>
               @if(c.website)
               {{ c.website}}
-              @else
-              &nbsp;
-              @end
-            </td>
-            <td>
-              @if(c.etf_website)
-              {{c.etf_website}}
               @else
               &nbsp;
               @end

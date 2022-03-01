@@ -54,7 +54,7 @@ Route.post('/login', 'AuthController.login')
 Route.get('/logout', 'AuthController.logout').middleware('auth')
 
 Route.group(()=> {
-  Route.get('/client', 'ClientsController.index').middleware('isAdmin')
+  Route.get('/client/:client_type_id', 'ClientsController.index').middleware('isAdmin')
   Route.post('/client', 'ClientsController.store')
   Route.get('/client/:id/edit', 'ClientsController.edit')
   Route.patch('/client/:id', 'ClientsController.update')
@@ -68,7 +68,7 @@ Route.group(()=> {
 }).middleware('auth')
 
 Route.group(() => {
-  Route.get('/custodian', 'CustodiansController.index')
+  Route.get('/custodian', 'ClientsController.custodian')
   Route.post('/custodian', 'CustodiansController.store')
   Route.get('/custodian/:id/edit', 'CustodiansController.edit')
   Route.patch('/custodian/:id', 'CustodiansController.update')
@@ -120,7 +120,7 @@ Route.group(() => {
 
 
 Route.get('/admin_funds', 'FundsController.show').middleware('isAdmin')
-Route.get('/admin_clients', 'ClientsController.show').middleware('isAdmin')
+Route.get('/admin_clients', 'ClientsController.clients').middleware('isAdmin')
 Route.get('/client_details/:client_id', 'ClientsController.details').middleware('isAdmin')
 Route.get('/client_contacts/:client_id', 'ClientContactsController.index').middleware('isAdmin')
 Route.get('/your_tasks', 'TasksController.show').middleware('isAdmin')

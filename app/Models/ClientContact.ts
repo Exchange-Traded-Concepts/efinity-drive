@@ -27,7 +27,7 @@ export default class ClientContact extends BaseModel {
   public phone : string
 
   @column()
-  public secondary_email : string
+  public secondary_phone : string
 
   @column()
   public notes : string
