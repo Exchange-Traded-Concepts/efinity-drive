@@ -64,7 +64,7 @@
   </div>
 </div>
 
-
+@if(data[0].client_type_id ===1)
 <div class="card shadow mb-4">
   <div
     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -136,7 +136,7 @@
     </div>
   </div>
 </div>
-
+@end
 
 <div class="card shadow mb-4">
   <div
@@ -172,28 +172,7 @@
             <th>Secondary Email</th>
             <th>Notes</th>
           </tr>
-          <tr>
-            <td>
-              {{data[0].primary_contact_name ||''}}
-            </td>
-            <td>
-              {{ data[0].primary_contact_role||'' }}
-            </td>
-            <td>
-              <a href="{{ `mailto:${data[0].primary_contact_email}` }}" target="_blank">{{data[0].primary_contact_email ||''}}</a>
-            </td>
-            <td>
-              {{data[0].primary_contact_phone ||'' }}
-            </td>
-            <td>
-              &nbsp;
-            </td>
-            <td>
-              &nbsp;
-            </td>
-          </tr>
-
-          @each(cc in data[0].clientContacts)
+           @each(cc in data[0].clientContacts)
           <tr>
             <td>
               {{cc.first_name ||''}} {{cc.last_name ||''}}
@@ -208,7 +187,7 @@
               {{cc.phone ||''}}
             </td>
             <td>
-              {{cc.secondary_email ||''}}
+              {{cc.secondary_phone||''}}
             </td>
             <td>
               {{cc.notes ||''}}

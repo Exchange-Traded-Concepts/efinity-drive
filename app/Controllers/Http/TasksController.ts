@@ -2,14 +2,15 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Task from "App/Models/Task";
 import users from "App/Models/users";
 import Fund from "App/Models/Fund";
-
 import Database from "@ioc:Adonis/Lucid/Database";
+
 
 export default class TasksController {
   public async index({view, auth}: HttpContextContract) {
     const etcUsers = await users.query().where('is_admin', 1)
 
     const tasks = await Task.query()
+      .preload('fund')
       .preload('createdBy')
       .preload('subtasks', (assignedToQuery) => {assignedToQuery.preload('assignedTo').preload('createdBy')})
       .preload('assignedTo')
@@ -18,9 +19,7 @@ export default class TasksController {
       .where('assigned_to', auth.user.id).orderBy('target_completion_date')
     const funds  = await Fund.all()
 
-    console.log()
-
-    const p = await Database.rawQuery("SELECT t.id ,st.title as s_title, st.description as st_desc,  t.title as t_title, " +
+   const p = await Database.rawQuery("SELECT t.id ,st.title as s_title, st.description as st_desc,  t.title as t_title, " +
       " u.first_name as first_name, u.last_name as last_name, DATE_FORMAT(st.target_completion_date, '%c/%e/%Y') as st_tcd, st.target_completion_date " +
       " FROM sub_tasks as st " +
       " JOIN tasks as t ON st.task_id = t.id " +
@@ -28,11 +27,11 @@ export default class TasksController {
       // @ts-ignore
       " WHERE st.assigned_to = ? order by st.target_completion_date ", [auth.user.id] )
 
-    let sub = p[0]
+   let sub = p[0]
 
-    console.log(sub)
+    //const sub = await SubTask.query().preload('task').preload('createdBy').preload('assignedTo').preload('fund')
 
-    return view.render('maintenance/task', {etcUsers, tasks, funds, sub})
+       return view.render('maintenance/task', {etcUsers, tasks, funds, sub})
   }
 
   public async create({request,auth, response, session }: HttpContextContract) {

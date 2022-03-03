@@ -25,7 +25,7 @@ export default class Task extends BaseModel {
   @column()
   public fundId: number
   @belongsTo(()=> Fund)
-  public fund_id : BelongsTo<typeof Fund>
+  public fund : BelongsTo<typeof Fund>
 
   @column()
   public created_by: number

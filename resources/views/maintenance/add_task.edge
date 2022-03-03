@@ -53,6 +53,7 @@
       <div class="form-group">
         <label for="fund_id">Fund</label>
         <select name="fund_id" id="fund_id" class="form-control">
+          <option value=""></option>
           @each(f in funds)
           <option value="{{f.id}}"
                   @if(u_task)

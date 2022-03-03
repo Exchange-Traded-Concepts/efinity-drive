@@ -120,7 +120,10 @@ Route.group(() => {
 
 
 Route.get('/admin_funds', 'FundsController.show').middleware('isAdmin')
-Route.get('/admin_clients', 'ClientsController.clients').middleware('isAdmin')
+Route.get('/admin_clients/', 'ClientsController.clients').middleware('isAdmin')
+Route.get('/admin_dist/', 'ClientsController.distributor').middleware('isAdmin')
+Route.get('/admin_cust/', 'ClientsController.custodian').middleware('isAdmin')
+Route.get('/admin_vendor/', 'ClientsController.vendor').middleware('isAdmin')
 Route.get('/client_details/:client_id', 'ClientsController.details').middleware('isAdmin')
 Route.get('/client_contacts/:client_id', 'ClientContactsController.index').middleware('isAdmin')
 Route.get('/your_tasks', 'TasksController.show').middleware('isAdmin')
@@ -129,4 +132,5 @@ Route.get('/task_sub_tasks/:task_id', 'SubTasksController.show').middleware('isA
 Route.get('/add_sub_tasks/:task_id', 'SubTasksController.add_subtask_to_task').middleware('isAdmin')
 Route.get('/fund_pipeline_details/:id', 'FundsController.details').middleware('isAdmin')
 Route.get('/c_contacts', 'ClientContactsController.show').middleware('isAdmin')
+Route.get('/c_contacts/:client_id', 'ClientContactsController.client').middleware('isAdmin')
 

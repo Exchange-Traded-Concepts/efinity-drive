@@ -36,11 +36,12 @@
           <TR>
             <th>ID</th>
             <th></th>
-            <th onclick="sortTable(2)" class="cursor-pointer select-none">Title</th>
+            <th>Task Title</th>
+            <th>Fund</th>
             <th>Description</th>
             <th>Assigned By</th>
             <th>Assigned To</th>
-            <th onclick="sortTable(6)" class="cursor-pointer select-none date">Target Completion Date</th>
+            <th>Target Completion Date</th>
             <th>Options</th>
           </TR>
           </thead>
@@ -55,6 +56,11 @@
             <td></td>
             @end
             <td>{{ t.title }}</td>
+            <td>
+              @if(t.fund)
+                {{t.fund.fund_name}}
+              @end
+            </td>
             <td>{{t.description}}</td>
             <td>
               {{t.createdBy.first_name}} {{t.createdBy.last_name}}

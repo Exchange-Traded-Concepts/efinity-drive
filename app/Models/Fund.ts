@@ -3,10 +3,11 @@ import {
   BaseModel,
   column,
   belongsTo,
-  BelongsTo, hasMany, HasMany,
+  BelongsTo, hasMany, HasMany, hasManyThrough, HasManyThrough,
 } from '@ioc:Adonis/Lucid/Orm'
 import Client from "App/Models/Client";
 import Task from "App/Models/Task";
+import SubTask from "App/Models/SubTask";
 
 export default class Fund extends BaseModel {
   @column({ isPrimary: true })
@@ -142,4 +143,10 @@ export default class Fund extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  @hasManyThrough([
+    () => SubTask,
+    () => Task
+  ])
+  public subtasks: HasManyThrough<typeof SubTask>
 }

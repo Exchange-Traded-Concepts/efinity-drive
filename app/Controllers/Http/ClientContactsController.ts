@@ -13,6 +13,12 @@ export default class ClientContactsController {
 
   }
 
+  public async client ({view, params}: HttpContextContract) {
+    const clientContacts = await ClientContact.query().preload('client').where('client_id', params.client_id)
+    return view.render('admin/client_contacts', {clientContacts, client_id: params.client_id})
+  }
+
+
   public async create({}: HttpContextContract) {}
 
   public async store({request, session, response}: HttpContextContract) {

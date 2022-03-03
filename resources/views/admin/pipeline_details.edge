@@ -51,7 +51,10 @@
 
     <div class="row">
       <div class="col-md-6">
-        Distributor: {{p[0].distributor.name ||''}}
+        Distributor:
+        @if(p[0].distributor)
+        {{p[0].distributor.name ||''}} <a href="{{`/c_contacts/${p[0].distributor.id}`}}"><i class="fas fa-address-card"></i></a>
+        @end
       </div>
       <div class="col-md-6">
         Role: {{ p[0].role || '' }}
@@ -60,7 +63,10 @@
 
     <div class="row">
       <div class="col-md-6">
-        Custodian: {{p[0].custodian.name ||''}}
+        Custodian:
+        @if(p[0].custodian)
+        {{p[0].custodian.name ||''}}  <a href="{{`/c_contacts/${p[0].custodian.id}`}}"><i class="fas fa-address-card"></i></a>
+        @end
       </div>
       <div class="col-md-6">
         Trust: {{ p[0].trust || '' }}

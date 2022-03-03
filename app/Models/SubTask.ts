@@ -2,6 +2,7 @@ import { DateTime } from 'luxon'
 import {BaseModel, BelongsTo, belongsTo, column} from '@ioc:Adonis/Lucid/Orm'
 import users from "App/Models/users";
 import Task from "App/Models/Task";
+import Fund from "App/Models/Fund";
 
 export default class SubTask extends BaseModel {
   @column({ isPrimary: true })
@@ -30,12 +31,15 @@ export default class SubTask extends BaseModel {
   public createdBy: BelongsTo<typeof users>
 
   @column()
+  public fundId: number
+  @belongsTo(()=> Fund)
+  public fund : BelongsTo<typeof Fund>
+
+
+  @column()
   public taskId: number
-  @belongsTo(()=> Task, {
-    foreignKey: 'task_id',
-    localKey: 'id'
-  })
-  public task_id: BelongsTo<typeof Task>
+  @belongsTo(()=> Task)
+  public task: BelongsTo<typeof Task>
 
   @column.dateTime()
   public target_completion_date : DateTime
