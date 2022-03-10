@@ -29,7 +29,7 @@ export default class PasswordRequestsController {
 
     const { token } = await PasswordResetToken.create({
       usersId : user.id,
-      token: Encryption.encrypt(string.generateRandom(32))
+      token: Encryption.encrypt(string.generateRandom(32),'30 minutes')
     })
 
     //await Event.emit('passwordResetRequested', {user, token})

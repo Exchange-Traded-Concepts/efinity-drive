@@ -4,6 +4,7 @@ import Fund from "App/Models/Fund";
 import Client from "App/Models/Client";
 import Task from "App/Models/Task";
 import FundDocument from "App/Models/FundDocument";
+import States from "App/utils/USState";
 
 
 export default class FundsController {
@@ -17,8 +18,7 @@ export default class FundsController {
     const distributors = await Client.query().where('client_type_id', 2)
     const maint = 'show'
 
-    console.log(funds[0].distributor)
-    return view.render('maintenance/fund', {funds, custodians, clients, distributors, maint})
+    return view.render('maintenance/fund', {funds, custodians, clients, distributors, maint, months: await States.months_list()})
   }
 
   public async show({view}: HttpContextContract) {
@@ -98,7 +98,12 @@ export default class FundsController {
       pea: data.pea,
       notes: data.notes,
       sub_advisor_agreement: data.sub_advisor_agreement,
-      target_launch_date: data.target_launch_date
+      target_launch_date: data.target_launch_date,
+      cusip: data.cusip,
+      exp_ratio: data.exp_ratio,
+      admin: data.admin,
+      management_fee : data.management_fee,
+      proxy: data.proxy
     })
     session.flash('notification', 'Fund saved.')
     return response.redirect().back()
@@ -161,7 +166,13 @@ export default class FundsController {
       pea: data.pea,
       notes: data.notes,
       sub_advisor_agreement: data.sub_advisor_agreement,
-      target_launch_date: data.target_launch_date
+      target_launch_date: data.target_launch_date,
+      cusip: data.cusip,
+      exp_ratio: data.exp_ratio,
+      admin: data.admin,
+      management_fee : data.management_fee,
+      proxy: data.proxy
+
     })
 
     await fund.save()
@@ -209,6 +220,11 @@ export default class FundsController {
       notes: schema.string.optional({trim:true}),
       sub_advisor_agreement: schema.string.optional({trim:true}),
       target_launch_date: schema.string.optional({trim:true}),
+      cusip: schema.string.optional({trim:true}),
+      exp_ratio: schema.number.optional(),
+      admin: schema.string.optional({trim:true}),
+      proxy: schema.string.optional({trim:true}),
+      management_fee: schema.string.optional(),
 
        })
 

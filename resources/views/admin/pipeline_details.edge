@@ -198,6 +198,36 @@
 
     <div class="row">
       <div class="col-md-6">
+        CUSIP:
+        @if(p[0].cusip)
+        {{p[0].cusip ||''}}
+        @end
+      </div>
+      <div class="col-md-6">
+        Proxy:
+        @if(p[0].proxy)
+        {{ p[0].proxy ||''}}
+        @end
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        Management Fee:
+        @if(p[0])
+        {{p[0].management_fee ||''}}
+        @end
+      </div>
+      <div class="col-md-6">
+        Exp. Ratio:
+        @if(p[0].exp_ratio)
+        {{ p[0].exp_ratio ||''}}
+        @end
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
         PSA Form Received:
         @if(p[0].psa_form_complete)
           {{p[0].psa_form_complete.toFormat('M/d/y')}}
@@ -223,6 +253,14 @@
         @if( p[0].fund_website)
         {{ p[0].fund_website}}
         @end
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        Admin: {{p[0].admin  ||'' }}
+      </div>
+      <div class="col-md-6">
+
       </div>
     </div>
 

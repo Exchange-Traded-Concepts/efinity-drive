@@ -138,6 +138,21 @@ export default class Fund extends BaseModel {
   @column.dateTime()
   public code_of_ethics_complete : DateTime
 
+  @column()
+  public cusip: string
+
+  @column()
+  public exp_ratio : number
+
+  @column()
+  public admin: string
+
+  @column()
+  public management_fee: number
+
+  @column()
+  public proxy: string
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 

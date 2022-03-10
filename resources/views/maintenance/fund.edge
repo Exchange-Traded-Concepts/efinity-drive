@@ -212,14 +212,18 @@
 
           <div class="col-md-6">
             <label for="fiscal_year_end">Fiscal Year End</label>
-            <input type="text"
-                   name="fiscal_year_end"
-                   @if(c_fund)
-                   value="{{c_fund.fiscal_year_end ||''}}"
-                   @endif
-                   class="form-control"
-                   id="fiscal_year_end"
-                   placeholder="Fiscal Year End">
+            <select name="fiscal_year_end" class="form-control" id="fiscal_year_end" aria-describedby="fiscal_year_end">
+              @each((m, m_n) in months)
+              <option value="{{ m_n }}"
+                      @if(c_fund)
+                      @if(m_n == c_fund.fiscal_year_end)
+                      selected
+                      @endif
+                      @endif
+              > {{ m }}</option>
+              @end
+
+            </select>
           </div>
             </div>
           <div class="form-group">
@@ -271,6 +275,32 @@
 
              </div>
              </div>
+          <div class="form-group row">
+            <div class="col-md-6">
+              <label for="exp_ratio">Exp. Ratio</label>
+              <input type="text"
+                     name="exp_ratio"
+                     @if(c_fund)
+                     value="{{c_fund.exp_ratio ||''}}"
+                     @endif
+                     class="form-control"
+                     id="exp_ratio"
+                     placeholder="Exp Ratio">
+            </div>
+            <div class="col-md-6">
+              <label for="management_fee">Management Fee</label>
+              <input type="text"
+                     name="management_fee"
+                     @if(c_fund)
+                     value="{{c_fund.management_fee ||''}}"
+                     @endif
+                     class="form-control"
+                     id="management_fee"
+                     placeholder="Management Fee">
+            </div>
+          </div>
+
+
           <div class="form-group row">
             <div class="col-md-6">
             <label for="Dividend Frequency">Dividend Frequency</label>
@@ -350,6 +380,41 @@
                      class="form-control"
                      id="client_questionnaire_completed"
                      placeholder="Client Questionnaire Received">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4 form-group">
+              <label for="cusip">Cusip</label>
+              <input type="text"
+                     name="cusip"
+                     @if(c_fund)
+                     value="{{ c_fund.cusip }}"
+                     @endif
+                     class="form-control"
+                     id="cusip"
+                     placeholder="Cusip">
+            </div>
+            <div class="col-md-4 form-group">
+              <label for="admin">Admin</label>
+              <input type="text"
+                     name="admin"
+                     @if(c_fund)
+                     value="{{ c_fund.admin }}"
+                     @endif
+                     class="form-control"
+                     id="admin"
+                     placeholder="Admin">
+            </div>
+            <div class="col-md-4 form-group">
+              <label for="proxy">Proxy</label>
+              <input type="text"
+                     name="proxy"
+                     @if(c_fund)
+                     value="{{ c_fund.proxy }}"
+                     @endif
+                     class="form-control"
+                     id="proxy"
+                     placeholder="Proxy">
             </div>
           </div>
           <div class="row">
