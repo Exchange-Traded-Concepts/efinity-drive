@@ -25,6 +25,13 @@ declare module '@ioc:Adonis/Core/Event' {
   | an instance of the the UserModel only.
   |
   */
+  import users from "App/Models/users";
+
   interface EventsList {
+    passwordResetRequested : {
+      user: users
+      token: string
+    }
+
   }
 }

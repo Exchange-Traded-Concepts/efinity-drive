@@ -178,6 +178,17 @@
            placeholder="Primary Website">
   </div>
 
+    <div class="form-group col-md-6">
+      <label for="phone">Phone</label>
+      <input type="text"
+             name="phone"
+             class="form-control"
+             id="phone"
+             @if(client)
+             value="{{ client.phone || ''}}"
+             @endif
+             placeholder="Phone">
+    </div>
   </div>
    <button type="submit" class="btn btn-primary">Submit</button>
 

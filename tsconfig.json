@@ -33,7 +33,8 @@
       "@adonisjs/shield",
       "@adonisjs/lucid",
       "@adonisjs/drive-s3",
-      "@adonisjs/auth"
+      "@adonisjs/auth",
+      "@adonisjs/mail"
     ]
   }
 }

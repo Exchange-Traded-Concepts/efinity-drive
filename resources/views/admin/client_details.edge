@@ -10,56 +10,21 @@
   <div class="card-body">
     <div class="row">
       <div class="col-md-6">
-         Name: {{ data[0].name }}
-      </div>
-      <div class="col-md-6">
+        <p> {{ data[0].name ||''}} </p>
+        <p> {{ data[0].phone ||''}} </p>
+        <p> {{ data[0].website ||''}} </p>
+        <p> {{ data[0].country ||''}} </p>
+        <p> {{ data[0].address ||''}} </p>
+        <p> {{ data[0].city ||''}} </p>
+        <p> {{ data[0].state ||''}} </p>
+        <p> {{ data[0].zip ||''}} </p>
 
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-6">
-
-      </div>
-      <div class="col-md-6">
-
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-6">
 
       </div>
       <div class="col-md-6">
 
       </div>
-    </div>
 
-    <div class="row">
-      <div class="col-md-6">
-        xx
-      </div>
-      <div class="col-md-6">
-        yy
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-6">
-        Client Sent Sample Portfolio Data:
-      </div>
-      <div class="col-md-6">
-        License/Sponsorship:
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-6">
-        SEC Notes:
-      </div>
-      <div class="col-md-6">
-        Notes:
-      </div>
-    </div>
 
   </div>
 </div>
@@ -169,7 +134,7 @@
             <th>Role</th>
             <th>Email</th>
             <th>Phone</th>
-            <th>Secondary Email</th>
+            <th>Secondary Phone</th>
             <th>Notes</th>
           </tr>
            @each(cc in data[0].clientContacts)

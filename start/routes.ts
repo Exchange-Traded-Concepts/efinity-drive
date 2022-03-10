@@ -133,4 +133,12 @@ Route.get('/add_sub_tasks/:task_id', 'SubTasksController.add_subtask_to_task').m
 Route.get('/fund_pipeline_details/:id', 'FundsController.details').middleware('isAdmin')
 Route.get('/c_contacts', 'ClientContactsController.show').middleware('isAdmin')
 Route.get('/c_contacts/:client_id', 'ClientContactsController.client').middleware('isAdmin')
+//This is a test
+Route.post('/email', 'TasksController.email')
+///
+Route.get('/forgot-password', 'PasswordRequestsController.create')
+Route.post('/forgot-password', 'PasswordRequestsController.store')
+Route.get('/reset-password/:token', 'PasswordRequestsController.edit')
+Route.post('/reset-password', 'PasswordRequestsController.update')
+
 

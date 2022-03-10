@@ -3,6 +3,7 @@ import Task from "App/Models/Task";
 import users from "App/Models/users";
 import Fund from "App/Models/Fund";
 import Database from "@ioc:Adonis/Lucid/Database";
+import Mail from "@ioc:Adonis/Addons/Mail";
 
 
 export default class TasksController {
@@ -67,6 +68,17 @@ export default class TasksController {
     const etcUsers = await users.query().where('is_admin', 1)
     const funds  = await Fund.all()
     return view.render('maintenance/add_task', {etcUsers, funds})
+  }
+
+  public async email({}){
+      await Mail.send((message) => {
+        message
+          .from('info@etcdev.com')
+          .to('soonerdm@gmail.com')
+          .subject('Welcome Onboard!')
+          .htmlView('emails/welcome', { name: 'David', url :"http://www.google.com" })
+      })
+
   }
 
 

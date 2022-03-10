@@ -95,18 +95,29 @@ export default class ClientsController {
 
     const client =    await Client.findBy('id',params.id)
     const states =  await States.state_hash()
-    const data =    await Client.all()
+    // @ts-ignore
+    const data =    await Client.query().where('client_type_id', client.client_type_id)
     const maint = 'show'
-    return view.render('client/index', { client: client, states, data, maint})
+    const client_type = {1: "client", 2: "distributor", 3: "custodian", 4:"vendor"}
+    // @ts-ignore
+    return view.render('client/index', { client: client, states, data, maint, type: client_type[client.client_type_id], client_type_id : client.client_type_id})
 
   }
 
 
   public async update ({ params, request, response, session  }: HttpContextContract) {
 
+    console.log('HERE')
+
     const c = await Client.findOrFail( params.id)
 
+    console.log("PAST")
+
     const data = await this.validateInput(request)
+
+    console.log('YO')
+
+    console.log(data)
 
     c.merge({
       name: data.name,
@@ -120,7 +131,7 @@ export default class ClientsController {
       client_type_id:  data.client_type_id,
     })
 
-     await c.save()
+    await c.save()
     session.flash('notification', 'Client Updated')
     return response.redirect('back', )
 
@@ -155,7 +166,8 @@ export default class ClientsController {
       zip: schema.string.optional({trim: true}, [rules.maxLength(10)]),
       country: schema.string.optional({trim: true}, [rules.maxLength(150)]),
       website: schema.string.optional({trim: true}, [rules.maxLength(150)]),
-     client_type_id:schema.number.optional()
+      phone: schema.string.optional({trim:true}),
+      client_type_id:schema.number.optional()
     })
 
     return await request.validate({

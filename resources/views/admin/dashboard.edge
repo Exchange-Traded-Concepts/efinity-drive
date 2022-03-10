@@ -1,4 +1,4 @@
-@layout('layouts.adminDashboard')
+@layout('layouts/adminDashboard')
 
 @section('content')
 
@@ -87,6 +87,7 @@
             </td>
             <td></td>
             <td>{{st.title}}</td>
+            <td></td>
             <td>{{st.description}}</td>
             <td>
               {{st.createdBy.first_name}} {{st.createdBy.last_name}}
@@ -107,7 +108,58 @@
     </div>
   </div>
 </div>
+
+<div class="row">
+<div class="col-md-6">
+  <div class="card shadow mb-4">
+    <div
+      class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+      <h6 class="m-0 font-weight-bold text-primary">Funds - Prelaunch</h6>
+      </div>
+    <div class="card-body">
+
+    <div class="table">
+    <table class="table table-striped" id="fundSortTable">
+      <thead>
+      <tr>
+        <th onclick="sortTable(0, 'fundSortTable')" class="cursor-pointer select-none">
+          Fund
+        </th>
+        <th onclick="sortTable(1, 'fundSortTable')" class="cursor-pointer select-none">
+          Ticker
+        </th>
+        <th style="text-align: right" onclick="sortTable(2, 'fundSortTable')" class="cursor-pointer select-none date">
+          Target Launch Date
+        </th>
+      </tr>
+      </thead>
+      @each(f in funds)
+      <tr>
+        <td>
+          @if(f.fund_name)
+            {{f.fund_name}}
+          @end
+        </td>
+        <td>
+          @if(f.ticker)
+            {{f.ticker}}
+          @end
+        </td>
+        <td align="right">
+          @if(f.target_launch_date)
+            {{f.target_launch_date.toFormat('M/d/y')}}
+          @end
+        </td>
+      </tr>
+      @end
+    </table>
+    </div>
   </div>
+  </div>
+  </div>
+  </div>
+  </div>
+
 
 
 <!--

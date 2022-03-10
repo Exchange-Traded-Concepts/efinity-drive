@@ -1,4 +1,4 @@
-@layout('layouts.adminDashboard')
+@layout('layouts/adminDashboard')
 
 @section('content')
 
@@ -109,6 +109,14 @@
   </div>
 </div>
 </div>
+  <div class="col-md-6">
+
+    <form action="/email" method="post">
+      {{ csrfField() }}
+      <input type="submit" value="Submit">
+    </form>
+  </div>
 </div>
+
 </div>
 @endsection

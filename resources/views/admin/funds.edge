@@ -27,6 +27,7 @@
             <th>Exchange</th>
             <th>Distributor</th>
             <th>Custodian</th>
+            <th onclick="sortTable(7)" class="cursor-pointer select-none date">Target Launch Date</th>
           </tr>
           </thead>
         @each(d in funds)
@@ -54,6 +55,11 @@
             <td>
               @if(d.custodian)
                 {{d.custodian.name}}  <a href="{{`/c_contacts/${d.custodian.id}`}}"><i class="fas fa-address-card"></i></a>
+              @end
+            </td>
+            <td>
+              @if(d.target_launch_date)
+                {{d.target_launch_date.toFormat('M/d/y') ||''}}
               @end
             </td>
           </tr>
