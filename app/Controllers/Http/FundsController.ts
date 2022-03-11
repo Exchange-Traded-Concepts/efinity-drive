@@ -13,9 +13,9 @@ export default class FundsController {
       .preload('client')
       .preload('custodian')
       .preload('distributor')
-    const custodians = await Client.query().where('client_type_id', 3)
-    const clients = await Client.query().where('client_type_id', 1)
-    const distributors = await Client.query().where('client_type_id', 2)
+    const custodians = await Client.query().where('client_type_id', 3).orderBy('name')
+    const clients = await Client.query().where('client_type_id', 1).orderBy('name')
+    const distributors = await Client.query().where('client_type_id', 2).orderBy('name')
     const maint = 'show'
 
     return view.render('maintenance/fund', {funds, custodians, clients, distributors, maint, months: await States.months_list()})
