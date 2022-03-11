@@ -103,7 +103,8 @@ export default class FundsController {
       exp_ratio: data.exp_ratio,
       admin: data.admin,
       management_fee : data.management_fee,
-      proxy: data.proxy
+      proxy: data.proxy,
+      color: data.color
     })
     session.flash('notification', 'Fund saved.')
     return response.redirect().back()
@@ -127,10 +128,11 @@ export default class FundsController {
   }
 
   public async update({params, request, response, session}: HttpContextContract) {
+
+    console.log('Hi!')
+    console.log(request)
     const fund = await Fund.findOrFail( params.id)
     const data = await this.validateInput(request)
-
-    console.log(data.prospectus_date)
 
     fund.merge({
       fund_name: data.fund_name,
@@ -171,8 +173,8 @@ export default class FundsController {
       exp_ratio: data.exp_ratio,
       admin: data.admin,
       management_fee : data.management_fee,
-      proxy: data.proxy
-
+      proxy: data.proxy,
+      color: data.color
     })
 
     await fund.save()
@@ -186,45 +188,46 @@ export default class FundsController {
 
   private async validateInput(request) {
     const valSchema = schema.create({
-      fund_name: schema.string.nullable({ trim: true }, [rules.maxLength(150)]),
-      ticker: schema.string.nullable( {trim: true},[rules.maxLength(5), rules.required()]),
+      fund_name: schema.string.nullableAndOptional({ trim: true }, [rules.maxLength(150)]),
+      ticker: schema.string.nullableAndOptional( {trim: true},[rules.maxLength(5), rules.required()]),
       client_id: schema.number( [ rules.required()]),
-      distributor_id: schema.number.nullable(),
-      custodian_id: schema.number.nullable(),
-      trust: schema.string.nullable({ trim: true }, [rules.maxLength(100)]),
-      fiscal_year_end: schema.string.nullable({ trim: true }, [rules.maxLength(100)]),
-      dividend_frequency: schema.string.nullable({ trim: true }, [rules.maxLength(100)]),
-      fund_website: schema.string.nullable({ trim: true }, [rules.maxLength(100)]),
-      exchange: schema.string.nullable({trim: true}, [rules.maxLength(100)]),
-      prospectus_date: schema.string.nullable({trim:true}),
+      distributor_id: schema.number.nullableAndOptional(),
+      custodian_id: schema.number.nullableAndOptional(),
+      trust: schema.string.nullableAndOptional({ trim: true }, [rules.maxLength(100)]),
+      fiscal_year_end: schema.string.nullableAndOptional({ trim: true }, [rules.maxLength(100)]),
+      dividend_frequency: schema.string.nullableAndOptional({ trim: true }, [rules.maxLength(100)]),
+      fund_website: schema.string.nullableAndOptional({ trim: true }, [rules.maxLength(100)]),
+      exchange: schema.string.nullableAndOptional({trim: true}, [rules.maxLength(100)]),
+      prospectus_date: schema.string.nullableAndOptional({trim:true}),
 
-      status: schema.string.nullable({trim:true}),
-      client_questionnaire_sent: schema.string.nullable({trim:true}),
-      client_questionnaire_completed: schema.string.nullable({trim:true}),
-      client_sent_sample_portfolio_data: schema.string.nullable({trim:true}),
-      portfolio_notes: schema.string.nullable({trim:true}),
-      proposal_sent: schema.string.nullable({trim:true}),
-      license_sponsorship: schema.string.nullable({trim:true}),
-      psa_form_sent: schema.string.nullable({trim:true}),
-      psa_form_complete: schema.string.nullable({trim:true}),
-      diligence_sent: schema.string.nullable({trim:true}),
-      diligence_received: schema.string.nullable({trim:true}),
-      strategy: schema.string.nullable({trim:true}),
-      sec_comments:schema.string.nullable({trim:true}),
-      launch_date: schema.string.nullable({trim:true}),
-      fifteenc_approval : schema.string.nullable({trim:true}),
-      four_eighty_five_status: schema.string.nullable({trim:true}),
-      four_eighty_five_effective_date : schema.string.nullable({trim:true}),
-      role : schema.string.nullable({trim:true}),
-      pea: schema.string.nullable({trim:true}),
-      notes: schema.string.nullable({trim:true}),
-      sub_advisor_agreement: schema.string.nullable({trim:true}),
-      target_launch_date: schema.string.nullable({trim:true}),
-      cusip: schema.string.nullable({trim:true}),
-      exp_ratio: schema.number.nullable(),
-      admin: schema.string.nullable({trim:true}),
-      proxy: schema.string.nullable({trim:true}),
-      management_fee: schema.string.nullable(),
+      status: schema.string.nullableAndOptional({trim:true}),
+      client_questionnaire_sent: schema.string.nullableAndOptional({trim:true}),
+      client_questionnaire_completed: schema.string.nullableAndOptional({trim:true}),
+      client_sent_sample_portfolio_data: schema.string.nullableAndOptional({trim:true}),
+      portfolio_notes: schema.string.nullableAndOptional({trim:true}),
+      proposal_sent: schema.string.nullableAndOptional({trim:true}),
+      license_sponsorship: schema.string.nullableAndOptional({trim:true}),
+      psa_form_sent: schema.string.nullableAndOptional({trim:true}),
+      psa_form_complete: schema.string.nullableAndOptional({trim:true}),
+      diligence_sent: schema.string.nullableAndOptional({trim:true}),
+      diligence_received: schema.string.nullableAndOptional({trim:true}),
+      strategy: schema.string.nullableAndOptional({trim:true}),
+      sec_comments:schema.string.nullableAndOptional({trim:true}),
+      launch_date: schema.string.nullableAndOptional({trim:true}),
+      fifteenc_approval : schema.string.nullableAndOptional({trim:true}),
+      four_eighty_five_status: schema.string.nullableAndOptional({trim:true}),
+      four_eighty_five_effective_date : schema.string.nullableAndOptional({trim:true}),
+      role : schema.string.nullableAndOptional({trim:true}),
+      pea: schema.string.nullableAndOptional({trim:true}),
+      notes: schema.string.nullableAndOptional({trim:true}),
+      sub_advisor_agreement: schema.string.nullableAndOptional({trim:true}),
+      target_launch_date: schema.string.nullableAndOptional({trim:true}),
+      cusip: schema.string.nullableAndOptional({trim:true}),
+      exp_ratio: schema.number.nullableAndOptional(),
+      admin: schema.string.nullableAndOptional({trim:true}),
+      proxy: schema.string.nullableAndOptional({trim:true}),
+      management_fee: schema.string.nullableAndOptional(),
+      color: schema.string.nullableAndOptional()
 
        })
 

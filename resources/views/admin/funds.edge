@@ -33,7 +33,7 @@
         @each(d in funds)
 
           <tr>
-            <td>
+            <td style="{{ `border-left: 8px solid ${d.color}` }} ">
               {{d.fund_name}}
               <a href="{{ `/fund_pipeline_details/${d.id}`}}"><i class="fa fa-plus-square-o"></i></a>
             </td>

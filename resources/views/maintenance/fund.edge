@@ -81,7 +81,11 @@
           <div class="col-md-2">
             <div class="form-group">
               <label for="name">Color</label>
-              <input type="color" class="form-control" name="color">
+              <input type="color" class="form-control" name="color"
+                     @if(c_fund)
+                      value="{{c_fund.color || ''}}"
+                     @end
+              >
             </div>
           </div>
           </div>

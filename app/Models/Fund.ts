@@ -153,6 +153,9 @@ export default class Fund extends BaseModel {
   @column()
   public proxy: string
 
+  @column()
+  public color: string
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
