@@ -160,14 +160,14 @@ export default class ClientsController {
 
     const valSchema = schema.create({
       name: schema.string({ trim: true }, [rules.maxLength(150), rules.required()]),
-      address: schema.string.optional({trim: true}, [rules.maxLength(255)]),
-      city: schema.string.optional({trim: true}, [rules.maxLength(255)]),
+      address: schema.string.nullable({trim: true}, [rules.maxLength(255)]),
+      city: schema.string.nullable({trim: true}, [rules.maxLength(255)]),
       state: schema.string({trim: true}, [rules.maxLength(3)]),
-      zip: schema.string.optional({trim: true}, [rules.maxLength(10)]),
-      country: schema.string.optional({trim: true}, [rules.maxLength(150)]),
-      website: schema.string.optional({trim: true}, [rules.maxLength(150)]),
-      phone: schema.string.optional({trim:true}),
-      client_type_id:schema.number.optional()
+      zip: schema.string.nullable({trim: true}, [rules.maxLength(10)]),
+      country: schema.string.nullable({trim: true}, [rules.maxLength(150)]),
+      website: schema.string.nullable({trim: true}, [rules.maxLength(150)]),
+      phone: schema.string.nullable({trim:true}),
+      client_type_id:schema.number.nullable()
     })
 
     return await request.validate({
