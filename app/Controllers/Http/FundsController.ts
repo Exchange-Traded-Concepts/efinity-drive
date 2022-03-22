@@ -76,7 +76,6 @@ export default class FundsController {
       fund_website: data.fund_website,
       exchange: data.exchange,
       prospectus_date: data.prospectus_date,
-
       status: data.status,
       client_questionnaire_sent: data.client_questionnaire_sent,
       client_questionnaire_completed: data.client_questionnaire_completed,
@@ -144,7 +143,6 @@ export default class FundsController {
       fund_website: data.fund_website,
       exchange: data.exchange,
       prospectus_date: data.prospectus_date,
-
       status: data.status,
       client_questionnaire_sent: data.client_questionnaire_sent,
       client_questionnaire_completed: data.client_questionnaire_completed,
@@ -197,7 +195,6 @@ export default class FundsController {
       fund_website: schema.string.nullableAndOptional({ trim: true }, [rules.maxLength(100)]),
       exchange: schema.string.nullableAndOptional({trim: true}, [rules.maxLength(100)]),
       prospectus_date: schema.string.nullableAndOptional({trim:true}),
-
       status: schema.string.nullableAndOptional({trim:true}),
       client_questionnaire_sent: schema.string.nullableAndOptional({trim:true}),
       client_questionnaire_completed: schema.string.nullableAndOptional({trim:true}),

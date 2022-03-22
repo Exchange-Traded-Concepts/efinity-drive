@@ -322,9 +322,13 @@
             <label for="prospectus_date">Prospectus Date </label>
             <input type="date"
                    name="prospectus_date"
+                   @if (c_fund)
+                   @if(c_fund.prospectus_date)
                    @if(c_fund.prospectus_date > 1972 )
                    value="{{c_fund.prospectus_date.toFormat('y-MM-d') ||''}}"
                    @endif
+                   @end
+                   @end
                    class="form-control"
                    id="prospectus_date"
                    placeholder="Prospectus Date">
