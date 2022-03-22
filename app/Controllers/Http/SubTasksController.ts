@@ -3,6 +3,7 @@ import SubTask from "App/Models/SubTask";
 import FileUpload from "App/utils/fileUploader";
 import users from "App/Models/users";
 import Task from "App/Models/Task";
+import TaskStatus from "App/Models/TaskStatus";
 
 
 export default class SubTasksController {
@@ -30,7 +31,8 @@ export default class SubTasksController {
       completion_date: request.input('completion_date'),
       document_name: request.input('document_name'),
       document_url: docurl,
-      notes: request.input('notes')
+      notes: request.input('notes'),
+      task_statuses_id: request.input('task_statuses_id')
     })
 
     return response.redirect('back')
@@ -63,7 +65,9 @@ export default class SubTasksController {
       .preload('assignedTo')
       .preload('createdBy')
       .where('id', params.task_id).orderBy('target_completion_date')
-    return view.render('maintenance/subtask', { params, etcUsers, tasks })
+
+    const status = await TaskStatus.query().orderBy('rank')
+    return view.render('maintenance/subtask', { params, etcUsers, tasks, status })
 
 
   }
@@ -94,7 +98,8 @@ export default class SubTasksController {
       target_completion_date: request.input('target_completion_date'),
       completion_date: request.input('completion_date'),
       document_name: request.input('document_name'),
-      notes: request.input('notes')
+      notes: request.input('notes'),
+      task_statuses_id: request.input('task_statuses_id')
     })
 
     await st.save()

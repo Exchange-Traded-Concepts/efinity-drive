@@ -3,6 +3,7 @@ import {BaseModel, BelongsTo, belongsTo, column, hasMany, HasMany} from '@ioc:Ad
 import users from "App/Models/users";
 import Fund from "App/Models/Fund";
 import SubTask from "App/Models/SubTask";
+import TaskStatus from "App/Models/TaskStatus";
 
 export default class Task extends BaseModel {
   @column({ isPrimary: true })
@@ -34,6 +35,15 @@ export default class Task extends BaseModel {
     localKey: 'id'
   })
   public createdBy : BelongsTo<typeof users>
+
+  @column()
+  public task_statuses_id: number
+  @belongsTo(()=> TaskStatus, {
+    foreignKey: 'task_statuses_id',
+    localKey: 'id'
+  })
+  public taskStatus : BelongsTo<typeof TaskStatus>
+
 
   @column.dateTime()
   public target_completion_date: DateTime

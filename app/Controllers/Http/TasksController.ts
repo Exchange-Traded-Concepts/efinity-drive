@@ -4,6 +4,7 @@ import users from "App/Models/users";
 import Fund from "App/Models/Fund";
 import Database from "@ioc:Adonis/Lucid/Database";
 import Mail from "@ioc:Adonis/Addons/Mail";
+import TaskStatus from "App/Models/TaskStatus";
 
 
 export default class TasksController {
@@ -12,13 +13,15 @@ export default class TasksController {
 
     const tasks = await Task.query()
       .preload('fund')
+      .preload('taskStatus')
       .preload('createdBy')
-      .preload('subtasks', (assignedToQuery) => {assignedToQuery.preload('assignedTo').preload('createdBy')})
+      .preload('subtasks', (assignedToQuery) => {assignedToQuery.preload('assignedTo').preload('createdBy').preload('taskStatus')})
       .preload('assignedTo')
       .preload('createdBy')
       // @ts-ignore
       .where('assigned_to', auth.user.id).orderBy('target_completion_date')
     const funds  = await Fund.all()
+    const taskStatus = await TaskStatus.query().orderBy('rank')
 
    const p = await Database.rawQuery("SELECT t.id ,st.title as s_title, st.description as st_desc,  t.title as t_title, " +
       " u.first_name as first_name, u.last_name as last_name, DATE_FORMAT(st.target_completion_date, '%c/%e/%Y') as st_tcd, st.target_completion_date " +
@@ -32,7 +35,7 @@ export default class TasksController {
 
     //const sub = await SubTask.query().preload('task').preload('createdBy').preload('assignedTo').preload('fund')
 
-       return view.render('maintenance/task', {etcUsers, tasks, funds, sub})
+       return view.render('maintenance/task', {etcUsers, tasks, funds, sub, taskStatus})
   }
 
   public async create({request,auth, response, session }: HttpContextContract) {
@@ -43,7 +46,8 @@ export default class TasksController {
       fundId: request.input('fund_id'),
       // @ts-ignore
       created_by: auth.user.id,
-      target_completion_date: request.input('target_completion_date')
+      target_completion_date: request.input('target_completion_date'),
+      task_statuses_id: request.input('task_statuses_id')
     })
 
     session.flash('notification', 'Task Added')
@@ -59,15 +63,45 @@ export default class TasksController {
     return view.render('admin/tasks', {tasks})
   }
 
-  public async edit({}: HttpContextContract) {}
+  public async edit({view, params}: HttpContextContract) {
 
-  public async update({}: HttpContextContract) {}
+    const etcUsers = await users.query().where('is_admin', 1)
+    const funds  = await Fund.all()
+    const u_task = await Task.findBy('id', params.id)
+    console.log(u_task)
+    const taskstatuses = await TaskStatus.query().orderBy('rank')
+    return view.render('maintenance/add_task', {etcUsers, funds, taskstatuses, u_task})
+
+
+  }
+
+  public async update({request, session, response, params}: HttpContextContract) {
+
+    const task = await Task.findOrFail( params.id)
+    //const data = await this.validateInput(request)
+
+    task.merge({
+      title: request.input('title'),
+      description:request.input('description'),
+      assigned_to: request.input('assigned_to'),
+      fundId: request.input('fund_id'),
+      target_completion_date: request.input('target_completion_date'),
+      task_statuses_id: request.input('task_statuses_id')
+    })
+
+    await task.save()
+    session.flash('notification', 'Task Updated.')
+    return response.redirect().back()
+
+
+  }
 
   public async add({view}: HttpContextContract) {
 
     const etcUsers = await users.query().where('is_admin', 1)
     const funds  = await Fund.all()
-    return view.render('maintenance/add_task', {etcUsers, funds})
+    const taskstatuses = await TaskStatus.query().orderBy('rank')
+    return view.render('maintenance/add_task', {etcUsers, funds, taskstatuses})
   }
 
   public async email({}){

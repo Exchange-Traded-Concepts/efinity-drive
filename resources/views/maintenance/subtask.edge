@@ -154,11 +154,27 @@
                    placeholder="Target Completion Date">
           </div>
           <div class="form-group">
-            <label for="notes">Notes</label>
-            <textarea name="notes" class="form-control" id="notes">
-              @if(subTask)
-              {{subTask.notes ||''}}
+            <label for="task_statuses_id">Status</label>
+            <select name="task_statuses_id" id="task_statuses_id" class="form-control">
+              @each(s in status)
+              <option value="{{s.id}}"
+                      @if(subtask)
+                      @if(s.id == subtask.task_statuses_id)
+                      selected
+                      @end
+                      @end
+              >
+                {{s.name}}
+              </option>
               @end
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="notes">Notes</label><textarea name="notes" class="form-control" id="notes" wrap="physical">
+@if(subTask)
+{{subTask.notes}}
+@end
             </textarea>
           </div>
         <input name="task_id" type="hidden" value="{{ params.task_id || subTask.id}}">

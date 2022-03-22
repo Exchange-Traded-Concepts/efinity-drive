@@ -3,6 +3,7 @@ import {BaseModel, BelongsTo, belongsTo, column} from '@ioc:Adonis/Lucid/Orm'
 import users from "App/Models/users";
 import Task from "App/Models/Task";
 import Fund from "App/Models/Fund";
+import TaskStatus from "App/Models/TaskStatus";
 
 export default class SubTask extends BaseModel {
   @column({ isPrimary: true })
@@ -35,6 +36,13 @@ export default class SubTask extends BaseModel {
   @belongsTo(()=> Fund)
   public fund : BelongsTo<typeof Fund>
 
+  @column()
+  public task_statuses_id: number
+  @belongsTo(()=> TaskStatus, {
+    foreignKey: 'task_statuses_id',
+    localKey: 'id'
+  })
+  public taskStatus : BelongsTo<typeof TaskStatus>
 
   @column()
   public taskId: number

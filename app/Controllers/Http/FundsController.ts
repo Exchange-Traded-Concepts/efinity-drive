@@ -129,8 +129,6 @@ export default class FundsController {
 
   public async update({params, request, response, session}: HttpContextContract) {
 
-    console.log('Hi!')
-    console.log(request)
     const fund = await Fund.findOrFail( params.id)
     const data = await this.validateInput(request)
 
