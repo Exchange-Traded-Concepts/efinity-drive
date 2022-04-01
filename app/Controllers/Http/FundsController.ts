@@ -123,7 +123,7 @@ export default class FundsController {
     //@ts-ignore
     c_fund.prospectus_date = p_date
   //  console.log(p_date)
-    return view.render('maintenance/fund', { funds, custodians, clients, distributors, maint, c_fund})
+    return view.render('maintenance/fund', { funds, custodians, clients, distributors, maint, c_fund, months: await States.months_list()})
   }
 
   public async update({params, request, response, session}: HttpContextContract) {

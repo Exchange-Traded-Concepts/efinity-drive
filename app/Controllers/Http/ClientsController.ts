@@ -28,7 +28,7 @@ export default class ClientsController {
     return view.render('client/index', {data, states, maint, client_type_id : params.client_type_id, type: client_type[params.client_type_id]})
   }
   public async store ({request, session, response}: HttpContextContract) {
-  console.log('IN LOG')
+  //console.log('IN LOG')
 
     let dataUrl = ''
     if (request.file('upload')) {
@@ -73,22 +73,22 @@ export default class ClientsController {
 
   public async clients ({view}: HttpContextContract) {
     const clients = await Client.query().where('client_type_id', 1)
-    return view.render('admin/clients', {clients, client_type_id: 1})
+    return view.render('admin/clients', {clients, client_type_id: 1, client_type_name : 'Client'})
   }
 
   public async distributor ({view}: HttpContextContract) {
     const clients = await Client.query().where('client_type_id', 2)
-    return view.render('admin/clients', {clients, client_type_id: 2})
+    return view.render('admin/clients', {clients, client_type_id: 2, client_type_name : 'Distributor'})
   }
 
   public async custodian ({view}: HttpContextContract) {
     const clients = await Client.query().where('client_type_id', 3)
-    return view.render('admin/clients', {clients, client_type_id: 3})
+    return view.render('admin/clients', {clients, client_type_id: 3, client_type_name : 'Custodian'})
   }
 
   public async vendor ({view}: HttpContextContract) {
     const clients = await Client.query().where('client_type_id', 4)
-    return view.render('admin/clients', {clients, client_type_id: 4})
+    return view.render('admin/clients', {clients, client_type_id: 4, client_type_name : 'Vendor'})
   }
 
   public async edit ({view, params}: HttpContextContract) {

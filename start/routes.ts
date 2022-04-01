@@ -62,6 +62,7 @@ Route.group(()=> {
 
 Route.group(()=> {
   Route.get('/client_contact', 'ClientContactsController.index').middleware('isAdmin')
+  Route.get('/client_contact_add/:client_id', 'ClientContactsController.index').middleware('isAdmin')
   Route.post('/client_contact', 'ClientContactsController.store')
   Route.get('/client_contact/:id/edit', 'ClientContactsController.edit')
   Route.patch('/client_contact/:id', 'ClientContactsController.update')

@@ -15,7 +15,11 @@ export default class ClientContactsController {
 
   public async client ({view, params}: HttpContextContract) {
     const clientContacts = await ClientContact.query().preload('client').where('client_id', params.client_id)
-    return view.render('admin/client_contacts', {clientContacts, client_id: params.client_id})
+    const client_type = {1: "client", 2: "distributor", 3: "custodian", 4:"vendor"}
+    console.log(clientContacts[0].client.client_type_id)
+
+    const client_T =  client_type[clientContacts[0].client.client_type_id]
+    return view.render('admin/client_contacts', {clientContacts, client_id: params.client_id, client_T})
   }
 
 
