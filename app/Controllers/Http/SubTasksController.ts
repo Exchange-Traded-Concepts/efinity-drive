@@ -4,6 +4,7 @@ import FileUpload from "App/utils/fileUploader";
 import users from "App/Models/users";
 import Task from "App/Models/Task";
 import TaskStatus from "App/Models/TaskStatus";
+import Document from "App/Models/Document";
 
 
 export default class SubTasksController {
@@ -67,7 +68,8 @@ export default class SubTasksController {
       .where('id', params.task_id).orderBy('target_completion_date')
 
     const status = await TaskStatus.query().orderBy('rank')
-    return view.render('maintenance/subtask', { params, etcUsers, tasks, status })
+    const docs = await Document.query().where('doc_type_id', 3).andWhere('resource_id', params.task_id)
+    return view.render('maintenance/subtask', { params, etcUsers, tasks, status, docs })
 
 
   }

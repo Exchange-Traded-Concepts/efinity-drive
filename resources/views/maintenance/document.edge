@@ -13,7 +13,7 @@
     <div class="card shadow mb-4">
       <div
         class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-        <h6 class="m-0 font-weight-bold text-primary">Fund Documents</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Documents</h6>
       </div>
       <div class="card-body">
         <table class="table table-striped">
@@ -24,7 +24,7 @@
             <th>Size</th>
             <th>Options</th>
           </tr>
-          @each(d in FundDocuments)
+          @each(d in Documents)
           <tr>
             <td>
               {{ d.id }}
@@ -54,18 +54,20 @@
     <div class="card shadow mb-4">
       <div
         class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-        <h6 class="m-0 font-weight-bold text-primary">{{ fundc[0].fund_name }} {{ fundc[0].ticker }}</h6>
+        <h6 class="m-0 font-weight-bold text-primary">{{-- fundc[0].fund_name }} {{ fundc[0].ticker --}}</h6>
       </div>
       <div class="card-body">
         <form
           @if(custo)
-          action=" {{ `/fund_documents/${doc.id}?_method=PATCH`}}"
+          action=" {{ `/documents/${doc.id}?_method=PATCH`}}"
           @else
-          action="/fund_documents"
+          action="/documents"
           @end
           method="post"
           enctype="multipart/form-data">
           {{ csrfField() }}
+          <input type="hidden" name="resource_id" value="{{ resource_id }}">
+          <input type="hidden" name="doc_type_id" value="{{ doc_type_id }}">
           <div class="form-group">
             <label for="name">Name</label>
             <input type="text" class="form-control {{ flashMessages.has('errors.name') ? 'alert-danger' :'' }}"
@@ -76,8 +78,7 @@
                    @endif
                    placeholder="Name">
           </div>
-          <input type="hidden" name="fund_id" value="{{ fund_id }}">
-          <div class="form-group">
+            <div class="form-group">
             <label for="document">Document</label>
             <input type="file"
                    class="form-control"

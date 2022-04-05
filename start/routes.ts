@@ -112,8 +112,8 @@ Route.group(() => {
 }).middleware('isAdmin')
 
 Route.group(() => {
-  Route.get('/fund_documents/:fund_id', 'FundDocumentsController.index')
-  Route.post('/fund_documents', 'FundDocumentsController.store')
+  Route.get('/documents/:resource_id/:doc_type_id', 'DocumentsController.index')
+  Route.post('/documents', 'DocumentsController.store')
   Route.get('/fund_documents/:id/edit', 'FundDocumentsController.edit')
   Route.patch('/fund_documents/:id', 'FundDocumentsController.update')
   Route.get('/fund_documents/:id/delete', 'FundDocumentsController.destroy')

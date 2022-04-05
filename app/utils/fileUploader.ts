@@ -61,7 +61,7 @@ export default class FileUpload {
   }
 
   static async DeleteFile(filePath){
-    console.log(filePath)
+   // console.log(filePath)
     await Drive.use('s3').delete(filePath)
   }
 

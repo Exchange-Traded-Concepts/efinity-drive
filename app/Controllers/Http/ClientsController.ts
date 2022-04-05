@@ -6,6 +6,7 @@ import States from "App/utils/USState";
 import {rules, schema} from "@ioc:Adonis/Core/Validator";
 import Fund from "App/Models/Fund";
 import ClientContact from "App/Models/ClientContact";
+import Document from "App/Models/Document";
 
 export default class ClientsController {
 
@@ -148,8 +149,9 @@ export default class ClientsController {
       .preload('distributor')
       .where('client_id', params.client_id)
 
+    const docs = await Document.query().where('doc_type_id', 1).andWhere('resource_id', params.client_id)
     const contacts = ClientContact.query().where('client_id', params.client_id)
-    return view.render('admin/client_details', {data, funds, contacts})
+    return view.render('admin/client_details', {data, funds, contacts, docs})
   }
 
 

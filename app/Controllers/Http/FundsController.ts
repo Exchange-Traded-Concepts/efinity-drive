@@ -3,7 +3,7 @@ import {rules, schema} from "@ioc:Adonis/Core/Validator";
 import Fund from "App/Models/Fund";
 import Client from "App/Models/Client";
 import Task from "App/Models/Task";
-import FundDocument from "App/Models/FundDocument";
+import Document from "App/Models/Document";
 import States from "App/utils/USState";
 
 
@@ -259,8 +259,8 @@ export default class FundsController {
       .where('fund_id', params.id)
       .orderBy('target_completion_date')
 
-    const docs = await FundDocument.query().preload('createdBy')
-      .where('fund_id', params.id)
+    const docs = await Document.query().preload('createdBy')
+      .where('resource_id', params.id).andWhere('doc_type_id', 2)
 
     const fund_id = params.id
 
