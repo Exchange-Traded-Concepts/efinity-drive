@@ -24,6 +24,8 @@ Route.get('/', async ({ view }) => {
   return view.render('welcome')
 })
 
+Route.post('/search', 'SearchesController.index').middleware('isAdmin')
+
 Route.get('/test', async () => {return 'working'} )
 
 Route.get('/company', 'CompanyContactsController.show').middleware('auth')

@@ -1,0 +1,216 @@
+@layout('layouts/adminDashboard')
+
+@section('content')
+<div class="container-fluid">
+
+<div class="card shadow mb-4">
+<div
+  class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+  <h6 class="m-0 font-weight-bold text-primary">Contacts</h6>
+</div>
+<div class="card-body">
+  <div class="row">
+    <div class="table-responsive">
+      <table class="table table-striped" id="sortTable">
+        <thead>
+        <tr>
+          <th onclick="sortTable(0)" class="cursor-pointer select-none">First Name</th>
+          <th onclick="sortTable(1)" class="cursor-pointer select-none">Last Name</th>
+          <th onclick="sortTable(2)" class="cursor-pointer select-none">Company</th>
+          <th onclick="sortTable(3)" class="cursor-pointer select-none">Role</th>
+          <th onclick="sortTable(4)" class="cursor-pointer select-none">Email</th>
+          <th>Phone</th>
+
+        </tr>
+        </thead>
+        @each(d in contacts)
+        <tr>
+           <td>
+            {{ d.first_name ||'' }}
+          </td>
+          <td>
+            {{d.last_name ||''}}
+          </td>
+          <td>
+            {{d.client.name}}
+          </td>
+          <td>
+            {{d.role ||''}}
+          </td>
+          <td>
+            <a href="{{`mailto:${d.email}` }}">{{d.email ||''}}</a>
+          </td>
+          <td>
+            <a href="{{`tel:${d.phone}`}}">{{d.phone ||''}}</a>
+          </td>
+         </tr>
+        @end
+      </table>
+    </div>
+  </div>
+</div>
+</div>
+
+{{-- Funds --}}
+
+<div class="card shadow mb-4">
+  <div
+    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+    <h6 class="m-0 font-weight-bold text-primary">Funds</h6>
+
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="table-responsive">
+        <table class="table table-striped" >
+          <tr>
+            <th class="" >
+              Name
+            </th>
+            <th>Ticker</th>
+            <th>Custodian</th>
+            <th>Distributor</th>
+            <th>Trust</th>
+            <th>Exchange</th>
+            <th>Status</th>
+          </tr>
+          @each(f in funds)
+
+          <tr>
+            <td>
+              <a href=" {{`/fund_pipeline_details/${f.id}`  }} ">{{ f.fund_name }}</a>
+
+            </td>
+            <td>
+              {{f.ticker}}
+            </td>
+            <td>
+              {{f.custodian.name}}
+            </td>
+            <td>
+              {{f.distributor.name}}
+            </td>
+            <td>
+              {{f.trust}}
+            </td>
+            <td>
+              {{f.exchange}}
+            </td>
+            <td style="text-transform: capitalize">
+              {{f.status}}
+            </td>
+          </tr>
+
+          @end
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{-- Clients --}}
+
+<div class="row">
+  <div class="col-md-12">
+    <!-- card -->
+    <div class="card shadow mb-4">
+      <!-- Card Header - Dropdown -->
+      <div
+        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Clients </h6>
+       </div>
+      <!-- Card Body -->
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped " id="sortTableC">
+            <thead>
+            <tr>
+              <th onclick="sortTable(0, 'sortTableC')" class="cursor-pointer select-none">Name</th>
+              <th>State</th>
+              <th>Website</th>
+              <th>Contacts</th>
+              <th>Edit</th>
+            </tr>
+            </thead>
+            @if(clients)
+            @each(c in clients)
+            <tr>
+              <td>
+                @if(c.name)
+                {{ c.name }} <a href="{{ `/client_details/${c.id}` }}"><i class="fa fa-plus-square-o"></i></a>
+                @else
+                &nbsp;
+                @end
+              </td>
+              <td>
+                @if(c.state)
+                {{ c.state }}
+                @else
+                &nbsp;
+                @end
+              </td>
+              <td>
+                @if(c.website)
+                {{ c.website}}
+                @else
+                &nbsp;
+                @end
+              </td>
+              <td>
+                <a href="{{`/c_contacts/${c.id}`}}"><i class="fas fa-address-card"></i></a>
+              </td>
+              <td>
+
+              </td>
+            </tr>
+
+            @end
+            @end
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- ./end col -->
+  </div>
+</div>
+
+{{-- TASKS --}}
+
+<div class="row">
+
+  <div class="col-md-12">
+    <div class="card shadow mb-4">
+      <div
+        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Your Tasks</h6>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <tr>
+              <th>Task Title</th>
+              <th>Created By</th>
+              <th>Assigned To</th>
+              <th>Due Date</th>
+
+            </tr>
+            @if(tasks)
+            @each(t in tasks)
+            <tr>
+              <td>{{t.title}}</td>
+              <td>{{t.createdBy.first_name}} {{t.createdBy.last_name}}</td>
+              <td>{{t.assignedTo.first_name}} {{t.assignedTo.last_name}}</td>
+              <td>{{t.target_completion_date.toFormat('M/d/yyyy')}}</td>
+
+            </tr>
+            @endeach
+            @end
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+@endsection
