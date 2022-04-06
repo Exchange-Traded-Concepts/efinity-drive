@@ -7,8 +7,11 @@
     <div class="card shadow mb-4">
       <div
         class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        @if(client_T)
         <h6 class="m-0 font-weight-bold text-primary"><span style="text-transform: capitalize">{{ client_T }}</span> Contact - {{client[0].name}}</h6>
+        @end
         @if(auth.user.can_edit)
+        @if(client)
         <div class="dropdown no-arrow">
           <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -16,6 +19,7 @@
           </a>
           <div class="dropdown-menu dropdow0n-menu-right shadow animated--fade-in"
                aria-labelledby="dropdownMenuLink">
+
             <div class="dropdown-header">Admin:</div>
             <a class="dropdown-item" href="{{`/client_contact_add/${client[0].id}` }}">Add Contact</a>
             <!--  <a class="dropdown-item" href="#">Another action</a>
@@ -24,6 +28,7 @@
             -->
           </div>
         </div>
+        @end
         @endif
       </div>
       <div class="card-body">
