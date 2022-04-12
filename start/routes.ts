@@ -101,7 +101,6 @@ Route.group(() => {
 Route.group(() => {
   Route.get('/tasks', 'TasksController.index')
   Route.get('/tasks_add', 'TasksController.add')
-  Route.post('/tasks', 'TasksController.create')
   Route.get('/tasks/:id/edit', 'TasksController.edit')
   Route.patch('tasks/:id', 'TasksController.update')
 }).middleware('isAdmin')
@@ -136,6 +135,8 @@ Route.get('/add_sub_tasks/:task_id', 'SubTasksController.add_subtask_to_task').m
 Route.get('/fund_pipeline_details/:id', 'FundsController.details').middleware('isAdmin')
 Route.get('/c_contacts', 'ClientContactsController.show').middleware('isAdmin')
 Route.get('/c_contacts/:client_id', 'ClientContactsController.client').middleware('isAdmin')
+Route.get('/task_status/:task_id/:status_id', 'TasksController.taskStatus')
+Route.get('/sub_task_status/:sub_task_id/:status_id', 'SubTasksController.taskStatus')
 //This is a test
 Route.post('/email', 'TasksController.email')
 ///

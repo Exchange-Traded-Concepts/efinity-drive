@@ -3,6 +3,7 @@ import {HttpContextContract} from "@ioc:Adonis/Core/HttpContext";
 import CalendarConfig from "App/utils/calendarConfig";
 import Task from "App/Models/Task";
 import Fund from "App/Models/Fund";
+import TaskStatus from "App/Models/TaskStatus";
 
 
 export default class DashboardController {
@@ -39,9 +40,10 @@ export default class DashboardController {
     const tasks = await Task.query()
       .preload('fund')
       .preload('createdBy')
-      .preload('subtasks', (assignedToQuery) => {assignedToQuery.preload('assignedTo').preload('createdBy')})
+      .preload('subtasks', (assignedToQuery) => {assignedToQuery.preload('assignedTo').preload('createdBy').preload('taskStatus')})
       .preload('assignedTo')
       .preload('createdBy')
+      .preload('taskStatus')
       // @ts-ignore
       .where('assigned_to', auth.user.id)
       .andWhere('completed', 0)
@@ -53,8 +55,10 @@ export default class DashboardController {
       .where('status', '!=', 'launched')
       .orderBy('target_launch_date')
 
+    const status = await TaskStatus.query().orderBy('rank')
 
-    return view.render('admin/dashboard', {d, tasks, funds})
+
+    return view.render('admin/dashboard', {d, tasks, funds, status})
   }
 
 

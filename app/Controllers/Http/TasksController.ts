@@ -21,7 +21,7 @@ export default class TasksController {
       // @ts-ignore
       .where('assigned_to', auth.user.id).orderBy('target_completion_date')
     const funds  = await Fund.all()
-    const taskStatus = await TaskStatus.query().orderBy('rank')
+    const status = await TaskStatus.query().orderBy('rank')
 
    const p = await Database.rawQuery("SELECT t.id ,st.title as s_title, st.description as st_desc,  t.title as t_title, " +
       " u.first_name as first_name, u.last_name as last_name, DATE_FORMAT(st.target_completion_date, '%c/%e/%Y') as st_tcd, st.target_completion_date " +
@@ -35,7 +35,7 @@ export default class TasksController {
 
     //const sub = await SubTask.query().preload('task').preload('createdBy').preload('assignedTo').preload('fund')
 
-       return view.render('maintenance/task', {etcUsers, tasks, funds, sub, taskStatus})
+       return view.render('maintenance/task', {etcUsers, tasks, funds, sub, status})
   }
 
   public async create({request,auth, response, session }: HttpContextContract) {
@@ -113,6 +113,20 @@ export default class TasksController {
           .htmlView('emails/welcome', { name: 'David', url :"http://www.google.com" })
       })
 
+  }
+
+
+  public async taskStatus({params, response} : HttpContextContract){
+
+    const task = await Task.findOrFail(params.task_id)
+    task.merge(
+      {
+        task_statuses_id : params.status_id
+      }
+    )
+    await task.save()
+    //session.flash('notification', 'Task Updated.')
+    return response.redirect().back()
   }
 
 

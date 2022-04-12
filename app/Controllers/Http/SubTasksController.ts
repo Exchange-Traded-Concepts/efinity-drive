@@ -62,9 +62,10 @@ export default class SubTasksController {
     const etcUsers = await users.all()
     const tasks = await Task.query()
       .preload('createdBy')
-      .preload('subtasks', (assignedToQuery) => {assignedToQuery.preload('assignedTo').preload('createdBy')})
+      .preload('subtasks', (assignedToQuery) => {assignedToQuery.preload('assignedTo').preload('createdBy').preload('taskStatus')})
       .preload('assignedTo')
       .preload('createdBy')
+      .preload('taskStatus')
       .where('id', params.task_id).orderBy('target_completion_date')
 
     const status = await TaskStatus.query().orderBy('rank')
@@ -108,6 +109,20 @@ export default class SubTasksController {
 
     return view.render('maint/subtask')
   }
+
+  public async taskStatus({params, response}: HttpContextContract){
+    const subtask = await SubTask.findOrFail(params.sub_task_id)
+
+    subtask.merge({
+      task_statuses_id : params.status_id
+    })
+
+    await subtask.save()
+    //session.flash('notification', 'Task Updated.')
+    return response.redirect().back()
+  }
+
+
 
   public async destroy({}: HttpContextContract) {}
 }
