@@ -100,6 +100,7 @@ Route.group(() => {
 
 Route.group(() => {
   Route.get('/tasks', 'TasksController.index')
+  Route.post('/tasks', 'TasksController.create')
   Route.get('/tasks_add', 'TasksController.add')
   Route.get('/tasks/:id/edit', 'TasksController.edit')
   Route.patch('tasks/:id', 'TasksController.update')
