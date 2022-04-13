@@ -553,15 +553,27 @@
           </div>
           <div class="form-group">
             <label for="portfolio_notes">Portfolio Notes</label>
-            <textarea class="form-control" name="portfolio_notes" id="portfolio_notes">{{c_fund.portfolio_notes ||''}}</textarea>
+            <textarea class="form-control" name="portfolio_notes" id="portfolio_notes">
+              @if(c_fund)
+              {{c_fund.portfolio_notes ||''}}
+              @end
+            </textarea>
           </div>
           <div class="form-group">
             <label for="sec_comments">SEC Comments</label>
-            <textarea class="form-control" name="sec_comments" id="sec_comments">{{c_fund.sec_comments ||''}}</textarea>
+            <textarea class="form-control" name="sec_comments" id="sec_comments">
+              @if(c_fund)
+              {{c_fund.sec_comments ||''}}
+              @end
+            </textarea>
           </div>
           <div class="form-group">
             <label for="notes">Notes</label>
-            <textarea class="form-control" name="notes" id="notes">{{c_fund.notes ||''}}</textarea>
+            <textarea class="form-control" name="notes" id="notes">
+              @if(c_fund)
+              {{c_fund.notes ||''}}
+              @end
+            </textarea>
           </div>
 
           <button type="submit" class="btn btn-primary">Submit</button>

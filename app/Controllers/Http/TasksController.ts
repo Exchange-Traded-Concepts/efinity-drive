@@ -115,6 +115,50 @@ export default class TasksController {
 
   }
 
+  public async to_do({view, auth}: HttpContextContract){
+
+    const tasks = await Task.query()
+      .preload('fund')
+      .preload('taskStatus')
+      .preload('createdBy')
+      .preload('subtasks', (assignedToQuery) => {assignedToQuery.preload('assignedTo').preload('createdBy').preload('taskStatus')})
+      .preload('assignedTo')
+      .preload('createdBy')
+      // @ts-ignore
+      .where('assigned_to', auth.user.id)
+      .andWhere('task_statuses_id', '<=', '2')
+      .orderBy('target_completion_date', )
+
+    const funds  = await Fund.all()
+    const status = await TaskStatus.query().orderBy('rank')
+    const etcUsers = await users.query().where('is_admin', 1)
+
+    return view.render('maintenance/task', {etcUsers, tasks, funds, status})
+  }
+
+
+
+  public async task_by_status({params, view, auth}: HttpContextContract){
+
+    const tasks = await Task.query()
+      .preload('fund')
+      .preload('taskStatus')
+      .preload('createdBy')
+      .preload('subtasks', (assignedToQuery) => {assignedToQuery.preload('assignedTo').preload('createdBy').preload('taskStatus')})
+      .preload('assignedTo')
+      .preload('createdBy')
+      // @ts-ignore
+      .where('assigned_to', auth.user.id)
+      .andWhere('task_statuses_id', params.status_id)
+      .orderBy('target_completion_date', 'desc')
+
+    const funds  = await Fund.all()
+    const status = await TaskStatus.query().orderBy('rank')
+    const etcUsers = await users.query().where('is_admin', 1)
+
+    return view.render('maintenance/task', {etcUsers, tasks, funds, status})
+  }
+
 
   public async taskStatus({params, response} : HttpContextContract){
 

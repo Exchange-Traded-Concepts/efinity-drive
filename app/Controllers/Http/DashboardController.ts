@@ -47,6 +47,7 @@ export default class DashboardController {
       // @ts-ignore
       .where('assigned_to', auth.user.id)
       .andWhere('completed', 0)
+      .andWhere('task_statuses_id' ,'<=', '2')
       .orderBy('target_completion_date')
       .limit(5)
 

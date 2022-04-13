@@ -13,7 +13,12 @@
     <div class="card shadow mb-4">
       <div
         class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-        <h6 class="m-0 font-weight-bold text-primary">My Tasks</h6>
+        <h6 class="m-0 font-weight-bold text-primary">My Tasks -
+          @each(status_nav in status)
+            <a href="{{`/task_by_status/${status_nav.id}`}}" style="{{`color:${status_nav.color};`}}">{{status_nav.name}}</a>&nbsp;&nbsp;
+          @end
+          <a href="/tasks" >All</a>
+        </h6>
         <div class="dropdown no-arrow">
           <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -146,4 +146,5 @@ Route.post('/forgot-password', 'PasswordRequestsController.store')
 Route.get('/reset-password/:token', 'PasswordRequestsController.edit')
 Route.post('/reset-password', 'PasswordRequestsController.update')
 
-
+Route.get('/task_by_status/:status_id', 'TasksController.task_by_status').middleware('isAdmin')
+Route.get('/to_do', 'TasksController.to_do').middleware('isAdmin')
