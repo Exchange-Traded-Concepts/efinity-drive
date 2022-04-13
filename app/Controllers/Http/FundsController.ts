@@ -5,6 +5,7 @@ import Client from "App/Models/Client";
 import Task from "App/Models/Task";
 import Document from "App/Models/Document";
 import States from "App/utils/USState";
+import TaskStatus from "App/Models/TaskStatus";
 
 
 export default class FundsController {
@@ -119,10 +120,7 @@ export default class FundsController {
     const distributors = await Client.query().where('client_type_id', 2)
     const maint = 'show'
     const c_fund = await Fund.findOrFail(params.id)
-    const p_date = await this.short_date(c_fund.prospectus_date)
-    //@ts-ignore
-    c_fund.prospectus_date = p_date
-  //  console.log(p_date)
+
     return view.render('maintenance/fund', { funds, custodians, clients, distributors, maint, c_fund, months: await States.months_list()})
   }
 
@@ -235,15 +233,6 @@ export default class FundsController {
   }
 
   public async details({params, view}: HttpContextContract){
-  /*  let p = await Database.rawQuery('SELECT clients.*, funds.*, fp.id, fp.fund_id, fp.status, DATE_FORMAT(fp.client_questionnaire_sent, "%c/%e/%Y") as cqs,' +
-      ' DATE_FORMAT(fp.client_questionnaire_completed, "%c/%e/%Y") as cqc, DATE_FORMAT(fp.client_sent_sample_portfolio_data, "%c/%e/%Y") as csspd,' +
-      ' fp.portfolio_notes, DATE_FORMAT(fp.proposal_sent, "%c/%e/%Y") as proposal_sent , DATE_FORMAT(fp.license_sponsorship, "%c/%e/%Y") as license_sponsorship,' +
-      '  DATE_FORMAT(fp.psa_form_sent, "%c/%e/%Y") as pfs, DATE_FORMAT(fp.psa_form_complete, "%c/%e/%Y") as pfc, ' +
-      'DATE_FORMAT(fp.diligence_sent, "%c/%e/%Y") as ds, DATE_FORMAT(fp.diligence_received, "%c/%e/%Y") as dr, DATE_FORMAT(fp.launch_date, "%c/%e/%Y") as ld,' +
-      'fp.strategy, fp.sec_comments, notes FROM fund_pipelines fp, clients, funds WHERE fp.fund_id = funds.id AND funds.client_id = clients.id AND funds.id =? ', [params.id]
-    )
-    p = p[0][0]
-*/
 
     const p = await Fund.query()
       .preload('client')
@@ -253,18 +242,21 @@ export default class FundsController {
 
     const tasks = await Task.query()
       .preload('createdBy')
-      .preload('subtasks', (assignedToQuery) => {assignedToQuery.preload('assignedTo').preload('createdBy')})
+      .preload('subtasks', (assignedToQuery) => {assignedToQuery.preload('assignedTo').preload('createdBy').preload('taskStatus')})
       .preload('assignedTo')
       .preload('createdBy')
+      .preload('taskStatus')
       .where('fund_id', params.id)
       .orderBy('target_completion_date')
+
+    const status = await TaskStatus.query().orderBy('rank')
 
     const docs = await Document.query().preload('createdBy')
       .where('resource_id', params.id).andWhere('doc_type_id', 2)
 
     const fund_id = params.id
 
-    return view.render('admin/pipeline_details', {p, tasks, fund_id, docs})
+    return view.render('admin/pipeline_details', {p, tasks, fund_id, docs, status})
 
 
   }

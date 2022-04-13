@@ -42,7 +42,7 @@
             <th>Description</th>
             <th>Assigned By</th>
             <th>Assigned To</th>
-            <th>Target Completion Date</th>
+            <th>Due Date</th>
             <th>Options</th>
           </TR>
           </thead>
@@ -57,30 +57,7 @@
             <td></td>
             @end
             <td>{{ t.title }}<br>
-              <small style="{{`color: ${t.taskStatus.color};` }} " id="{{`t_s_${t.id}`}}">
-                <span  id="{{`t_${t.id}`}}">{{t.taskStatus.name}}</span>
-                <div class=" items-start justify-center" x-data="{showContextMenu:false}" style="display: inline-flex">
-                  <div class="relative" @click.away="showContextMenu=false">
-                    @if(auth.user.id == t.assignedTo.id)
-                    <button  x-on:contextmenu="$event.preventDefault();showContextMenu=true" @click.prevent="showContextMenu=false"><i class="fas fa-check-circle"></i></button>
-                    @end
-                    <div class="absolute mt-12 top-0 left-1 min-w-full w-48 z-30" style="display:none;" x-show="showContextMenu" x-transition:enter="transition ease duration-100 transform" x-transition:enter-start="opacity-0 scale-90 translate-y-1" x-transition:enter-end="opacity-100 scale-100 translate-y-0" x-transition:leave="transition ease duration-100 transform" x-transition:leave-start="opacity-100 scale-100 translate-y-0" x-transition:leave-end="opacity-0 scale-90 translate-y-1">
-                      <span class="absolute top-0 left-0 w-2 h-2 bg-white transform rotate-45 -mt-1 ml-3 border-gray-300 border-l border-t z-20"></span>
-                      <div class="bg-white overflow-auto rounded-lg shadow-md w-full relative z-10 py-2 border border-gray-300 text-gray-800 text-xs">
-                        <ul class="list-reset">
-                          <li>
-                            @each(sm in status)
-                            <a href="#" class="px-4 py-1 flex hover:bg-gray-100 no-underline hover:no-underline transition-colors duration-100" style="{{`color: ${sm.color}`}}" onclick="{{`StatusUpdate(${t.id},${sm.id}) `}}"
-                               @click.prevent="showContextMenu=false" >{{sm.name}}</a>
-                            @end
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-              </small>
+              @include('admin/partials/task_status')
             </td>
             <td>
              @if(t.fund)
@@ -106,42 +83,13 @@
           </tr>
           @if(t.subtasks)
           @each(st in t.subtasks)
-          <tr x-show="{{ `selected == ${t.id}` }}" class="sub" style="background-color: #1c294e; color: #b3e4ec; display: none">
+          <tr x-show="{{ `selected == ${t.id}` }}" class="sub" style="background-color: #858796; color: #FFFFFF; display: none">
             <td>
               <p><i class="fas fa-arrow-circle-right" style="color: #FFFFFF"></i></p>
             </td>
             <td></td>
-            <td>{{st.title}}
-
-              <br>
-              <small style="{{`color: ${st.taskStatus.color};` }} " id="{{`ts_s_${st.id}`}}">
-                <span  id="{{`ts_${st.id}`}}">{{st.taskStatus.name}}</span>
-                <div class=" items-start justify-center" x-data="{showContextMenu:false}" style="display: inline-flex">
-                  <div class="relative" @click.away="showContextMenu=false">
-                    @if(auth.user.id == st.assignedTo.id)
-                    <button  x-on:contextmenu="$event.preventDefault();showContextMenu=true" @click.prevent="showContextMenu=false"><i class="fas fa-check-circle"></i></button>
-                    @end
-                    <div class="absolute mt-12 top-0 left-1 min-w-full w-48 z-30" style="display:none;"
-                         x-show="showContextMenu" x-transition:enter="transition ease duration-100 transform"
-                         x-transition:enter-start="opacity-0 scale-90 translate-y-1" x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-                         x-transition:leave="transition ease duration-100 transform" x-transition:leave-start="opacity-100 scale-100 translate-y-0"
-                         x-transition:leave-end="opacity-0 scale-90 translate-y-1">
-                      <span class="absolute top-0 left-0 w-2 h-2 bg-white transform rotate-45 -mt-1 ml-3 border-gray-300 border-l border-t z-20"></span>
-                      <div class="bg-white overflow-auto rounded-lg shadow-md w-full relative z-10 py-2 border border-gray-300 text-gray-800 text-xs">
-                        <ul class="list-reset">
-                          <li>
-                            @each(sm in status)
-                            <a href="#" class="px-4 py-1 flex hover:bg-gray-100 no-underline hover:no-underline transition-colors duration-100" style="{{`color: ${sm.color}`}}" onclick="{{`StatusUpdateS(${st.id},${sm.id}) `}}"
-                               @click.prevent="showContextMenu=false" >{{sm.name}}</a>
-                            @end
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-              </small>
+            <td>{{st.title}}<br>
+              @include('admin/partials/sub_task_status')
             </td>
             <td></td>
             <td>{{st.description}}</td>

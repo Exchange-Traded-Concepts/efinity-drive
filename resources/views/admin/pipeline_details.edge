@@ -310,7 +310,7 @@
           <th>Description</th>
           <th>Assigned By</th>
           <th>Assigned To</th>
-          <th onclick="sortTable(6)" class="cursor-pointer select-none date">Target Completion Date</th>
+          <th onclick="sortTable(6)" class="cursor-pointer select-none date">Due Date</th>
           <th>Options</th>
         </TR>
         </thead>
@@ -324,7 +324,9 @@
           @else
           <td></td>
           @end
-          <td>{{ t.title }}</td>
+          <td>{{ t.title }}<br>
+            @include('admin/partials/task_status')
+          </td>
           <td>{{t.description}}</td>
           <td>
             {{t.createdBy.first_name}} {{t.createdBy.last_name}}
@@ -343,12 +345,14 @@
         </tr>
         @if(t.subtasks)
         @each(st in t.subtasks)
-        <tr x-show="{{ `selected == ${t.id}` }}" class="sub" style="background-color: #1c294e; color: #b3e4ec; display: none;">
+        <tr x-show="{{ `selected == ${t.id}` }}" class="sub" style="background-color: #858796; color: #FFFFFF; display: none">
           <td>
             <p><i class="fas fa-arrow-circle-right" style="color: #FFFFFF"></i></p>
           </td>
           <td></td>
-          <td>{{st.title}}</td>
+          <td>{{st.title}}<br>
+            @include('admin/partials/sub_task_status')
+          </td>
           <td>{{st.description}}</td>
           <td>
             {{st.createdBy.first_name}} {{st.createdBy.last_name}}

@@ -270,7 +270,7 @@
                       name="target_launch_date"
                       @if(c_fund)
                         @if(c_fund.target_launch_date)
-                          value="{{c_fund.target_launch_date.toFormat('y-M-d')}}"
+                          value="{{c_fund.target_launch_date.toFormat('y-MM-dd')}}"
                         @endif
                       @endif
                       class="form-control"
@@ -281,8 +281,9 @@
              </div>
           <div class="form-group row">
             <div class="col-md-6">
-              <label for="exp_ratio">Exp. Ratio</label>
-              <input type="text"
+              <label for="exp_ratio">Exp. Ratio <small>(Number Only)</small></label>
+              <input type="number"
+                     step="0.01"
                      name="exp_ratio"
                      @if(c_fund)
                      value="{{c_fund.exp_ratio ||''}}"
@@ -318,15 +319,12 @@
                    placeholder="Dividend Frequency">
           </div>
           <div class="col-md-6">
-            <!-- Weird stuff with the date -->
-            <label for="prospectus_date">Prospectus Date </label>
+            <label for="prospectus_date">Prospectus Date</label>
             <input type="date"
                    name="prospectus_date"
                    @if (c_fund)
                    @if(c_fund.prospectus_date)
-                   @if(c_fund.prospectus_date > 1972 )
-                   value="{{c_fund.prospectus_date.toFormat('y-MM-d') ||''}}"
-                   @endif
+                    value="{{c_fund.prospectus_date.toFormat('y-MM-dd') ||''}}"
                    @end
                    @end
                    class="form-control"
@@ -554,16 +552,16 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="sec_comments">Portfolio Notes</label>
-            <textarea class="form-control" name="portfolio_notes" id="portfolio_notes">{{portfolio_notes ||''}}</textarea>
+            <label for="portfolio_notes">Portfolio Notes</label>
+            <textarea class="form-control" name="portfolio_notes" id="portfolio_notes">{{c_fund.portfolio_notes ||''}}</textarea>
           </div>
           <div class="form-group">
             <label for="sec_comments">SEC Comments</label>
-            <textarea class="form-control" name="sec_comments" id="sec_comments">{{sec_comments ||''}}</textarea>
+            <textarea class="form-control" name="sec_comments" id="sec_comments">{{c_fund.sec_comments ||''}}</textarea>
           </div>
           <div class="form-group">
             <label for="notes">Notes</label>
-            <textarea class="form-control" name="notes" id="notes">{{notes ||''}}</textarea>
+            <textarea class="form-control" name="notes" id="notes">{{c_fund.notes ||''}}</textarea>
           </div>
 
           <button type="submit" class="btn btn-primary">Submit</button>
