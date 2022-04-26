@@ -1,0 +1,37 @@
+@layout('layouts/adminDashboard')
+
+@section('content')
+<div class="container-fluid">
+<div>
+  @if(flashMessages.has('notification'))
+  <div class="alert alert-success">{{ flashMessages.get('notification') }}</div>
+  @endif
+</div>
+<div class="row">
+
+  <div class="col-md-6">
+
+    <form
+      @if(cc)
+      action=" {{ `/client_user/${cc.id}?_method=PATCH`}}"
+      @else
+      action="/client_user"
+      @end
+      method="post"
+      enctype="multipart/form-data">
+      {{ csrfField() }}
+    @each(c in clients)
+      {{c.name}} <input type="checkbox" value="{{c.id}}" name="client_id[]"><br>
+    @end
+
+      <input name="name" placeholder="Name" value="" type="text"> <input name="email" placeholder="email" value="" type="text">
+
+      <input type="submit">
+
+    </form>
+
+  </div>
+
+</div>
+</div>
+@endsection

@@ -118,7 +118,7 @@ Route.group(() => {
   Route.post('/documents', 'DocumentsController.store')
   Route.get('/fund_documents/:id/edit', 'FundDocumentsController.edit')
   Route.patch('/fund_documents/:id', 'FundDocumentsController.update')
-  Route.get('/fund_documents/:id/delete', 'FundDocumentsController.destroy')
+  Route.get('/documents/:id/delete', 'FundDocumentsController.destroy')
 }).middleware('editAdmin')
 
 
@@ -141,6 +141,10 @@ Route.get('/sub_task_status/:sub_task_id/:status_id', 'SubTasksController.taskSt
 //This is a test
 Route.post('/email', 'TasksController.email')
 ///
+
+Route.get('/client_user', 'ClientUsersController.index')
+Route.post('client_user','ClientUsersController.create')
+
 Route.get('/forgot-password', 'PasswordRequestsController.create')
 Route.post('/forgot-password', 'PasswordRequestsController.store')
 Route.get('/reset-password/:token', 'PasswordRequestsController.edit')

@@ -59,7 +59,15 @@ export default class DocumentsController {
 
   public async update({}: HttpContextContract) {}
 
-  public async destroy({}: HttpContextContract) {}
+  public async destroy({params, session, response}: HttpContextContract) {
+    const f = await Document.findOrFail(params.id)
+    await FileUpload.DeleteFile(f.url)
+    await f.delete()
+    session.flash('notification', 'File deleted!')
+
+    return response.redirect('back')
+
+  }
 
 
   private async validateInput(request) {
