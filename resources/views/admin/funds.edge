@@ -59,7 +59,7 @@
               {{d.client.name}}
               <a href="{{`/client_details/${d.client.id}`}}"><i class="fa fa-plus-square-o"></i></a>
             </td>
-            <td> {{ d.ticker }}</td>
+            <td> <a href="{{ `/fund_pipeline_details_t/${d.ticker}`}}">{{ d.ticker }}</a></td>
             <td>{{d.trust}}</td>
             <td>{{d.exchange}}</td>
                        <td>

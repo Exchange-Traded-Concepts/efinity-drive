@@ -134,6 +134,7 @@ Route.get('/fund_pipeline/:status', 'FundsController.showPipeline').middleware('
 Route.get('/task_sub_tasks/:task_id', 'SubTasksController.show').middleware('isAdmin')
 Route.get('/add_sub_tasks/:task_id', 'SubTasksController.add_subtask_to_task').middleware('isAdmin')
 Route.get('/fund_pipeline_details/:id', 'FundsController.details').middleware('isAdmin')
+Route.get('/fund_pipeline_details_t/:ticker', 'FundsController.details').middleware('isAdmin')
 Route.get('/c_contacts', 'ClientContactsController.show').middleware('isAdmin')
 Route.get('/c_contacts/:client_id', 'ClientContactsController.client').middleware('isAdmin')
 Route.get('/task_status/:task_id/:status_id', 'TasksController.taskStatus')

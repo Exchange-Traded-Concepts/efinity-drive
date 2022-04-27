@@ -234,6 +234,12 @@ export default class FundsController {
 
   public async details({params, view}: HttpContextContract){
 
+    if (params.ticker){
+      const f = await Fund.query().where('ticker', params.ticker )
+      params.id = f[0].id
+    }
+
+
     const p = await Fund.query()
       .preload('client')
       .preload('custodian')
