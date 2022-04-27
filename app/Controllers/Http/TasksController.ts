@@ -20,7 +20,7 @@ export default class TasksController {
       .preload('createdBy')
       // @ts-ignore
       .where('assigned_to', auth.user.id).orderBy('target_completion_date')
-    const funds  = await Fund.all()
+    const funds  = await Fund.query().orderBy('ticker')
     const status = await TaskStatus.query().orderBy('rank')
 
    const p = await Database.rawQuery("SELECT t.id ,st.title as s_title, st.description as st_desc,  t.title as t_title, " +
@@ -66,7 +66,7 @@ export default class TasksController {
   public async edit({view, params}: HttpContextContract) {
 
     const etcUsers = await users.query().where('is_admin', 1)
-    const funds  = await Fund.all()
+    const funds  = await Fund.query().orderBy('ticker')
     const u_task = await Task.findBy('id', params.id)
     console.log(u_task)
     const taskstatuses = await TaskStatus.query().orderBy('rank')
@@ -99,7 +99,7 @@ export default class TasksController {
   public async add({view}: HttpContextContract) {
 
     const etcUsers = await users.query().where('is_admin', 1)
-    const funds  = await Fund.all()
+    const funds  = await Fund.query().orderBy('ticker')
     const taskstatuses = await TaskStatus.query().orderBy('rank')
     return view.render('maintenance/add_task', {etcUsers, funds, taskstatuses})
   }
@@ -129,7 +129,7 @@ export default class TasksController {
       .andWhere('task_statuses_id', '<=', '2')
       .orderBy('target_completion_date', )
 
-    const funds  = await Fund.all()
+    const funds  = await Fund.query().orderBy('ticker')
     const status = await TaskStatus.query().orderBy('rank')
     const etcUsers = await users.query().where('is_admin', 1)
 
@@ -152,7 +152,7 @@ export default class TasksController {
       .andWhere('task_statuses_id', params.status_id)
       .orderBy('target_completion_date', 'desc')
 
-    const funds  = await Fund.all()
+    const funds  = await Fund.query().orderBy('ticker')
     const status = await TaskStatus.query().orderBy('rank')
     const etcUsers = await users.query().where('is_admin', 1)
 
