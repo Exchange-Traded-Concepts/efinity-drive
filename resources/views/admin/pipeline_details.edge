@@ -350,10 +350,10 @@
             <p><i class="fas fa-arrow-circle-right" style="color: #FFFFFF"></i></p>
           </td>
           <td></td>
-          <td>{{st.title}}<br>
+          <td>{{st.title ||''}}<br>
             @include('admin/partials/sub_task_status')
           </td>
-          <td>{{st.description}}</td>
+          <td>{{st.description ||''}}</td>
           <td>
             {{st.createdBy.first_name}} {{st.createdBy.last_name}}
           </td>
@@ -361,7 +361,11 @@
             {{st.assignedTo.first_name}} {{st.assignedTo.last_name}}
           </td>
           <td>{{st.target_completion_date.toFormat('M/d/y')}}</td>
-          <td></td>
+          <td>
+            @if(auth.user.id === st.assignedTo.id || auth.user.id == st.createdBy.id )
+            <a href="{{ `/sub_tasks/${st.id}/edit` }}"><i class="fas fa-pencil-alt" style="color: #FFFFFF;"></i></a>
+            @end
+          </td>
         </tr>
         @end
         @end

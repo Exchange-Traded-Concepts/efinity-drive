@@ -6,6 +6,7 @@ import Task from "App/Models/Task";
 import Document from "App/Models/Document";
 import States from "App/utils/USState";
 import TaskStatus from "App/Models/TaskStatus";
+import SubTask from "App/Models/SubTask";
 
 
 export default class FundsController {
@@ -63,7 +64,7 @@ export default class FundsController {
 
   }
 
-  public async store({request, response, session}: HttpContextContract) {
+  public async store({request, response, session, auth}: HttpContextContract) {
     const data = await this.validateInput(request)
     await Fund.create({
       fund_name: data.fund_name,
@@ -106,6 +107,148 @@ export default class FundsController {
       proxy: data.proxy,
       color: data.color
     })
+
+    let f = await Fund.query().orderBy('id', 'desc')
+
+    let fund_id = f[0].id
+
+
+    await Task.create({
+      title: 'Pre-PEA',
+      description:'All the sub-tasks that need to be completed prior to executing the PSA',
+      // @ts-ignore
+      assigned_to: auth.user.id,
+      // @ts-ignore
+      created_by : auth.user.id,
+      fundId: fund_id,
+      target_completion_date: request.input('target_launch_date'),
+      task_statuses_id: 1
+
+    })
+
+    let t = await Task.query().orderBy('id', 'desc')
+
+    let task_id = t[0].id
+
+    console.log('TASK')
+    console.log(task_id)
+    console.log('END')
+
+    await SubTask.createMany([
+      {
+        title: 'Conflict with existing products',
+        // @ts-ignore
+        assigned_to: auth.user.id,
+        // @ts-ignore
+        created_by: auth.user.id,
+        task_id : task_id,
+        target_completion_date: request.input('target_launch_date'),
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Welcome packet sent',
+        // @ts-ignore
+        assigned_to: auth.user.id,
+        // @ts-ignore
+        created_by: auth.user.id,
+        task_id : task_id,
+        target_completion_date: request.input('target_launch_date'),
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Questionnaire received',
+        // @ts-ignore
+        assigned_to: auth.user.id,
+        // @ts-ignore
+        created_by: auth.user.id,
+        task_id : task_id,
+        target_completion_date: request.input('target_launch_date'),
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Sponsor background check',
+        // @ts-ignore
+        assigned_to: auth.user.id,
+        // @ts-ignore
+        created_by: auth.user.id,
+        task_id : task_id,
+        target_completion_date: request.input('target_launch_date'),
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Portfolio review (including diversification, liquidity analysis) ',
+        // @ts-ignore
+        assigned_to: auth.user.id,
+        // @ts-ignore
+        created_by: auth.user.id,
+        task_id : task_id,
+        target_completion_date: request.input('target_launch_date'),
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Derivatives review (if necessary) ',
+        // @ts-ignore
+        assigned_to: auth.user.id,
+        // @ts-ignore
+        created_by: auth.user.id,
+        task_id : task_id,
+        target_completion_date: request.input('target_launch_date'),
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'New Activity Review and Signoff',
+        // @ts-ignore
+        assigned_to: auth.user.id,
+        // @ts-ignore
+        created_by: auth.user.id,
+        task_id : task_id,
+        target_completion_date: request.input('target_launch_date'),
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Special tax considerations',
+        // @ts-ignore
+        assigned_to: auth.user.id,
+        // @ts-ignore
+        created_by: auth.user.id,
+        task_id : task_id,
+        target_completion_date: request.input('target_launch_date'),
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Ticker obtained',
+        // @ts-ignore
+        assigned_to: auth.user.id,
+        // @ts-ignore
+        created_by: auth.user.id,
+        task_id : task_id,
+        target_completion_date: request.input('target_launch_date'),
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'PSA executed',
+        // @ts-ignore
+        assigned_to: auth.user.id,
+        // @ts-ignore
+        created_by: auth.user.id,
+        task_id : task_id,
+        target_completion_date: request.input('target_launch_date'),
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+
+      ])
+
+
     session.flash('notification', 'Fund saved.')
     return response.redirect().back()
 

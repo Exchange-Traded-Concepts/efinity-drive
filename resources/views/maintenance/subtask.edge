@@ -31,6 +31,7 @@
         </div>
       </div>
       <div class="card-body">
+        <div class="table-responsive">
         <table class="table table-striped" x-data="{selected:null}" id="sortTable">
           <thead>
           <TR>
@@ -54,10 +55,10 @@
             @else
             <td></td>
             @end
-            <td>{{ t.title }}<br>
+            <td>{{ t.title ||'' }}<br>
               @include('admin/partials/task_status')
             </td>
-            <td>{{t.description}}</td>
+            <td>{{t.description ||''}}</td>
             <td>
               {{t.createdBy.first_name}} {{t.createdBy.last_name}}
             </td>
@@ -78,10 +79,10 @@
               <p><i class="fas fa-arrow-circle-right" style="color: #FFFFFF"></i></p>
             </td>
             <td></td>
-            <td>{{st.title}}<br>
+            <td>{{st.title ||''}}<br>
               @include('admin/partials/sub_task_status')
            </td>
-            <td>{{st.description}}</td>
+            <td>{{st.description ||''}}</td>
             <td>
               {{st.createdBy.first_name}} {{st.createdBy.last_name}}
             </td>
@@ -89,13 +90,17 @@
               {{st.assignedTo.first_name}} {{st.assignedTo.last_name}}
             </td>
             <td>{{st.target_completion_date.toFormat('M/d/y')}}</td>
-            <td></td>
+            <td>
+              @if(auth.user.id === st.assignedTo.id || auth.user.id == st.createdBy.id )
+              <a href="{{ `/sub_tasks/${st.id}/edit` }}"><i class="fas fa-pencil-alt" style="color: #FFFFFF;"></i></a>
+              @end
+            </td>
           </tr>
           @end
           @end
           @end
         </table>
-
+        </div>
       </div>
 
     </div>
@@ -129,6 +134,7 @@
       <div class="card-body">
         <div class="row">
           <div class="table-responsive">
+            <div class="table-responsive">
             <table class="table table-striped" >
               <tr>
                 <th>File</th>
@@ -149,6 +155,7 @@
               </tr>
               @end
             </table>
+              </div>
           </div>
         </div>
       </div>
@@ -164,9 +171,9 @@
         <h6 class="m-0 font-weight-bold text-primary">Add Sub Task</h6>
       </div>
       <div class="card-body">
-        <form
+         <form
           @if(subTask)
-          action=" {{ `/sub_tasks/${t.id}?_method=PATCH`}}"
+          action=" {{ `/sub_tasks/${subTask.id}?_method=PATCH`}}"
           @else
           action="/sub_tasks"
           @end
@@ -194,8 +201,8 @@
                <select name="task_statuses_id" id="task_statuses_id" class="form-control">
                  @each(s in status)
                  <option value="{{s.id}}"
-                         @if(subtask)
-                         @if(s.id == subtask.task_statuses_id)
+                         @if(subTask)
+                         @if(s.id == subTask.task_statuses_id)
                          selected
                          @end
                          @end
@@ -228,7 +235,13 @@
             <label for="assigned_to">Assign To</label>
             <select name="assigned_to" id="assigned_to" class="form-control">
               @each(u in etcUsers)
-              <option value="{{u.id}}">
+              <option value="{{u.id}}"
+              @if(subTask)
+              @if(subTask.assigned_to == u.id)
+                      selected
+              @end
+              @end
+              >
                 {{u.first_name}} {{u.last_name}}
               </option>
               @end
@@ -239,7 +252,7 @@
             <input type="date"
                    name="target_completion_date"
                    @if(subTask)
-                   value="{{subTask.target_completion_date ||''}}"
+                   value="{{subTask.target_completion_date.toFormat('y-MM-dd') ||''}}"
                    @endif
                    class="form-control"
                    id="target_completion_date"

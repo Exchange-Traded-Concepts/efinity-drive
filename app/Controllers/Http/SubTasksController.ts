@@ -53,8 +53,25 @@ export default class SubTasksController {
   public async edit({ view, params }: HttpContextContract) {
 
     const subTask =    await SubTask.findBy('id',params.id)
-    return view.render('client/index', { subTask })
+    const etcUsers = await users.all()
+    const status = await TaskStatus.query().orderBy('rank')
 
+    params.task_id = subTask?.taskId
+
+
+    const tasks = await Task.query()
+      .preload('createdBy')
+      .preload('subtasks', (assignedToQuery) => {assignedToQuery.preload('assignedTo').preload('createdBy').preload('taskStatus')})
+      .preload('assignedTo')
+      .preload('createdBy')
+      .preload('taskStatus')
+      // @ts-ignore
+      .where('id', subTask.taskId).orderBy('target_completion_date')
+    // @ts-ignore
+    const docs = await Document.query().where('doc_type_id', 3).andWhere('resource_id', subTask.taskId)
+
+
+    return view.render('maintenance/subtask', { params, etcUsers, subTask, tasks, status, docs })
   }
 
   public async add_subtask_to_task({params, view}: HttpContextContract){
@@ -75,7 +92,7 @@ export default class SubTasksController {
 
   }
 
-  public async update({params, view, request, auth}: HttpContextContract) {
+  public async update({params, response, request, auth, session}: HttpContextContract) {
 
     const st = await SubTask.findOrFail( params.id)
 
@@ -106,8 +123,27 @@ export default class SubTasksController {
     })
 
     await st.save()
+/*
+    const etcUsers = await users.all()
 
-    return view.render('maint/subtask')
+    let task_id = request.input('task_id')
+    params.task_id = request.input('task_id')
+
+    const tasks = await Task.query()
+      .preload('createdBy')
+      .preload('subtasks', (assignedToQuery) => {assignedToQuery.preload('assignedTo').preload('createdBy').preload('taskStatus')})
+      .preload('assignedTo')
+      .preload('createdBy')
+      .preload('taskStatus')
+      .where('id', task_id).orderBy('target_completion_date')
+
+    const status = await TaskStatus.query().orderBy('rank')
+    const docs = await Document.query().where('doc_type_id', 3).andWhere('resource_id', task_id)
+
+ */
+    session.flash('notification', 'Sub Task Updated')
+    return response.redirect().back()
+   // return view.render('maintenance/subtask', { params, etcUsers, tasks, status, docs })
   }
 
   public async taskStatus({params, response}: HttpContextContract){

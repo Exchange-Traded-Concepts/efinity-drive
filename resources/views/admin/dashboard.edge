@@ -32,6 +32,7 @@
         </div>
       </div>
       <div class="card-body">
+        <div class="table-responsive">
         <table class="table table-striped" x-data="{selected:null}" id="sortTable">
           <thead>
           <TR>
@@ -56,7 +57,7 @@
             @else
             <td></td>
             @end
-            <td>{{ t.title }}<br>
+            <td>{{ t.title ||''  }}<br>
               @include('admin/partials/task_status')
             </td>
             <td>
@@ -64,7 +65,7 @@
               {{ t.fund.fund_name || ''}}
              @end
             </td>
-            <td>{{t.description}}</td>
+            <td>{{t.description ||''}}</td>
             <td>
               {{t.createdBy.first_name}} {{t.createdBy.last_name}}
             </td>
@@ -85,14 +86,14 @@
           @each(st in t.subtasks)
           <tr x-show="{{ `selected == ${t.id}` }}" class="sub" style="background-color: #858796; color: #FFFFFF; display: none">
             <td>
-              <p><i class="fas fa-arrow-circle-right" style="color: #FFFFFF"></i></p>
+              <!-- <p><i class="fas fa-arrow-circle-right" style="color: #FFFFFF"></i></p> -->
             </td>
             <td></td>
             <td>{{st.title}}<br>
               @include('admin/partials/sub_task_status')
             </td>
-            <td></td>
-            <td>{{st.description}}</td>
+            <td>{{t.fund.fund_name || ''}}</td>
+            <td>{{st.description || ''}}</td>
             <td>
               {{st.createdBy.first_name}} {{st.createdBy.last_name}}
             </td>
@@ -100,13 +101,17 @@
               {{st.assignedTo.first_name}} {{st.assignedTo.last_name}}
             </td>
             <td>{{st.target_completion_date.toFormat('M/d/y')}}</td>
-            <td></td>
+            <td>
+              @if(auth.user.id === st.assignedTo.id || auth.user.id == st.createdBy.id )
+              <a href="{{ `/sub_tasks/${st.id}/edit` }}"><i class="fas fa-pencil-alt" style="color: #FFFFFF;"></i></a>
+              @end
+            </td>
           </tr>
           @end
           @end
           @end
         </table>
-
+      </div>
       </div>
 
     </div>
@@ -123,6 +128,7 @@
     <div class="card-body">
 
     <div class="table">
+      <div class="table-responsive">
     <table class="table table-striped" id="fundSortTable">
       <thead>
       <tr>
@@ -158,6 +164,7 @@
       @end
     </table>
     </div>
+      </div>
   </div>
   </div>
   </div>
