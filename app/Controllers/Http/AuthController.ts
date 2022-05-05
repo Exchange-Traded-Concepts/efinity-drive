@@ -95,6 +95,7 @@ export default class AuthController {
       first_name: data.first_name,
       last_name: data.last_name,
       email: data.email,
+      password: data.password,
       is_active: await this.trueCheck(request.input('is_active')),
       is_admin: await this.trueCheck(request.input('is_admin')),
       can_edit: await this.trueCheck(request.input('can_edit'))
@@ -130,22 +131,42 @@ export default class AuthController {
   }
 
   private async validateUpdate(request) {
-    const valSchema = schema.create({
-      first_name: schema.string({ trim: true }, [rules.maxLength(150), rules.required()]),
-      last_name:  schema.string({ trim: true }, [rules.maxLength(150), rules.required()]),
-      email: schema.string({trim: true}, [rules.maxLength(255),
-        rules.email(),
+    if(!request.input('password')) {
+      const valSchema = schema.create({
+        first_name: schema.string({trim: true}, [rules.maxLength(150), rules.required()]),
+        last_name: schema.string({trim: true}, [rules.maxLength(150), rules.required()]),
+        email: schema.string({trim: true}, [rules.maxLength(255),
+          rules.email(),
         ]),
-    })
+      })
 
-    return await request.validate({
-      schema: valSchema,
-      messages: {
-        'first_name.required': 'Name is required',
-        'last_name.required': 'Name allows upto 150 characters',
-        'email.required': 'Valid email required',
-      },
-    })
+      return await request.validate({
+        schema: valSchema,
+        messages: {
+          'first_name.required': 'Name is required',
+          'last_name.required': 'Name allows upto 150 characters',
+          'email.required': 'Valid email required',
+        },
+      })
+    }
+    else {
+      const valSchema = schema.create({
+        first_name: schema.string({ trim: true }, [rules.maxLength(150), rules.required()]),
+        last_name:  schema.string({ trim: true }, [rules.maxLength(150), rules.required()]),
+        email: schema.string({trim: true}, [rules.maxLength(255),
+          rules.email()]),
+         password: schema.string({trim:true}, [rules.maxLength(255)]),
+      })
+
+      return await request.validate({
+        schema: valSchema,
+        messages: {
+          'first_name.required': 'Name is required',
+          'last_name.required': 'Name allows upto 150 characters',
+          'email.required': 'Valid email required',
+        },
+      })
+    }
   }
 
   private async confirmPassword( password, confirm_passowrd){
