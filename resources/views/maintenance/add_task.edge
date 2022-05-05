@@ -91,7 +91,9 @@
         <input type="date"
                name="target_completion_date"
                @if(u_task)
+		@if(u_task.target_completion_date)
                  value="{{u_task.target_completion_date.toFormat('y-MM-dd') ||''}}"
+		@end
                @endif
                class="form-control"
                id="target_completion_date"

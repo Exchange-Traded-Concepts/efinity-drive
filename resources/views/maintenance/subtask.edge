@@ -89,7 +89,11 @@
             <td>
               {{st.assignedTo.first_name}} {{st.assignedTo.last_name}}
             </td>
-            <td>{{st.target_completion_date.toFormat('M/d/y')}}</td>
+            <td>
+		@if(st.target_completion_date)
+		{{st.target_completion_date.toFormat('M/d/y')}}
+		@end	
+	    </td>
             <td>
               @if(auth.user.id === st.assignedTo.id || auth.user.id == st.createdBy.id )
               <a href="{{ `/sub_tasks/${st.id}/edit` }}"><i class="fas fa-pencil-alt" style="color: #FFFFFF;"></i></a>
@@ -252,7 +256,9 @@
             <input type="date"
                    name="target_completion_date"
                    @if(subTask)
+			@if(subTask.target_completion_date)
                    value="{{subTask.target_completion_date.toFormat('y-MM-dd') ||''}}"
+			@end
                    @endif
                    class="form-control"
                    id="target_completion_date"
