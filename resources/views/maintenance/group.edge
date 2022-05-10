@@ -1,0 +1,97 @@
+@layout('layouts/adminDashboard')
+
+@section('content')
+<div class="container-fluid">
+<div>
+  @if(flashMessages.has('notification'))
+  <div class="alert alert-success">{{ flashMessages.get('notification') }}</div>
+  @endif
+</div>
+<div class="row">
+
+  <div class="col-md-6">
+    <div class="card shadow mb-4">
+      <div
+        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Groups</h6>
+      </div>
+      <div class="card-body">
+        <table class="table table-striped">
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Order</th>
+            <th>Options</th>
+          </tr>
+          @each(d in groups)
+          <tr>
+            <td>
+              {{ d.id }}
+            </td>
+            <td>
+              {{ d.name }}
+            </td>
+            <td>{{d.rank}}
+            </td>
+            <td>
+              <a href="{{ `/group/${d.id}/edit` }}">Edit</a><br>
+            </td>
+          </tr>
+          @end
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card shadow mb-4">
+      <div
+        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Group</h6>
+      </div>
+      <div class="card-body">
+        <form
+          @if(group)
+          action=" {{ `/group/${group.id}?_method=PATCH`}}"
+          @else
+          action="/group"
+          @end
+          method="post"
+          enctype="multipart/form-data">
+          {{ csrfField() }}
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control {{ flashMessages.has('errors.name') ? 'alert-danger' :'' }}"
+                   id="name"
+                   name="name"
+                   @if(group)
+                   value="{{group.name ||''}}"
+                   @endif
+                   placeholder="Name">
+          </div>
+          <div class="form-group">
+            <label for="order">Order</label>
+            <input type="text" class="form-control"
+                   id="order"
+                   name="rank"
+                   @if(group)
+                   value="{{group.rank ||''}}"
+                   @endif
+                   placeholder="Order">
+          </div>
+           <button type="submit" class="btn btn-primary">Submit</button>
+          @if(flashMessages.has('errors.title'))
+          <p class="alert-danger">
+            {{ flashMessages.get('errors.title')}}
+          </p>
+          @endif
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+@endsection

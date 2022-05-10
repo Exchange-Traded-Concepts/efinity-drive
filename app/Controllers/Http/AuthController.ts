@@ -2,6 +2,7 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 import {rules, schema} from "@ioc:Adonis/Core/Validator";
 import users from "App/Models/users";
+import Database from "@ioc:Adonis/Lucid/Database";
 
 
 export default class AuthController {
@@ -48,7 +49,9 @@ export default class AuthController {
 
     try {
       const cur_user  =  await auth.attempt(email, password)
-      console.log(cur_user)
+      // @ts-ignore
+      const user_groups = await Database.rawQuery('SELECT group_id FROM user_groups where user_id =? ', [auth.user.id])
+      session.put('user_groups', user_groups)// cur_user.groups = user_groups
       session.put('cur_user', {cur_user})
       return response.redirect('/dashboard')
     } catch (error) {

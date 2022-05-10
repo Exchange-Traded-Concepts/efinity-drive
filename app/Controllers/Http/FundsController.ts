@@ -248,12 +248,27 @@ export default class FundsController {
 
       ])
 
+    await this.prePea(auth,task_id, request.input('target_launch_date') )
 
     session.flash('notification', 'Fund saved.')
     return response.redirect().back()
 
   }
 
+  private async prePea(auth, fund_id, date){
+
+    await Task.create({
+      title:  'Pre-PEA ',
+      description: '',
+      assigned_to: auth.user.id,
+      created_by: auth.user.id,
+      fundId: fund_id,
+      target_completion_date: date,
+      task_statuses_id: 1
+
+    })
+
+  }
 
 
   public async edit({view,params}: HttpContextContract) {

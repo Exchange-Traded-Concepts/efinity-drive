@@ -6,6 +6,7 @@ import Fund from "App/Models/Fund";
 import TaskStatus from "App/Models/TaskStatus";
 
 
+
 export default class DashboardController {
 
   public async cal ({ view, request }: HttpContextContract){
@@ -19,7 +20,7 @@ export default class DashboardController {
 
 }
 
-  public async index ({ view, auth}: HttpContextContract){
+  public async index ({ view, auth, session}: HttpContextContract){
 
 
     const axios = require('axios');
@@ -55,7 +56,8 @@ export default class DashboardController {
       .preload('client')
       .where('status', '!=', 'launched')
       .orderBy('target_launch_date')
-
+    console.log('userGroups V')
+    console.log(session.get('user_groups'))
     const status = await TaskStatus.query().orderBy('rank')
 
 

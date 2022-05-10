@@ -143,6 +143,21 @@ Route.get('/sub_task_status/:sub_task_id/:status_id', 'SubTasksController.taskSt
 Route.post('/email', 'TasksController.email')
 ///
 
+Route.get('/group', 'GroupsController.index').middleware('isAdmin')
+Route.post('/group', 'GroupsController.create').middleware('isAdmin')
+Route.get('/group/:id/edit', 'GroupsController.edit')
+Route.patch('/group/:id', 'GroupsController.update')
+Route.get('/group/:id/delete', 'GroupsController.destroy')
+
+Route.group(() => {
+  Route.get('/user_group/:id', 'UserGroupsController.index').middleware('isAdmin')
+  Route.post('/user_group', 'UserGroupsController.create').middleware('isAdmin')
+  Route.get('/user_group/:id/edit', 'UserGroupsController.edit')
+  Route.patch('/user_group', 'UserGroupsController.update')
+  Route.get('/user_group/:id/delete', 'UserGroupsController.destroy')
+}).middleware('editAdmin')
+
+
 Route.get('/client_user', 'ClientUsersController.index')
 Route.post('client_user','ClientUsersController.create')
 

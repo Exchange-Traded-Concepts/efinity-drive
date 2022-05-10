@@ -1,0 +1,58 @@
+@layout('layouts/adminDashboard')
+
+@section('content')
+<div class="container-fluid">
+<div>
+  @if(flashMessages.has('notification'))
+  <div class="alert alert-success">{{ flashMessages.get('notification') }}</div>
+  @endif
+</div>
+<div class="row">
+
+  <div class="col-md-6">
+    <div class="card shadow mb-4">
+      <div
+        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">User Groups for {{user[0].first_name}} {{user[0].last_name}}</h6>
+      </div>
+      <form
+        action=" {{ `/user_group?_method=PATCH`}}"
+        method="post"
+        enctype="multipart/form-data">
+        {{ csrfField() }}
+        <input  type="hidden" name="user_id" value="{{user[0].id}}">
+      <div class="card-body">
+        <table class="table table-striped">
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+
+          </tr>
+          @each(d in groups)
+          <tr>
+            <td>
+              {{ d.id }}
+            </td>
+            <td>
+               <input type="checkbox" name="group_id[]" value="{{d.id}}"
+                     @each(g in user_groups[0])
+                      @if(g.group_id == d.id)
+                      checked
+                     @end
+                     @end
+              > {{ d.name }}
+            </td>
+
+          </tr>
+          @end
+        </table>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+
+
+@endsection
