@@ -73,7 +73,7 @@
               {{t.createdBy.first_name}} {{t.createdBy.last_name}}
             </td>
             <td>
-              {{t.assignedTo.first_name}} {{t.assignedTo.last_name}}
+              {{t.assignedTo.name}}
             </td>
             <td>
               @if(t.target_completion_date)
@@ -102,10 +102,10 @@
               {{st.createdBy.first_name}} {{st.createdBy.last_name}}
             </td>
             <td>
-              {{st.assignedTo.first_name}} {{st.assignedTo.last_name}}
+              {{st.assignedTo.name}}
             </td>
             <td>
-		@if(st.target_completion_date)		
+		@if(st.target_completion_date)
 {{st.target_completion_date.toFormat('M/d/y')}}
 		@end
 </td>

@@ -79,9 +79,15 @@
       <div class="form-group">
         <label for="assigned_to">Assign To</label>
         <select name="assigned_to" id="assigned_to" class="form-control">
-          @each(u in etcUsers)
-          <option value="{{u.id}}">
-            {{u.first_name}} {{u.last_name}}
+          @each(g in groups)
+          <option value="{{g.id}}"
+          @if(u_task)
+          @if (u_task.assigned_to_group_id == g.id)
+                  selected
+          @end
+          @end
+          >
+            {{g.name}}
           </option>
           @end
         </select>

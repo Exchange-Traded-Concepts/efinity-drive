@@ -20,7 +20,7 @@ export default class DashboardController {
 
 }
 
-  public async index ({ view, auth, session}: HttpContextContract){
+  public async index ({ view, session}: HttpContextContract){
 
 
     const axios = require('axios');
@@ -46,7 +46,7 @@ export default class DashboardController {
       .preload('createdBy')
       .preload('taskStatus')
       // @ts-ignore
-      .where('assigned_to', auth.user.id)
+      .whereIn('assigned_to_group_id', session.get('user_groups'))
       .andWhere('completed', 0)
       .andWhere('task_statuses_id' ,'<=', '2')
       .orderBy('target_completion_date')
@@ -58,10 +58,11 @@ export default class DashboardController {
       .orderBy('target_launch_date')
     console.log('userGroups V')
     console.log(session.get('user_groups'))
+    const user_groups = session.get('user_groups')
     const status = await TaskStatus.query().orderBy('rank')
 
 
-    return view.render('admin/dashboard', {d, tasks, funds, status})
+    return view.render('admin/dashboard', {d, tasks, funds, status, user_groups})
   }
 
 

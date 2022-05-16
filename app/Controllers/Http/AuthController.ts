@@ -48,10 +48,28 @@ export default class AuthController {
     const { email, password } = request.all()
 
     try {
+      let x = []
       const cur_user  =  await auth.attempt(email, password)
       // @ts-ignore
       const user_groups = await Database.rawQuery('SELECT group_id FROM user_groups where user_id =? ', [auth.user.id])
-      session.put('user_groups', user_groups)// cur_user.groups = user_groups
+
+      console.log(user_groups[0])
+
+      for (let i = 0; i < user_groups[0].length; i++) {
+        console.log('start loop ' + i)
+        console.log('loop is '+ user_groups[0].length + ' long')
+        console.log('ID V')
+        console.log(user_groups[0][i])
+        console.log(user_groups[0][i].group_id)
+        // @ts-ignore
+        x.push( user_groups[0][i].group_id )
+      }
+      console.log('outside of loop')
+      console.log(x)
+      console.log('x should br that ^')
+
+      if(x) session.put('user_groups', x)// cur_user.groups = user_groups
+
       session.put('cur_user', {cur_user})
       return response.redirect('/dashboard')
     } catch (error) {

@@ -306,11 +306,11 @@
         <TR>
           <th>ID</th>
           <th></th>
-          <th onclick="sortTable(2)" class="cursor-pointer select-none">Title</th>
+          <th>Title</th>
           <th>Description</th>
           <th>Assigned By</th>
           <th>Assigned To</th>
-          <th onclick="sortTable(6)" class="cursor-pointer select-none date">Due Date</th>
+          <th>Due Date</th>
           <th>Options</th>
         </TR>
         </thead>
@@ -332,7 +332,7 @@
             {{t.createdBy.first_name}} {{t.createdBy.last_name}}
           </td>
           <td>
-            {{t.assignedTo.first_name}} {{t.assignedTo.last_name}}
+            {{t.assignedTo.name}}
           </td>
           <td>
             @if(t.target_completion_date)
@@ -358,7 +358,7 @@
             {{st.createdBy.first_name}} {{st.createdBy.last_name}}
           </td>
           <td>
-            {{st.assignedTo.first_name}} {{st.assignedTo.last_name}}
+            {{st.assignedTo.name}}
           </td>
           <td>
 		@if(st.target_completion_date)

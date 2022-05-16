@@ -5,6 +5,7 @@ import Fund from "App/Models/Fund";
 import Database from "@ioc:Adonis/Lucid/Database";
 import Mail from "@ioc:Adonis/Addons/Mail";
 import TaskStatus from "App/Models/TaskStatus";
+import Group from "App/Models/Group";
 
 
 export default class TasksController {
@@ -19,7 +20,7 @@ export default class TasksController {
       .preload('assignedTo')
       .preload('createdBy')
       // @ts-ignore
-      .where('assigned_to', auth.user.id).orderBy('target_completion_date')
+      .whereIn('assigned_to_group_id', session.get('user_groups')).orderBy('target_completion_date')
     const funds  = await Fund.query().orderBy('ticker')
     const status = await TaskStatus.query().orderBy('rank')
 
@@ -42,7 +43,7 @@ export default class TasksController {
     await Task.create({
       title: request.input('title'),
       description:request.input('description'),
-      assigned_to: request.input('assigned_to'),
+      assigned_to_group_id: request.input('assigned_to_group_id'),
       fundId: request.input('fund_id'),
       // @ts-ignore
       created_by: auth.user.id,
@@ -56,9 +57,9 @@ export default class TasksController {
 
   public async store({}: HttpContextContract) {}
 
-  public async show({auth, view}: HttpContextContract) {
+  public async show({view}: HttpContextContract) {
     // @ts-ignore
-    const tasks = await Task.query().preload('createdBy').preload('subtasks').where('assigned_to', auth.user.id)
+    const tasks = await Task.query().preload('createdBy').preload('subtasks').whereIn('assigned_to_group_id', session.get('user_groups'))
     console.log(tasks)
     return view.render('admin/tasks', {tasks})
   }
@@ -68,9 +69,9 @@ export default class TasksController {
     const etcUsers = await users.query().where('is_admin', 1)
     const funds  = await Fund.query().orderBy('ticker')
     const u_task = await Task.findBy('id', params.id)
-    console.log(u_task)
+    const groups = await Group.all()
     const taskstatuses = await TaskStatus.query().orderBy('rank')
-    return view.render('maintenance/add_task', {etcUsers, funds, taskstatuses, u_task})
+    return view.render('maintenance/add_task', {groups, etcUsers, funds, taskstatuses, u_task})
 
 
   }
@@ -83,7 +84,7 @@ export default class TasksController {
     task.merge({
       title: request.input('title'),
       description:request.input('description'),
-      assigned_to: request.input('assigned_to'),
+      assigned_to_group_id: request.input('assigned_to_group_id'),
       fundId: request.input('fund_id'),
       target_completion_date: request.input('target_completion_date'),
       task_statuses_id: request.input('task_statuses_id')
@@ -99,9 +100,10 @@ export default class TasksController {
   public async add({view}: HttpContextContract) {
 
     const etcUsers = await users.query().where('is_admin', 1)
+    const groups = await Group.all()
     const funds  = await Fund.query().orderBy('ticker')
     const taskstatuses = await TaskStatus.query().orderBy('rank')
-    return view.render('maintenance/add_task', {etcUsers, funds, taskstatuses})
+    return view.render('maintenance/add_task', {groups, etcUsers, funds, taskstatuses})
   }
 
   public async email({}){
@@ -115,8 +117,9 @@ export default class TasksController {
 
   }
 
-  public async to_do({view, auth}: HttpContextContract){
+  public async to_do({view, session}: HttpContextContract){
 
+    console.log(session.get('user_groups'))
     const tasks = await Task.query()
       .preload('fund')
       .preload('taskStatus')
@@ -124,22 +127,23 @@ export default class TasksController {
       .preload('subtasks', (assignedToQuery) => {assignedToQuery.preload('assignedTo').preload('createdBy').preload('taskStatus')})
       .preload('assignedTo')
       .preload('createdBy')
-      // @ts-ignore
-      .where('assigned_to', auth.user.id)
+      .whereIn('assigned_to_group_id', session.get('user_groups'))
       .andWhere('task_statuses_id', '<=', '2')
       .orderBy('target_completion_date', )
 
     const funds  = await Fund.query().orderBy('ticker')
     const status = await TaskStatus.query().orderBy('rank')
     const etcUsers = await users.query().where('is_admin', 1)
+    const user_groups = session.get('user_groups')
 
-    return view.render('maintenance/task', {etcUsers, tasks, funds, status})
+    return view.render('maintenance/task', {etcUsers, tasks, funds, status, user_groups})
   }
 
 
 
-  public async task_by_status({params, view, auth}: HttpContextContract){
+  public async task_by_status({params, view, session}: HttpContextContract){
 
+    console.log(session.get('user_groups'))
     const tasks = await Task.query()
       .preload('fund')
       .preload('taskStatus')
@@ -147,16 +151,17 @@ export default class TasksController {
       .preload('subtasks', (assignedToQuery) => {assignedToQuery.preload('assignedTo').preload('createdBy').preload('taskStatus')})
       .preload('assignedTo')
       .preload('createdBy')
-      // @ts-ignore
-      .where('assigned_to', auth.user.id)
+      .whereIn('assigned_to_group_id', session.get('user_groups'))
       .andWhere('task_statuses_id', params.status_id)
       .orderBy('target_completion_date', 'desc')
 
     const funds  = await Fund.query().orderBy('ticker')
+
     const status = await TaskStatus.query().orderBy('rank')
     const etcUsers = await users.query().where('is_admin', 1)
+    const user_groups = session.get('user_groups')
 
-    return view.render('maintenance/task', {etcUsers, tasks, funds, status})
+    return view.render('maintenance/task', { user_groups, etcUsers, tasks, funds, status})
   }
 
 

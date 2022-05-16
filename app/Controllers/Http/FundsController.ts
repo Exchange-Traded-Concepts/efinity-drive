@@ -260,7 +260,7 @@ export default class FundsController {
     await Task.create({
       title:  'Pre-PEA ',
       description: '',
-      assigned_to: auth.user.id,
+      assigned_to_group_id: 6,
       created_by: auth.user.id,
       fundId: fund_id,
       target_completion_date: date,
@@ -390,7 +390,7 @@ export default class FundsController {
     })
   }
 
-  public async details({params, view}: HttpContextContract){
+  public async details({params, view, session}: HttpContextContract){
 
     if (params.ticker){
       const f = await Fund.query().where('ticker', params.ticker )
@@ -419,8 +419,9 @@ export default class FundsController {
       .where('resource_id', params.id).andWhere('doc_type_id', 2)
 
     const fund_id = params.id
+    const user_groups = session.get('user_groups')
 
-    return view.render('admin/pipeline_details', {p, tasks, fund_id, docs, status})
+    return view.render('admin/pipeline_details', {user_groups, p, tasks, fund_id, docs, status})
 
 
   }

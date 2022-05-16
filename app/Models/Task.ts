@@ -4,6 +4,7 @@ import users from "App/Models/users";
 import Fund from "App/Models/Fund";
 import SubTask from "App/Models/SubTask";
 import TaskStatus from "App/Models/TaskStatus";
+import Group from "App/Models/Group";
 
 export default class Task extends BaseModel {
   @column({ isPrimary: true })
@@ -16,12 +17,12 @@ export default class Task extends BaseModel {
   public description: string
 
   @column()
-  public assigned_to : number
-  @belongsTo(()=> users, {
-    foreignKey: 'assigned_to',
+  public assigned_to_group_id : number
+  @belongsTo(()=> Group, {
+    foreignKey: 'assigned_to_group_id',
     localKey: 'id'
   })
-  public assignedTo : BelongsTo<typeof users>
+  public assignedTo : BelongsTo<typeof Group>
 
   @column()
   public fundId: number
