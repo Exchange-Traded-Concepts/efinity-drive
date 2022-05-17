@@ -117,7 +117,7 @@ export default class FundsController {
       title: 'Pre-PEA',
       description:'All the sub-tasks that need to be completed prior to executing the PSA',
       // @ts-ignore
-      assigned_to: auth.user.id,
+      assigned_to_group_id: 6,
       // @ts-ignore
       created_by : auth.user.id,
       fundId: fund_id,
@@ -137,8 +137,7 @@ export default class FundsController {
     await SubTask.createMany([
       {
         title: 'Conflict with existing products',
-        // @ts-ignore
-        assigned_to: auth.user.id,
+        assigned_to_group_id: 6,
         // @ts-ignore
         created_by: auth.user.id,
         task_id : task_id,
@@ -148,8 +147,7 @@ export default class FundsController {
       },
       {
         title: 'Welcome packet sent',
-        // @ts-ignore
-        assigned_to: auth.user.id,
+        assigned_to_group_id: 6,
         // @ts-ignore
         created_by: auth.user.id,
         task_id : task_id,
@@ -159,8 +157,7 @@ export default class FundsController {
       },
       {
         title: 'Questionnaire received',
-        // @ts-ignore
-        assigned_to: auth.user.id,
+        assigned_to_group_id: 6,
         // @ts-ignore
         created_by: auth.user.id,
         task_id : task_id,
@@ -170,8 +167,7 @@ export default class FundsController {
       },
       {
         title: 'Sponsor background check',
-        // @ts-ignore
-        assigned_to: auth.user.id,
+        assigned_to_group_id: 6,
         // @ts-ignore
         created_by: auth.user.id,
         task_id : task_id,
@@ -181,8 +177,7 @@ export default class FundsController {
       },
       {
         title: 'Portfolio review (including diversification, liquidity analysis) ',
-        // @ts-ignore
-        assigned_to: auth.user.id,
+        assigned_to_group_id: 6,
         // @ts-ignore
         created_by: auth.user.id,
         task_id : task_id,
@@ -192,8 +187,7 @@ export default class FundsController {
       },
       {
         title: 'Derivatives review (if necessary) ',
-        // @ts-ignore
-        assigned_to: auth.user.id,
+        assigned_to_group_id: 6,
         // @ts-ignore
         created_by: auth.user.id,
         task_id : task_id,
@@ -203,8 +197,7 @@ export default class FundsController {
       },
       {
         title: 'New Activity Review and Signoff',
-        // @ts-ignore
-        assigned_to: auth.user.id,
+        assigned_to_group_id: 6,
         // @ts-ignore
         created_by: auth.user.id,
         task_id : task_id,
@@ -214,8 +207,7 @@ export default class FundsController {
       },
       {
         title: 'Special tax considerations',
-        // @ts-ignore
-        assigned_to: auth.user.id,
+        assigned_to_group_id: 6,
         // @ts-ignore
         created_by: auth.user.id,
         task_id : task_id,
@@ -225,8 +217,7 @@ export default class FundsController {
       },
       {
         title: 'Ticker obtained',
-        // @ts-ignore
-        assigned_to: auth.user.id,
+        assigned_to_group_id: 6,
         // @ts-ignore
         created_by: auth.user.id,
         task_id : task_id,
@@ -236,8 +227,7 @@ export default class FundsController {
       },
       {
         title: 'PSA executed',
-        // @ts-ignore
-        assigned_to: auth.user.id,
+        assigned_to_group_id: 6,
         // @ts-ignore
         created_by: auth.user.id,
         task_id : task_id,
