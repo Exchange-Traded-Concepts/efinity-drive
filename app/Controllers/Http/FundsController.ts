@@ -238,7 +238,7 @@ export default class FundsController {
 
       ])
 
-    await this.prePea(auth,task_id, request.input('target_launch_date') )
+   // await this.prePea(auth,task_id, request.input('target_launch_date') )
 
     session.flash('notification', 'Fund saved.')
     return response.redirect().back()
