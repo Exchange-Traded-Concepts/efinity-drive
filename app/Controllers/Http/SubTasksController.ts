@@ -5,6 +5,8 @@ import users from "App/Models/users";
 import Task from "App/Models/Task";
 import TaskStatus from "App/Models/TaskStatus";
 import Document from "App/Models/Document";
+import Group from "App/Models/Group";
+
 
 
 export default class SubTasksController {
@@ -24,7 +26,7 @@ export default class SubTasksController {
     await SubTask.create({
       title: request.input('title'),
       description: request.input('description'),
-      assigned_to: request.input('assigned_to'),
+      assigned_to_group_id: request.input('assigned_to'),
       // @ts-ignore
       created_by: auth.user.id,
       task_id: request.input('task_id'),
@@ -54,6 +56,7 @@ export default class SubTasksController {
 
     const subTask =    await SubTask.findBy('id',params.id)
     const etcUsers = await users.all()
+    const groups = await Group.all()
     const status = await TaskStatus.query().orderBy('rank')
 
     params.task_id = subTask?.taskId
@@ -71,7 +74,7 @@ export default class SubTasksController {
     const docs = await Document.query().where('doc_type_id', 3).andWhere('resource_id', subTask.taskId)
 
 
-    return view.render('maintenance/subtask', { params, etcUsers, subTask, tasks, status, docs })
+    return view.render('maintenance/subtask', { params, etcUsers, subTask, tasks, status, docs , groups})
   }
 
   public async add_subtask_to_task({params, view}: HttpContextContract){
@@ -86,8 +89,9 @@ export default class SubTasksController {
       .where('id', params.task_id).orderBy('target_completion_date')
 
     const status = await TaskStatus.query().orderBy('rank')
+    const groups = await Group.all()
     const docs = await Document.query().where('doc_type_id', 3).andWhere('resource_id', params.task_id)
-    return view.render('maintenance/subtask', { params, etcUsers, tasks, status, docs })
+    return view.render('maintenance/subtask', { params, etcUsers, tasks, status, docs, groups })
 
 
   }
@@ -111,7 +115,7 @@ export default class SubTasksController {
     st.merge({
       title: request.input('title'),
       description: request.input('description'),
-      assigned_to: request.input('assigned_to'),
+      assigned_to_group_id: request.input('assigned_to'),
       // @ts-ignore
       created_by: auth.user.id,
       task_id: request.input('task_id'),

@@ -63,7 +63,7 @@
               {{t.createdBy.first_name}} {{t.createdBy.last_name}}
             </td>
             <td>
-              {{t.assignedTo.first_name}} {{t.assignedTo.last_name}}
+              {{t.assignedTo.name}}
             </td>
             <td>
               @if(t.target_completion_date)
@@ -87,12 +87,12 @@
               {{st.createdBy.first_name}} {{st.createdBy.last_name}}
             </td>
             <td>
-              {{st.assignedTo.first_name}} {{st.assignedTo.last_name}}
+              {{st.assignedTo.name}}
             </td>
             <td>
 		@if(st.target_completion_date)
 		{{st.target_completion_date.toFormat('M/d/y')}}
-		@end	
+		@end
 	    </td>
             <td>
               @if(auth.user.id === st.assignedTo.id || auth.user.id == st.createdBy.id )
@@ -238,7 +238,7 @@
           <div class="form-group col-md-6">
             <label for="assigned_to">Assign To</label>
             <select name="assigned_to" id="assigned_to" class="form-control">
-              @each(u in etcUsers)
+              @each(u in groups)
               <option value="{{u.id}}"
               @if(subTask)
               @if(subTask.assigned_to == u.id)
@@ -246,7 +246,7 @@
               @end
               @end
               >
-                {{u.first_name}} {{u.last_name}}
+                {{u.name}}
               </option>
               @end
             </select>
@@ -267,11 +267,12 @@
          </div>
 
           <div class="form-group">
-            <label for="notes">Notes</label><textarea name="notes" class="form-control" id="notes" wrap="physical">
-@if(subTask)
-{{subTask.notes}}
-@end
-            </textarea>
+            <label for="notes">Notes</label>
+            @if(subTask)
+            <textarea name="notes" class="form-control" id="notes" wrap="physical">{{subTask.notes}}</textarea>
+            @else
+            <textarea name="notes" class="form-control" id="notes" wrap="physical"></textarea>
+            @end
           </div>
         <input name="task_id" type="hidden" value="{{ params.task_id || subTask.id}}">
           <button type="submit" class="btn btn-primary">Submit</button>
