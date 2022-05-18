@@ -100,8 +100,8 @@ export default class Fund extends BaseModel {
   @column()
   public sec_comments: string
 
-  @column()
-  public launch_date: string
+  @column.dateTime()
+  public launch_date: DateTime
 
   @column.dateTime()
   public sub_advisor_agreement: DateTime
@@ -129,8 +129,8 @@ export default class Fund extends BaseModel {
   @column()
   public role : string
 
-  @column()
-  public pea: string
+  @column.dateTime()
+  public pea: DateTime
 
   @column()
   public notes: string

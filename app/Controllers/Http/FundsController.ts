@@ -105,7 +105,8 @@ export default class FundsController {
       admin: data.admin,
       management_fee : data.management_fee,
       proxy: data.proxy,
-      color: data.color
+      color: data.color,
+      code_of_ethics_complete: data.code_of_ethics_complete
     })
 
     let f = await Fund.query().orderBy('id', 'desc')
@@ -298,7 +299,8 @@ export default class FundsController {
       admin: data.admin,
       management_fee : data.management_fee,
       proxy: data.proxy,
-      color: data.color
+      color: data.color,
+      code_of_ethics_complete: data.code_of_ethics_complete
     })
 
     await fund.save()
@@ -350,8 +352,8 @@ export default class FundsController {
       admin: schema.string.nullableAndOptional({trim:true}),
       proxy: schema.string.nullableAndOptional({trim:true}),
       management_fee: schema.string.nullableAndOptional(),
-      color: schema.string.nullableAndOptional()
-
+      color: schema.string.nullableAndOptional(),
+      code_of_ethics_complete: schema.string.nullableAndOptional({trim:true})
        })
 
     return await request.validate({

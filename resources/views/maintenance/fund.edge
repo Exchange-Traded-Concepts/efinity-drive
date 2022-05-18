@@ -334,6 +334,39 @@
           </div>
 
           <!---------------------------////////////////////////  ---->
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label for="code_of_ethics_complete">Code of Ethics Complete</label>
+              <input type="date"
+                     name="code_of_ethics_complete"
+                     @if(c_fund)
+                     @if(c_fund.code_of_ethics_complete)
+                     value="{{ c_fund.code_of_ethics_complete.toFormat('y-MM-dd') }}"
+                     @end
+                     @endif
+                     class="form-control"
+                     id="code_of_ethics_complete"
+                     placeholder="Code of Ethics Complete">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="launch_date">Actual Launch Date</label>
+              <input type="date"
+                     name="launch_date"
+                     @if(c_fund)
+                     @if(c_fund.launch_date)
+                     value="{{c_fund.launch_date.toFormat('y-MM-dd') ||''}}"
+                     @endif
+                     @endif
+                     class="form-control"
+                     id="launch_date"
+                     placeholder="Actual Launch Date">
+            </div>
+          </div>
+
+
+
+
+
 
           <div class="row">
             <div class="form-group col-md-6">
@@ -480,7 +513,8 @@
                      placeholder="15(C) Approval">
             </div>
           </div>
-          <div class="form-group ">
+          <div class="row">
+          <div class="form-group col-md-6">
             <label for="proposal_sent">Proposal Sent</label>
             <input type="date"
                    name="proposal_sent"
@@ -492,6 +526,21 @@
                    class="form-control"
                    id="proposal_sent"
                    placeholder="Proposal Sent">
+          </div>
+            <div class="form-group col-md-6">
+              <label for="proposal_sent">PEA Approval Date</label>
+              <input type="date"
+                     name="pea"
+                     @if(c_fund)
+                     @if(c_fund.pea)
+                     value="{{c_fund.pea.toFormat('y-MM-dd') ||''}}"
+                     @endif
+                     @endif
+                     class="form-control"
+                     id="pea"
+                     placeholder="PEA Approval Date">
+            </div>
+
           </div>
           <div class="row">
             <div class="form-group col-md-6">
@@ -553,11 +602,11 @@
           </div>
           <div class="form-group">
             <label for="portfolio_notes">Portfolio Notes</label>
-            <textarea class="form-control" name="portfolio_notes" id="portfolio_notes">
-              @if(c_fund)
-              {{c_fund.portfolio_notes ||''}}
-              @end
-            </textarea>
+            @if(c_fund)
+            <textarea class="form-control" name="portfolio_notes" id="portfolio_notes">{{c_fund.portfolio_notes ||''}}</textarea>
+            @else
+            <textarea class="form-control" name="portfolio_notes" id="portfolio_notes"></textarea>
+            @end
           </div>
           <div class="form-group">
             <label for="sec_comments">SEC Comments</label>
