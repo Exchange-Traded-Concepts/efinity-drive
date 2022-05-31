@@ -31,7 +31,6 @@
         </div>
       </div>
       <div class="card-body">
-        <div class="table-responsive">
         <table class="table table-striped" x-data="{selected:null}" id="sortTable">
           <thead>
           <TR>
@@ -104,7 +103,6 @@
           @end
           @end
         </table>
-        </div>
       </div>
 
     </div>
@@ -241,7 +239,7 @@
               @each(u in groups)
               <option value="{{u.id}}"
               @if(subTask)
-              @if(subTask.assigned_to == u.id)
+              @if(subTask.assigned_to_group_id == u.id)
                       selected
               @end
               @end

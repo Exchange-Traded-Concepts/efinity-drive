@@ -4,6 +4,7 @@ import CalendarConfig from "App/utils/calendarConfig";
 import Task from "App/Models/Task";
 import Fund from "App/Models/Fund";
 import TaskStatus from "App/Models/TaskStatus";
+import SubTask from "App/Models/SubTask";
 
 
 
@@ -61,9 +62,12 @@ export default class DashboardController {
     const user_groups = session.get('user_groups')
     const status = await TaskStatus.query().orderBy('rank')
 
+    const subtasks = await SubTask.query().whereIn('assigned_to_group_id', user_groups).andWhereNotIn('task_statuses_id', [3,4])
+      .preload('task', (fundQuery) => {fundQuery.preload('fund')})
+      .preload('taskStatus')
+      .preload('assignedTo')
+      .preload('createdBy')
 
-    return view.render('admin/dashboard', {d, tasks, funds, status, user_groups})
+  return view.render('admin/dashboard', {d, tasks, funds, status, user_groups, subtasks})
   }
-
-
 }

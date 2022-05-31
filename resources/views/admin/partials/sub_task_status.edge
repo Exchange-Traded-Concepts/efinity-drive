@@ -6,7 +6,7 @@
   <div class="relative" @click.away="showContextMenu=false">
     @each(ug in user_groups)
     @if(ug == st.assignedTo.id)
-    <button  x-on:contextmenu="$event.preventDefault();showContextMenu=true" @click.prevent="showContextMenu=false"><i class="fas fa-check-circle"></i></button>
+     <button  x-on:contextmenu="$event.preventDefault();showContextMenu=true" @click.prevent="showContextMenu=false"><i class="fas fa-check-circle"></i></button>
     @end
     @end
     <div class="absolute mt-12 top-0 left-1 min-w-full w-48 z-30" style="display:none;"

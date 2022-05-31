@@ -33,7 +33,7 @@
       </div>
       <div class="card-body">
         <div class="table-responsive">
-        <table class="table table-striped" x-data="{selected:null}" id="sortTable">
+        <table class="table table-striped" x-data="{selected:null}" >
           <thead>
           <TR>
             <th>ID</th>
@@ -120,7 +120,49 @@
 
     </div>
   </div>
+ </div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="card shadow mb-4">
+      <div
+         class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+         <h6 class="m-0 font-weight-bold text-primary">My SubTasks</h6>
+        </div>
+      <div class="card-body">
+        <table class="table table-striped" x-data="{selected:null}" id="sortTable">
+          <thead>
+          <tr>
+            <th>Title</th>
+            <th>Parent Task</th>
+            <th>Fund</th>
+            <th>Assigned By</th>
+            <th>Assigned To</th>
+            <th>Due Date</th>
+          </tr>
+          </thead>
+          @each(st in subtasks)
+          <tr>
+            <td>{{st.title}}<br>
+              @include('admin/partials/sub_task_status')
+            </td>
+            <td><a href="{{`/add_sub_tasks/${st.task.id}`}}">{{st.task.title}}</a></td>
+            <td><a href="{{`/fund_pipeline_details/${st.task.fund.id}`}}">{{st.task.fund.ticker}}<a/></td>
+            <td>{{st.createdBy.first_name}} {{st.createdBy.last_name}}</td>
+            <td>{{st.assignedTo.name }}</td>
+            <td>
+              @if(st.target_completion_date)
+              {{st.target_completion_date.toFormat('m/d/y')}}
+              @end
+            </td>
+           </tr>
+          @end
+        </table>
+
+      </div>
+    </div>
+   </div>
 </div>
+
 
 <div class="row">
 <div class="col-md-6">
@@ -132,8 +174,7 @@
     <div class="card-body">
 
     <div class="table">
-      <div class="table-responsive">
-    <table class="table table-striped" id="fundSortTable">
+         <table class="table table-striped" id="fundSortTable">
       <thead>
       <tr>
         <th onclick="sortTable(0, 'fundSortTable')" class="cursor-pointer select-none">
@@ -169,7 +210,7 @@
     </table>
     </div>
       </div>
-  </div>
+
   </div>
   </div>
   </div>

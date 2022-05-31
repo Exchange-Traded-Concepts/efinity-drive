@@ -33,8 +33,9 @@ async function StatusUpdateS(task_id, status_id){
       inno.innerHTML = tStatus(status_id);
       span_c.style.color = c;
     })
-    .catch(() => {
+    .catch((err) => {
       this.message = 'Ooops! Something went wrong!'
+      console.log(err)
     })
 }
 

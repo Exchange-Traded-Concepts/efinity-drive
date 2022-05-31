@@ -3,9 +3,10 @@ import Task from "App/Models/Task";
 import users from "App/Models/users";
 import Fund from "App/Models/Fund";
 import Database from "@ioc:Adonis/Lucid/Database";
-import Mail from "@ioc:Adonis/Addons/Mail";
 import TaskStatus from "App/Models/TaskStatus";
 import Group from "App/Models/Group";
+import EFMailer from "App/utils/mailer";
+import Env from "@ioc:Adonis/Core/Env";
 
 
 export default class TasksController {
@@ -76,14 +77,39 @@ export default class TasksController {
 
   }
 
+  /* Update the entire task from the maint page */
   public async update({request, session, response, params}: HttpContextContract) {
 
     const task = await Task.findOrFail( params.id)
     //const data = await this.validateInput(request)
 
+    let changes = []
+    if(task.title != request.input('title')){
+      // @ts-ignore
+      changes.push("Title")
+    }
+    if(task.description != request.input('description')){
+      // @ts-ignore
+      changes.push('Description')
+    }
+    if(task.assigned_to_group_id != request.input('assigned_to_group_id')){
+      // @ts-ignore
+      changes.push('Group Assignment')
+    }
+    if(task.target_completion_date) {
+      if (task.target_completion_date.toFormat('y-MM-dd') != request.input('target_completion_date')) {
+        // @ts-ignore
+        changes.push('Target Completion Date')
+      }
+    }
+    if(task.task_statuses_id != request.input('task_statuses_id')){
+      // @ts-ignore
+      changes.push('Status Updated')
+    }
+
     task.merge({
-      title: request.input('title'),
-      description:request.input('description'),
+      title: request.input('title').trim(),
+      description:request.input('description').trim(),
       assigned_to_group_id: request.input('assigned_to_group_id'),
       fundId: request.input('fund_id'),
       target_completion_date: request.input('target_completion_date'),
@@ -91,6 +117,32 @@ export default class TasksController {
     })
 
     await task.save()
+
+    const x = changes.toString()
+
+    let IDarray = []
+    if(task.assigned_to_group_id != request.input('assigned_to_group_id')){
+         // @ts-ignore
+      IDarray = [task.assigned_to_group_id,  request.input('assigned_to_group_id')]
+    }
+    else{
+         // @ts-ignore
+      IDarray = [task.assigned_to_group_id]
+    }
+
+    const fund = await Fund.query().where('id', request.input('fund_id'))
+    const url = Env.get('URL')
+
+    const mailTo = await EFMailer.getEmailByGroupArray(IDarray)
+    await EFMailer.email(mailTo, 'Task Update', 'emails/task_update',
+      {changes: x,
+        fund_name : fund[0].fund_name,
+        task_title: request.input('title'),
+        url: url,
+        task_id: task.id
+      })
+
+
     session.flash('notification', 'Task Updated.')
     return response.redirect().back()
 
@@ -107,13 +159,19 @@ export default class TasksController {
   }
 
   public async email({}){
-      await Mail.send((message) => {
+
+    /*  await Mail.send((message) => {
         message
           .from('info@etcdev.com')
           .to('soonerdm@gmail.com')
           .subject('Welcome Onboard!')
           .htmlView('emails/welcome', { name: 'David', url :"http://www.google.com" })
       })
+
+     */
+
+    await EFMailer.getEmailByGroupArray([1,6])
+
 
   }
 
@@ -174,7 +232,23 @@ export default class TasksController {
       }
     )
     await task.save()
-    //session.flash('notification', 'Task Updated.')
+    try {
+      const nTask = await Task.query().preload('fund').where('id', task.id)
+      const fund_name = nTask[0].fund.fund_name
+      const status = await TaskStatus.query().where('id', params.status_id)
+      const mailTo = await EFMailer.getEmailByGroupArray([task.assigned_to_group_id])
+      const url = Env.get('URL')
+      await EFMailer.email(mailTo, 'Task Status Updated', 'emails/task_status_update', {
+        status: status[0].name,
+        fund_name: fund_name,
+        task_title: task.title,
+        task_id: task.id,
+        url: url
+      })
+    }
+    catch (err){
+      console.log(err)
+    }
     return response.redirect().back()
   }
 

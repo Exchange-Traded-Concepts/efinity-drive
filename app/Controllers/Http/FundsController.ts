@@ -7,7 +7,8 @@ import Document from "App/Models/Document";
 import States from "App/utils/USState";
 import TaskStatus from "App/Models/TaskStatus";
 import SubTask from "App/Models/SubTask";
-
+import EFMailer from "App/utils/mailer";
+import Env from "@ioc:Adonis/Core/Env";
 
 export default class FundsController {
   public async index({view}: HttpContextContract) {
@@ -138,7 +139,7 @@ export default class FundsController {
     await SubTask.createMany([
       {
         title: 'Conflict with existing products',
-        assigned_to_group_id: 6,
+        assigned_to_group_id: 7,
         // @ts-ignore
         created_by: auth.user.id,
         task_id : task_id,
@@ -147,8 +148,8 @@ export default class FundsController {
         task_statuses_id : 1,
       },
       {
-        title: 'Welcome packet sent',
-        assigned_to_group_id: 6,
+          title: 'Welcome packet sent',
+        assigned_to_group_id: 4,
         // @ts-ignore
         created_by: auth.user.id,
         task_id : task_id,
@@ -158,7 +159,7 @@ export default class FundsController {
       },
       {
         title: 'Questionnaire received',
-        assigned_to_group_id: 6,
+        assigned_to_group_id: 4,
         // @ts-ignore
         created_by: auth.user.id,
         task_id : task_id,
@@ -168,7 +169,7 @@ export default class FundsController {
       },
       {
         title: 'Sponsor background check',
-        assigned_to_group_id: 6,
+        assigned_to_group_id: 2,
         // @ts-ignore
         created_by: auth.user.id,
         task_id : task_id,
@@ -178,7 +179,7 @@ export default class FundsController {
       },
       {
         title: 'Portfolio review (including diversification, liquidity analysis) ',
-        assigned_to_group_id: 6,
+        assigned_to_group_id: 9,
         // @ts-ignore
         created_by: auth.user.id,
         task_id : task_id,
@@ -188,7 +189,7 @@ export default class FundsController {
       },
       {
         title: 'Derivatives review (if necessary) ',
-        assigned_to_group_id: 6,
+        assigned_to_group_id: 9,
         // @ts-ignore
         created_by: auth.user.id,
         task_id : task_id,
@@ -198,7 +199,7 @@ export default class FundsController {
       },
       {
         title: 'New Activity Review and Signoff',
-        assigned_to_group_id: 6,
+        assigned_to_group_id: 7,
         // @ts-ignore
         created_by: auth.user.id,
         task_id : task_id,
@@ -208,7 +209,7 @@ export default class FundsController {
       },
       {
         title: 'Special tax considerations',
-        assigned_to_group_id: 6,
+        assigned_to_group_id: 9,
         // @ts-ignore
         created_by: auth.user.id,
         task_id : task_id,
@@ -228,7 +229,7 @@ export default class FundsController {
       },
       {
         title: 'PSA executed',
-        assigned_to_group_id: 6,
+        assigned_to_group_id: 7,
         // @ts-ignore
         created_by: auth.user.id,
         task_id : task_id,
@@ -238,6 +239,25 @@ export default class FundsController {
       },
 
       ])
+
+    let date = request.input('target_launch_date')
+
+    await this.prePsa(date, fund_id, auth)
+    await this.prefifteenc(date, fund_id, auth)
+
+   const mailstring = await EFMailer.getEmailByGroupArray([2,4,5,6,7,9])
+
+    console.log(mailstring)
+
+    //const mailto = emails.toString()
+    let name = request.input('fund_name')
+    const base_url = Env.get('URL')
+    await EFMailer.email(mailstring, 'New Fund Created', 'emails/new_fund', {
+      name: name,
+      fund_id : fund_id,
+      url: base_url
+    })
+
 
     session.flash('notification', 'Fund saved.')
     return response.redirect().back()
@@ -309,6 +329,186 @@ export default class FundsController {
 
 
   }
+
+  public async prePsa(date, fund_id, auth){
+    await Task.create({
+      title: 'Pre-PSA',
+      description:'All the sub-tasks that need to be completed prior to executing the PSA',
+      // @ts-ignore
+      assigned_to_group_id: 6,
+      // @ts-ignore
+      created_by : auth.user.id,
+      fundId: fund_id,
+      target_completion_date: date,
+      task_statuses_id: 1
+
+    })
+
+    let t = await Task.query().orderBy('id', 'desc')
+
+    let task_id = t[0].id
+
+    await SubTask.createMany([
+      {
+        title: 'Term Sheet Complete',
+        assigned_to_group_id: 7,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Client presentation complete',
+        assigned_to_group_id: 7,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date:date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'MLB notified to draft prospectus',
+        assigned_to_group_id: 5,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Marketing plans',
+        assigned_to_group_id: 7,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      }
+
+    ])
+  }
+
+  public async prefifteenc(date, fund_id, auth){
+    await Task.create({
+      title: 'Pre 15(C)',
+      description:'All the sub-tasks that need to be completed prior to executing the 15(C)',
+      // @ts-ignore
+      assigned_to_group_id: 6,
+      // @ts-ignore
+      created_by : auth.user.id,
+      fundId: fund_id,
+      target_completion_date: date,
+      task_statuses_id: 1
+
+    })
+
+    let t = await Task.query().orderBy('id', 'desc')
+
+    let task_id = t[0].id
+
+    await SubTask.createMany([
+      {
+        title: 'On-Site Diligence Review (if client trading) ',
+        assigned_to_group_id: 5,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: '485(a) filed',
+        assigned_to_group_id: 5,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date:date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Code of Ethics Reviewed',
+        assigned_to_group_id: 2,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'SEC comments received',
+        assigned_to_group_id: 5,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Responded to SEC comments',
+        assigned_to_group_id: 5,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Profitability analysis',
+        assigned_to_group_id: 7,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Mini 15(c) response',
+        assigned_to_group_id: 5,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'License/Sponsor/Subadviser Agreement negotiated',
+        assigned_to_group_id: 5,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'ISS Comps Received',
+        assigned_to_group_id: 5,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+
+
+    ])
+  }
+
+
+
 
   public async destroy({}: HttpContextContract) {}
 
