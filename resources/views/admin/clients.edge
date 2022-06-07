@@ -34,7 +34,8 @@
         <table class="table table-striped " id="sortTable">
           <thead>
           <tr>
-            <th onclick="sortTable(0)" class="cursor-pointer select-none">Name</th>
+            <th>ID</th>
+            <th onclick="sortTable(1)" class="cursor-pointer select-none">Name</th>
             <th>State</th>
             <th>Website</th>
             <th>Contacts</th>
@@ -44,6 +45,7 @@
           @if(clients)
           @each(c in clients)
           <tr>
+            <td>{{c.id}}</td>
             <td>
               @if(c.name)
                {{ c.name }} <a href="{{ `/client_details/${c.id}` }}"><i class="fa fa-plus-square-o"></i></a>
