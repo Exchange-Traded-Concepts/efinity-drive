@@ -170,7 +170,11 @@
     <div class="card shadow mb-4">
       <div
         class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        @if(subTask)
+        <h6 class="m-0 font-weight-bold text-primary">Edit Sub Task</h6>
+        @else
         <h6 class="m-0 font-weight-bold text-primary">Add Sub Task</h6>
+        @end
       </div>
       <div class="card-body">
          <form

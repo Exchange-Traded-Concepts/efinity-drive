@@ -26,9 +26,12 @@ export default class EFMailer{
         // @ts-ignore
         x.push(emails[i].email)
         }
-      //console.log(x)
-      const mailto = x.toString()
-      //console.log(mailto)
+      // X is our arrya of emails. Now to remove duplicates
+      let uniqueEmails = [...new Set(x)]
+
+      console.log(uniqueEmails)
+      const mailto = uniqueEmails.toString()
+      console.log(mailto)
       return mailto
     }
     catch (err){

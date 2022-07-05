@@ -4,9 +4,13 @@
 <span  id="{{`ts_${st.id}`}}">{{st.taskStatus.name}}</span>
 <div class=" items-start justify-center" x-data="{showContextMenu:false}" style="display: inline-flex">
   <div class="relative" @click.away="showContextMenu=false">
+    @if (auth.user.id == st.createdBy.id)
+    <button  x-on:contextmenu="$event.preventDefault();showContextMenu=true" @click.prevent="showContextMenu=false"><i class="fas fa-check-circle"></i></button>
+    @else
     @each(ug in user_groups)
     @if(ug == st.assignedTo.id)
      <button  x-on:contextmenu="$event.preventDefault();showContextMenu=true" @click.prevent="showContextMenu=false"><i class="fas fa-check-circle"></i></button>
+    @end
     @end
     @end
     <div class="absolute mt-12 top-0 left-1 min-w-full w-48 z-30" style="display:none;"

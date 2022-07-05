@@ -187,6 +187,7 @@ export default class SubTasksController {
     console.log(IDarray)
 
     const mailTo = await EFMailer.getEmailByGroupArray(IDarray)
+    // @ts-ignore
     if(mailTo) {
       await EFMailer.email(mailTo, 'Subtask Update', 'emails/sub_task_update',
         {

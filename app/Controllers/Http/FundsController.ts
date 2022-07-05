@@ -507,6 +507,421 @@ export default class FundsController {
     ])
   }
 
+  public async seedFinal(date, fund_id, auth){
+    await Task.create({
+      title: 'Seed Finalized',
+      description:'Seed Finalized',
+      // @ts-ignore
+      assigned_to_group_id: 6,
+      // @ts-ignore
+      created_by : auth.user.id,
+      fundId: fund_id,
+      target_completion_date: date,
+      task_statuses_id: 1
+
+    })
+
+    let t = await Task.query().orderBy('id', 'desc')
+
+    let task_id = t[0].id
+
+    await SubTask.createMany([
+      {
+        title: 'Lead Market Maker Finalized',
+        assigned_to_group_id: 9,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Index SFTP setup complete',
+        assigned_to_group_id: 9,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Trading counterparties have SSI’s for all markets',
+        assigned_to_group_id: 9,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Request Outstanding Items and Exhibits from MLB 7-10 days prior to going effective ',
+        assigned_to_group_id: 5,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Review the Investment Advisory Agreement – Schedule',
+        assigned_to_group_id: 5,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Request the New Fund Addendum from the admin 7-10 days prior to going effective ',
+        assigned_to_group_id: 6,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Testing has been conducted on the Cr/Rd process, pcf basket upload',
+        assigned_to_group_id: 9,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Trading Agreements in Place',
+        assigned_to_group_id: 5,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'CU Size',
+        assigned_to_group_id: 9,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'NAV set',
+        assigned_to_group_id: 9,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Exchange Listing Application (incl. Index Rep Letter, if needed)',
+        assigned_to_group_id: 6,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Sample portfolio/index Constituent File',
+        assigned_to_group_id: 9,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Website (Marketing responsibility)',
+        assigned_to_group_id: 1,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Website URL',
+        assigned_to_group_id: 1,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Website URL/800 number/email',
+        assigned_to_group_id: 3,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Broker Setup',
+        assigned_to_group_id: 9,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'LMM/AP Due Diligence',
+        assigned_to_group_id: 2,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: '485B Filing (Final prospectus)',
+        assigned_to_group_id: 5,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: '8-A filing',
+        assigned_to_group_id: 5,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Sole/Initial Shareholder Consent ',
+        assigned_to_group_id: 6,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created - request from MLB at least two weeks prior to launch',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Dividend Distribution Schedule',
+        assigned_to_group_id: 9,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Proxy Voting Setup',
+        assigned_to_group_id: 6,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Selection of Proxy Voting Guidelines (ESG)',
+        assigned_to_group_id: 6,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Final Prospectus & SAI has been reviewed and approved by Sponsor',
+        assigned_to_group_id: 5,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Create/Redeem fees finalized',
+        assigned_to_group_id: 9,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Website created and reviewed and approved by FINRA',
+        assigned_to_group_id: 3,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Rebalance Dates and Frequency confirmed and coded',
+        assigned_to_group_id: 9,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'All international markets have been opened, if needed',
+        assigned_to_group_id: 9,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'If international, standing instructions set on FX',
+        assigned_to_group_id: 9,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Compliance Checks in RATL have been set up and reviewed against Pro and SAI',
+        assigned_to_group_id: 2,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Complete attribute sheet received',
+        assigned_to_group_id: 9,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Confirm no material changes to portfolio since initial portfolio review',
+        assigned_to_group_id: 2,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Sponsor has received marketing training from distributor',
+        assigned_to_group_id: 3,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Set up Liquidity Risk Reporting with Vendor if not in-kind and/or Derivatives Risk Reporting, if applicable',
+        assigned_to_group_id: 2,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Initiate Initial Seed Investment. 2-3 days prior to launch e',
+        assigned_to_group_id: 6,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Relay offering costs to the administrator for non-unitary fee funds only',
+        assigned_to_group_id: 6,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'Sublicense Agreement signed',
+        assigned_to_group_id: 5,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'PSA executed',
+        assigned_to_group_id: 5,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+      {
+        title: 'License / Subadvisory Agreement executed',
+        assigned_to_group_id: 5,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+
+  ])
+
+  }
+
+
 
 
 
