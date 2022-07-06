@@ -45,6 +45,8 @@ export default class FileUpload {
       console.log(e.original)
     }
 
+    console.log('file should be moved')
+
     // Creates a readable stream from file and stores its size
     const fileStream = createReadStream(filePath)
     // const fileSize = file.size
