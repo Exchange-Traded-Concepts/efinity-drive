@@ -13,9 +13,11 @@ export default class DocumentsController {
 
   public async create({}: HttpContextContract) {}
 
-  public async store({request, response, auth, session}: HttpContextContract) {
+  public async store({request, response, auth, session, view}: HttpContextContract) {
 
     console.log('INSIDE STORE')
+    return view.render('maintenance/fund');
+    /*
 
     let dataUrl = ''
     let fileSize = 0
@@ -23,14 +25,21 @@ export default class DocumentsController {
     if (request.file('upload')) {
       const new_file = request.file('upload')
 
-      // @ts-ignore
-     // console.log(new_file)
-      const data = await FileUpload.uploadToS3(request.file('upload'), 'uploads', null)
-      //console.log(data)
-      dataUrl = data.url
-      fileSize = data.stats.size
-      fileType = new_file?.type
-    }
+      try {
+        // @ts-ignore
+        // console.log(new_file)
+        const data = await FileUpload.uploadToS3(request.file('upload'), 'uploads', null)
+        //console.log(data)
+        dataUrl = data.url
+        fileSize = data.stats.size
+        fileType = new_file?.type
+      }
+      catch (e) {
+        console.log(e)
+      }
+      }
+
+
 
     const dataS = await this.validateInput(request)
 
@@ -51,6 +60,8 @@ export default class DocumentsController {
     })
     session.flash({notification: 'File Added'})
     return response.redirect('back')
+
+     */
   }
 
   public async show({}: HttpContextContract) {}
