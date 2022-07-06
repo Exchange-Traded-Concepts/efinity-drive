@@ -1,7 +1,7 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Document from "App/Models/Document";
 import FileUpload from "App/utils/fileUploader";
-import {rules, schema} from "@ioc:Adonis/Core/Validator";
+//import {rules, schema} from "@ioc:Adonis/Core/Validator";
 
 export default class DocumentsController {
   public async index({params, view}: HttpContextContract) {
@@ -80,7 +80,7 @@ export default class DocumentsController {
 
   }
 
-
+/*
   private async validateInput(request) {
     const valSchema = schema.create({
       name: schema.string({trim: true}, [rules.maxLength(150), rules.required()]),
@@ -98,6 +98,6 @@ export default class DocumentsController {
       },
     })
   }
-
+*/
 
 }
