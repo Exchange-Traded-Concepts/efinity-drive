@@ -13,7 +13,7 @@ export default class DocumentsController {
 
   public async create({}: HttpContextContract) {}
 
-  public async store({request, response, auth, session, view}: HttpContextContract) {
+  public async store({ /* request, response, auth, session,*/ view}: HttpContextContract) {
 
     console.log('INSIDE STORE')
     return view.render('maintenance/fund');
