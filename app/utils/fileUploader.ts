@@ -7,8 +7,6 @@ export default class FileUpload {
   // @ts-ignore
   static async stream2buffer(stream: ReadStream): Promise<Buffer> {
 
-    try {
-
       return new Promise<Buffer>((resolve, reject) => {
 
         const _buf = Array<any>();
@@ -19,10 +17,6 @@ export default class FileUpload {
 
       });
     }
-    catch (e) {
-      console.log(e.original)
-    }
-  }
 
   static async uploadToS3 (file, folder, oldPath) {
     // If oldPath parameter is set then, delete the old picture
