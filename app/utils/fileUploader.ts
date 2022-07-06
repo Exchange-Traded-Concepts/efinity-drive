@@ -53,7 +53,14 @@ export default class FileUpload {
     const buffers = await this.stream2buffer(fileStream)
     // Uploads the file to Amazon S3 and stores the url
     const s3Path = `${folder}/${fileName}`
-    await Drive.use('s3').put(s3Path, buffers, { ACL: 'public-read', ContentType: `${file.type}/${file.subtype}` })
+
+    console.log('right before put')
+    try {
+      await Drive.use('s3').put(s3Path, buffers, {ACL: 'public-read', ContentType: `${file.type}/${file.subtype}`})
+    }
+    catch (e){
+      console.log(e.original)
+    }
     const fileUrl = await Drive.use('s3').getUrl(s3Path)
     console.log('file URL v')
     console.log(fileUrl)
