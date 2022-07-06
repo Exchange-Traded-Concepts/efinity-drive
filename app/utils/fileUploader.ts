@@ -36,8 +36,8 @@ export default class FileUpload {
 
     // Sets the path and move the file
     const filePath = `${path.resolve(`./tmp/${folder}`)}/${fileName}`
-    //console.log(filePath)
-    //console.log(Application.tmpPath(folder),"=======>",path.resolve(`./tmp/${folder}`))
+    console.log(filePath)
+    console.log(Application.tmpPath(folder),"=======>",path.resolve(`./tmp/${folder}`))
     await file.move(Application.tmpPath('uploads'), { name: fileName, overwrite: true })
 
     // Creates a readable stream from file and stores its size
@@ -48,6 +48,9 @@ export default class FileUpload {
     const s3Path = `${folder}/${fileName}`
     await Drive.use('s3').put(s3Path, buffers, { ACL: 'public-read', ContentType: `${file.type}/${file.subtype}` })
     const fileUrl = await Drive.use('s3').getUrl(s3Path)
+    console.log('file URL v')
+    console.log(fileUrl)
+    console.log('file URL ^')
     const fileStats = await Drive.use('s3').getStats(s3Path)
     const contents = await Drive.use('s3').get(s3Path)
     // Destroy the readable stream and delete the file from tmp path
