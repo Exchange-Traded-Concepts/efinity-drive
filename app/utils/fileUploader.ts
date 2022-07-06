@@ -19,7 +19,7 @@ export default class FileUpload {
 
   static async uploadToS3 (file, folder, oldPath) {
     // If oldPath parameter is set then, delete the old picture
-    // console.log({file})
+    console.log({file})
     if (oldPath) {
       const exists = await Drive.use('s3').exists(oldPath)
       if (exists) {
@@ -30,6 +30,9 @@ export default class FileUpload {
     // Create a random name for file
     const randomName = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
     const fileName = `${randomName}_${Date.now()}.${file.subtype}`
+
+    console.log(randomName)
+    console.log(fileName)
 
     // Sets the path and move the file
     const filePath = `${path.resolve(`./tmp/${folder}`)}/${fileName}`
