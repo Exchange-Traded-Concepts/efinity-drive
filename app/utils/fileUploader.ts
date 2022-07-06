@@ -59,8 +59,8 @@ export default class FileUpload {
     const fileStats = await Drive.use('s3').getStats(s3Path)
     const contents = await Drive.use('s3').get(s3Path)
     // Destroy the readable stream and delete the file from tmp path
-    await fileStream.destroy()
-    await Drive.delete(filePath)
+   // await fileStream.destroy()
+   // await Drive.delete(filePath)
 
     return {
       name: fileName,
