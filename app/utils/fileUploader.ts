@@ -44,13 +44,14 @@ export default class FileUpload {
     catch (e) {
       console.log(e.original)
     }
-
     console.log('file should be moved')
 
     // Creates a readable stream from file and stores its size
     const fileStream = createReadStream(filePath)
+    console.log('stream created')
     // const fileSize = file.size
     const buffers = await this.stream2buffer(fileStream)
+    console.log('buffer created')
     // Uploads the file to Amazon S3 and stores the url
     const s3Path = `${folder}/${fileName}`
 
