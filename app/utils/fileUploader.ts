@@ -4,17 +4,24 @@ import Application from '@ioc:Adonis/Core/Application'
 import {createReadStream,ReadStream} from 'fs';
 export default class FileUpload {
 
+  // @ts-ignore
   static async stream2buffer(stream: ReadStream): Promise<Buffer> {
 
-    return new Promise < Buffer > ((resolve, reject) => {
+    try {
 
-      const _buf = Array < any > ();
+      return new Promise<Buffer>((resolve, reject) => {
 
-      stream.on("data", chunk => _buf.push(chunk));
-      stream.on("end", () => resolve(Buffer.concat(_buf)));
-      stream.on("error", err => reject(`error converting stream - ${err}`));
+        const _buf = Array<any>();
 
-    });
+        stream.on("data", chunk => _buf.push(chunk));
+        stream.on("end", () => resolve(Buffer.concat(_buf)));
+        stream.on("error", err => reject(`error converting stream - ${err}`));
+
+      });
+    }
+    catch (e) {
+      console.log(e.original)
+    }
   }
 
   static async uploadToS3 (file, folder, oldPath) {
