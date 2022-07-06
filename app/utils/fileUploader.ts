@@ -38,7 +38,12 @@ export default class FileUpload {
     const filePath = `${path.resolve(`./tmp/${folder}`)}/${fileName}`
     console.log(filePath)
     console.log(Application.tmpPath(folder),"=======>",path.resolve(`./tmp/${folder}`))
-    await file.move(Application.tmpPath('uploads'), { name: fileName, overwrite: true })
+    try {
+      await file.move(Application.tmpPath('uploads'), { name: fileName, overwrite: true })
+    }
+    catch (e) {
+      console.log(e.original)
+    }
 
     // Creates a readable stream from file and stores its size
     const fileStream = createReadStream(filePath)
