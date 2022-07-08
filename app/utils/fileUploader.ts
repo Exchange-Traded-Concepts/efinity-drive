@@ -1,6 +1,6 @@
 import path from 'path';
 import Drive from '@ioc:Adonis/Core/Drive';
-import Application from '@ioc:Adonis/Core/Application'
+//import Application from '@ioc:Adonis/Core/Application'
 import {createReadStream,ReadStream} from 'fs';
 export default class FileUpload {
 
@@ -20,7 +20,7 @@ export default class FileUpload {
 
   static async uploadToS3 (file, folder, oldPath) {
     // If oldPath parameter is set then, delete the old picture
-    console.log({file})
+    //console.log({file})
     if (oldPath) {
       const exists = await Drive.use('s3').exists(oldPath)
       if (exists) {
@@ -37,26 +37,24 @@ export default class FileUpload {
 
     // Sets the path and move the file
     const filePath = `${path.resolve(`./tmp/${folder}`)}/${fileName}`
-    console.log(filePath)
-    console.log(Application.tmpPath(folder),"=======>",path.resolve(`./tmp/${folder}`))
+    //console.log(filePath)
+    //console.log(Application.tmpPath(folder),"=======>",path.resolve(`./tmp/${folder}`))
     try {
-      await file.move('/root/efinity/tmp/uploads', { name: fileName, overwrite: true })
+      // Application.tmpPath('uploads')
+      // '/root/efinity/tmp/uploads'
+      await file.move('./tmp/uploads', { name: fileName, overwrite: true })
     }
     catch (e) {
       console.log(e.original)
     }
-    console.log('file should be moved')
 
     // Creates a readable stream from file and stores its size
     const fileStream = createReadStream(filePath)
-    console.log('stream created')
     // const fileSize = file.size
     const buffers = await this.stream2buffer(fileStream)
-    console.log('buffer created')
     // Uploads the file to Amazon S3 and stores the url
     const s3Path = `${folder}/${fileName}`
 
-    console.log('right before put')
     try {
       await Drive.use('s3').put(s3Path, buffers, {ACL: 'public-read', ContentType: `${file.type}/${file.subtype}`})
     }
@@ -64,14 +62,11 @@ export default class FileUpload {
       console.log(e.original)
     }
     const fileUrl = await Drive.use('s3').getUrl(s3Path)
-    console.log('file URL v')
-    console.log(fileUrl)
-    console.log('file URL ^')
     const fileStats = await Drive.use('s3').getStats(s3Path)
     const contents = await Drive.use('s3').get(s3Path)
     // Destroy the readable stream and delete the file from tmp path
-   // await fileStream.destroy()
-   // await Drive.delete(filePath)
+    await fileStream.destroy()
+    await Drive.delete(filePath)
 
     return {
       name: fileName,

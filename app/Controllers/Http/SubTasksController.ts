@@ -127,8 +127,8 @@ export default class SubTasksController {
       changes.push('Status Updated')
     }
 
-    console.log(st.target_completion_date.toFormat('y-MM-d'))
-    console.log(request.input('target_completion_date'))
+    //console.log(st.target_completion_date.toFormat('y-MM-d'))
+    //console.log(request.input('target_completion_date'))
 
      let docurl = ''
     if (request.input('document_url')){

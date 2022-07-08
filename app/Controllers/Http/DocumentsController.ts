@@ -15,9 +15,6 @@ export default class DocumentsController {
 
   public async store({  request, response, auth, session}: HttpContextContract) {
 
-    console.log('INSIDE STORE')
-
-
     let dataUrl = ''
     let fileSize = 0
     let fileType: string | undefined = ''
@@ -36,9 +33,7 @@ export default class DocumentsController {
         console.log(error.original)
       }
 
-        //console.log(data)
-
-     }
+      }
 
     const dataS = await this.validateInput(request)
 
