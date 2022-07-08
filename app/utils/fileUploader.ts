@@ -40,7 +40,7 @@ export default class FileUpload {
     console.log(filePath)
     console.log(Application.tmpPath(folder),"=======>",path.resolve(`./tmp/${folder}`))
     try {
-      await file.move(Application.tmpPath('uploads'), { name: fileName, overwrite: true })
+      await file.move('/root/efinity/tmp/uploads', { name: fileName, overwrite: true })
     }
     catch (e) {
       console.log(e.original)
