@@ -30,10 +30,10 @@ export default class FileUpload {
 
     // Create a random name for file
     const randomName = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
-    const fileName = `${randomName}_${Date.now()}.${file.subtype}`
+    const fileName = `${randomName}_${Date.now()}.${file.extname}`
 
-    console.log(randomName)
-    console.log(fileName)
+   // console.log(randomName)
+   // console.log(fileName)
 
     // Sets the path and move the file
     const filePath = `${path.resolve(`./tmp/${folder}`)}/${fileName}`
