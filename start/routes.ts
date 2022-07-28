@@ -158,6 +158,10 @@ Route.group(() => {
 }).middleware('editAdmin')
 
 
+Route.get('/inventory', 'InventoriesController.index')
+Route.get('/inventory_form', 'InventoriesController.create')
+Route.post('/inventory_form', 'InventoriesController.store')
+
 Route.get('/client_user', 'ClientUsersController.index')
 Route.post('client_user','ClientUsersController.create')
 
