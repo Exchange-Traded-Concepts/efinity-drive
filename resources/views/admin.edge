@@ -28,7 +28,7 @@ header > h1{
 }
 
 .day-of-week > span{
-  height: 14vh;
+  /*height: 14vh; */
   text-align: center;
 }
 
@@ -47,6 +47,10 @@ header > h1{
 
 </style>
 <div class="container-fluid">
+TEST DATA
+@each(l in launches)
+  {{ l.target_launch_date.toFormat('y-d-M') }}
+@end
 
 <!-- Page Heading -->
 <h1 class="h3 mb-4 text-gray-800">Blank Page</h1>
@@ -64,10 +68,19 @@ header > h1{
       @each((day , week) in calendar[index])
   <div class="days">
     @each((numDate, numDayofWeek) in calendar[index][week])
-    <div class="date">
-      <div id="">
+    <div class="date"
+         @if (numDate)
+         style="border: 1px solid #000000;"
+          @end
+    >
+      <div id="" >
         {{ numDate }}<br>
-        {{ year+`-`+(index+1)+`-`+numDate}}
+        @each (l in launches )
+        @if(l.target_launch_date.toFormat('y-M-d') == (year+`-`+(index+1)+`-`+numDate))
+          {{ l.ticker }}
+        @end
+        @end
+      <!-- {{ year+`-`+(index+1)+`-`+numDate}} -->
       </div>
     </div>
     @endeach

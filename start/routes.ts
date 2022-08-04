@@ -39,6 +39,7 @@ Route.group(() => {
 }).middleware('isAdmin')
 
 Route.get('/dashboard', 'DashboardController.index').middleware('isAdmin')
+Route.get('/cal', 'DashboardController.cal').middleware('isAdmin')
 
 /*
 Route.get('/dashboard', async ({view})  => {

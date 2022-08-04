@@ -17,7 +17,11 @@ export default class DashboardController {
       "August", "September", "October", "November", "December"];
     const calendar = await CalendarConfig.calcTable(year)
 
-    return view.render('admin', {calendar: calendar, months, year})
+    const events  = {'event' : '2022-2-1', 'event2' : '2022-3-1'}
+
+    const launches = await Fund.query().whereBetween('target_launch_date',  ['2022-01-01', '2022-12-31'] )
+
+    return view.render('admin', {calendar: calendar, months, year, events, launches})
 
 }
 
