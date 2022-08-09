@@ -1,6 +1,6 @@
 export default class CalendarConfig {
 
-  static async calcTable(year) {
+  static async calcTable(year, month) {
 
     let arr = new Array(12);
     for (let x = 0; x < arr.length; x++) {
@@ -13,17 +13,26 @@ export default class CalendarConfig {
       }
     }
 
-    for (let month = 0; month < arr.length; month++) {
+  //  for (let month = 0; month < arr.length; month++) {
+      // What day number the grid starts for the month
       let startDayInWeek = new Date(year, month, 0).getDay() + 1;
 
-      let monthLong = new Date(year, month + 1, 0).getDate() + 1;
+     console.log(startDayInWeek)
+      // Number of days in a month +1
+      console.log(month)
+      console.log('month^')
+      console.log(year)
+      let monthLong = new Date(year, (month -(-1))  , 0).getDate() +1 ;
       console.log(monthLong)
 
       let beforCount = 0;
       let counter = 1;
       let startCount = false;
 
-      for (let x = 0; x < arr[month].length; x++) {
+    //  console.log('lV')
+    //  console.log(arr[month].length)
+    //  console.log('L^')
+      for (let x = 0; x < 6; x++) {
         for (let y = 0; y < arr[month][x].length; y++) {
 
           if (beforCount == startDayInWeek) {
@@ -43,7 +52,7 @@ export default class CalendarConfig {
           }
         }
       }
-    }
+  // }
     return arr;
   }
 }

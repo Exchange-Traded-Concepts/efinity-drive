@@ -10,18 +10,45 @@ import SubTask from "App/Models/SubTask";
 
 export default class DashboardController {
 
-  public async cal ({ view, request }: HttpContextContract){
+  public async cal ({ view, params }: HttpContextContract){
 
-    const year = request.input('year') || new Date().getFullYear();
+    let today = new Date();
+    let dd = String(today.getDate());//.padStart(2, '0');
+    let mm = String(today.getMonth() + 1);//.padStart(2, '0'); //January is 0!
+    let yyyy = today.getFullYear();
+
+    const ctoday = yyyy + '-' + mm + '-' + dd;
+
+    let year = params.year || new Date().getFullYear();
     const months = ["January",  "February", "March", "April", "May", "June", "July",
       "August", "September", "October", "November", "December"];
-    const calendar = await CalendarConfig.calcTable(year)
+    let indexedMonth = params.month || new Date().getMonth() ;
 
-    const events  = {'event' : '2022-2-1', 'event2' : '2022-3-1'}
+    if(indexedMonth == -1){
+      indexedMonth = 11;
+      year = (year -1)
+    }
+    if(indexedMonth == 12){
+      indexedMonth = 0
+      year = (year - (-1))
+    }
 
-    const launches = await Fund.query().whereBetween('target_launch_date',  ['2022-01-01', '2022-12-31'] )
+    console.log(indexedMonth)
 
-    return view.render('admin', {calendar: calendar, months, year, events, launches})
+    const calendar = await CalendarConfig.calcTable(year, indexedMonth)
+
+    let daysInMonth = new Date(year, (indexedMonth - (-1)), 0).getDate()
+    const minRange = year+'-'+(indexedMonth - (-1))+'-'+'01';
+    const maxRange = year+'-'+(indexedMonth - (-1)) +'-'+daysInMonth
+
+    console.log(minRange)
+    console.log(maxRange)
+
+    const launches = await Fund.query().whereBetween('target_launch_date',  [minRange, maxRange] )
+
+    let curMonth = months[indexedMonth]
+
+    return view.render('admin', {calendar: calendar[indexedMonth], months, year,  launches, indexedMonth: indexedMonth, curMonth, ctoday})
 
 }
 

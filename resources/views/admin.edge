@@ -1,10 +1,45 @@
-@layout('layouts.adminDashboard')
+@layout('layouts/adminDashboard')
 
 @section('content')
 <style>
 
 header{
   text-align: center;
+}
+
+ul {list-style-type: none;}
+
+/* Month header */
+.month {
+  padding: 20px 25px;
+  width: 100%;
+  background: #36b9cc;
+  text-align: center;
+}
+
+/* Month list */
+.month ul {
+  margin: 0;
+  padding: 0;
+}
+
+.month ul li {
+  color: white;
+  font-size: 20px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+/* Previous button inside month header */
+.month .prev {
+  float: left;
+  padding-top: 10px;
+}
+
+/* Next button */
+.month .next {
+  float: right;
+  padding-top: 10px;
 }
 
 header > h1{
@@ -23,7 +58,9 @@ header > h1{
 .day-of-week{
   display: grid;
   grid-template-columns: repeat(7,1fr);
-
+  margin: 0;
+  padding: 10px 0;
+  background-color:#ddd;
   grid-gap: 1em;
 }
 
@@ -35,52 +72,87 @@ header > h1{
 .days{
   display: grid;
   grid-template-columns: repeat(7,1fr);
-
-  grid-gap: 1em;
+ /* grid-gap: 1em; */
 }
 
 .date{
   height: 14vh;
   text-align: center;
+}
 
+.active {
+  padding: 5px;
+  background: #1abc9c;
+  color: white !important
+}
+
+.numdate{
+  float:right;
+  padding: 2px;
+}
+
+.launches{
+  float: left;
+  padding: 2px;
+}
+
+.ticker{
+  font-size: 12px;
+  color: #0F5DAC;
+  border: 1px #2d2e33 solid;
+  background-color: #b3e4ec;
+  padding: 1px 2px;
 }
 
 </style>
 <div class="container-fluid">
-TEST DATA
-@each(l in launches)
-  {{ l.target_launch_date.toFormat('y-d-M') }}
-@end
 
 <!-- Page Heading -->
-<h1 class="h3 mb-4 text-gray-800">Blank Page</h1>
+<div class="month">
+<ul>
+  <li class="prev"><form action="{{`/cal/${indexedMonth -1}/${year}`}}" method="post">
+  {{ csrfField() }}
+  <button type="submit">&#10094;</button>
+</form>
+  </li>
+  <li class="next">
+<form action="{{`/cal/${indexedMonth -(-1)}/${year}`}}" method="post">
+  {{ csrfField() }}
+  <button type="submit">&#10095;</button>
+</form>
+  </li>
+  <li>{{ curMonth }}<br><span style="font-size:18px">{{ year }}</span></li>
+</ul>
+</div>
 <div class="calendar-container">
-@each((month, index) in months)
-  {{month}}<br>
+<!--@each((month, index) in months) -->
 
-
-<div class="month-container" id="{{months[index] }}">
-  <h3 style="text-align: center;"> {{  months[index] }} </h3>
+<div class="month-container" id="{{curMonth }}">
   <div class="day-of-week">
     <span>Sun</span><span>Mon</span><span>Tue</span>
     <span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
   </div>
-      @each((day , week) in calendar[index])
+      @each((day , week) in calendar)
   <div class="days">
-    @each((numDate, numDayofWeek) in calendar[index][week])
+       @each((numDate, numDayofWeek) in calendar[week])
     <div class="date"
          @if (numDate)
+         @if((year+`-`+(indexedMonth-(-1))+`-`+numDate) == ctoday)
+           style=" padding: 5px; background: #36b9cc; color: white !important; "
+         @end
          style="border: 1px solid #000000;"
           @end
     >
+      <!--{{ year+`-`+(indexedMonth-(-1))+`-`+numDate}} == {{ctoday}}-->
       <div id="" >
-        {{ numDate }}<br>
-        @each (l in launches )
-        @if(l.target_launch_date.toFormat('y-M-d') == (year+`-`+(index+1)+`-`+numDate))
-          {{ l.ticker }}
-        @end
-        @end
-      <!-- {{ year+`-`+(index+1)+`-`+numDate}} -->
+        <span class="numdate">{{ numDate }}</span>
+        <span class="launches">
+          @each (l in launches )
+            @if(l.target_launch_date.toFormat('y-M-d') == (year+`-`+(indexedMonth-(-1))+`-`+numDate))
+              <span class="ticker"><a href="{{`/fund_pipeline_details_t/${l.ticker}`}}">{{ l.ticker }}</a></span><br>
+            @end
+          @end
+        </span>
       </div>
     </div>
     @endeach
@@ -89,7 +161,7 @@ TEST DATA
 
 </div>
 
-@endeach
+<!--@endeach-->
 
 </div>
 <!-- /.container-fluid -->
