@@ -33,21 +33,13 @@ export default class DashboardController {
       year = (year - (-1))
     }
 
-    console.log(indexedMonth)
-
     const calendar = await CalendarConfig.calcTable(year, indexedMonth)
 
     let daysInMonth = new Date(year, (indexedMonth - (-1)), 0).getDate()
     const minRange = year+'-'+(indexedMonth - (-1))+'-'+'01';
     const maxRange = year+'-'+(indexedMonth - (-1)) +'-'+daysInMonth
-
-    console.log(minRange)
-    console.log(maxRange)
-
     const launches = await Fund.query().whereBetween('target_launch_date',  [minRange, maxRange] )
-
     const seeds = await Fund.query().whereBetween('seed_date', [minRange, maxRange])
-
     let curMonth = months[indexedMonth]
 
     return view.render('admin', {calendar: calendar[indexedMonth], months, year,  launches, indexedMonth: indexedMonth, curMonth, ctoday, seeds})

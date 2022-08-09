@@ -17,13 +17,9 @@ export default class CalendarConfig {
       // What day number the grid starts for the month
       let startDayInWeek = new Date(year, month, 0).getDay() + 1;
 
-     console.log(startDayInWeek)
+    // console.log(startDayInWeek)
       // Number of days in a month +1
-      console.log(month)
-      console.log('month^')
-      console.log(year)
       let monthLong = new Date(year, (month -(-1))  , 0).getDate() +1 ;
-      console.log(monthLong)
 
       let beforCount = 0;
       let counter = 1;
