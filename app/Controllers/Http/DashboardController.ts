@@ -46,9 +46,11 @@ export default class DashboardController {
 
     const launches = await Fund.query().whereBetween('target_launch_date',  [minRange, maxRange] )
 
+    const seeds = await Fund.query().whereBetween('seed_date', [minRange, maxRange])
+
     let curMonth = months[indexedMonth]
 
-    return view.render('admin', {calendar: calendar[indexedMonth], months, year,  launches, indexedMonth: indexedMonth, curMonth, ctoday})
+    return view.render('admin', {calendar: calendar[indexedMonth], months, year,  launches, indexedMonth: indexedMonth, curMonth, ctoday, seeds})
 
 }
 

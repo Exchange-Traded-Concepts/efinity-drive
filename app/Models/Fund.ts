@@ -156,6 +156,9 @@ export default class Fund extends BaseModel {
   @column()
   public color: string
 
+  @column.dateTime()
+  public seed_date: DateTime
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 

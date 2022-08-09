@@ -263,7 +263,10 @@
         Admin: {{p[0].admin  ||'' }}
       </div>
       <div class="col-md-6">
-
+        Seed Date:
+        @if(p[0].seed_date)
+        {{p[0].seed_date.toFormat('M/d/y')}}
+        @end
       </div>
     </div>
 

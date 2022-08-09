@@ -96,6 +96,11 @@ header > h1{
   padding: 2px;
 }
 
+.seeds{
+  float: left;
+  padding: 2px;
+}
+
 .ticker{
   font-size: 12px;
   color: #0F5DAC;
@@ -103,6 +108,16 @@ header > h1{
   background-color: #b3e4ec;
   padding: 1px 2px;
 }
+
+.sticker{
+  font-size: 12px;
+  color: #0F5DAC;
+  border: 1px #2d2e33 solid;
+  background-color: yellow;
+  padding: 1px 2px;
+}
+
+
 
 </style>
 <div class="container-fluid">
@@ -150,6 +165,13 @@ header > h1{
           @each (l in launches )
             @if(l.target_launch_date.toFormat('y-M-d') == (year+`-`+(indexedMonth-(-1))+`-`+numDate))
               <span class="ticker"><a href="{{`/fund_pipeline_details_t/${l.ticker}`}}">{{ l.ticker }}</a></span><br>
+            @end
+          @end
+        </span>
+        <span class="seeds">
+           @each (s in seeds )
+            @if(s.seed_date.toFormat('y-M-d') == (year+`-`+(indexedMonth-(-1))+`-`+numDate))
+              <span class="sticker"><a href="{{`/fund_pipeline_details_t/${s.ticker}`}}">{{ s.ticker }}</a></span><br>
             @end
           @end
         </span>
