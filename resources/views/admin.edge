@@ -115,6 +115,7 @@ header > h1{
   border: 1px #2d2e33 solid;
   background-color: yellow;
   padding: 1px 2px;
+  display: inline-block;
 }
 
 .time_off{
@@ -136,10 +137,14 @@ header > h1{
 
 </style>
 <div class="container-fluid">
+<div style="float: left">
 <span class="sticker">Seed Date</span>
 <span class="ticker">Target Launch Date</span>
 <span class="meeting">Meeting</span>
 <span class="time_off">Time Off Request</span>
+</div>
+<div style="float: right"><a href="/cal" data-toggle="modal" data-target="#calEventModal">Calendar Event</a></div>
+<div style="clear: both"></div>
 <!-- Page Heading -->
 <div class="month">
 <ul>
@@ -178,7 +183,9 @@ header > h1{
     >
       <!--{{ year+`-`+(indexedMonth-(-1))+`-`+numDate}} == {{ctoday}}-->
       <div id="" >
-        <span class="numdate">{{ numDate }}</span>
+        <span class="numdate">
+               {{ numDate }}
+         </span>
         <span class="launches">
           @each (l in launches )
             @if(l.target_launch_date.toFormat('y-M-d') == (year+`-`+(indexedMonth-(-1))+`-`+numDate))
@@ -186,10 +193,18 @@ header > h1{
             @end
           @end
         </span>
+
         <span class="seeds">
            @each (s in seeds )
             @if(s.seed_date.toFormat('y-M-d') == (year+`-`+(indexedMonth-(-1))+`-`+numDate))
               <span class="sticker"><a href="{{`/fund_pipeline_details_t/${s.ticker}`}}">{{ s.ticker }}</a></span><br>
+            @end
+          @end
+        </span>
+        <span class="seeds">
+           @each (a in appointments )
+            @if(a.start_date.toFormat('y-M-d') == (year+`-`+(indexedMonth-(-1))+`-`+numDate))
+              <span class="meeting">{{ a.title }}</span><br>
             @end
           @end
         </span>
@@ -205,4 +220,145 @@ header > h1{
 
 </div>
 <!-- /.container-fluid -->
+
+<div class="modal fade" id="calEventModal" tabindex="-1" role="dialog" aria-labelledby="calEventModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document" style="max-width: 600px !important;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Calendar Event</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- This is the body -->
+        <form
+          @if(c_event)
+          action=" {{ `/cal_event/${c_event.id}?_method=PATCH`}}"
+          @else
+          action="/cal_event"
+          @end
+          method="post"
+          enctype="multipart/form-data">
+          {{ csrfField() }}
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" class="form-control {{ flashMessages.has('errors.name') ? 'alert-danger' :'' }}"
+                   id="title"
+                   name="title"
+                   @if(u_task)
+                   value="{{c_event.title ||''}}"
+                   @endif
+                   placeholder="Title">
+          </div>
+          <div class="form-group">
+            <label for="type">Type</label>
+            <select name="type" class="form-control" id="type" aria-describedby="type">
+               <option value="Meeting"
+                       @if(c_event)
+                        @if(c_event.type == 'Meeting')
+                          selected
+                        @endif
+                       @endif
+                > Meeting
+              </option>
+              <option value="Appointment"
+               @if(c_event)
+                @if(c_event.type == 'Appointment')
+              selected
+              @endif
+              @endif
+              > Appointment
+              </option>
+              <option value="Time Off"
+                @if(c_event)
+                 @if(c_event.type == 'Time Off')
+                selected
+              @endif
+              @endif
+              > Time Off
+              </option>
+           </select>
+          </div>
+
+          <div class="row">
+          <div class="form-group col-md-6">
+            <label for="start_date">Start Date</label>
+            <input type="date"
+                   name="start_date"
+                   @if(c_event)
+                   @if(c_event.start_date)
+                   value="{{c_event.start_date.toFormat('y-MM-dd') ||''}}"
+                   @endif
+                   @endif
+                   class="form-control"
+                   id="start_date"
+                   placeholder="Start Date">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="end_date">End Date</label>
+            <input type="date"
+                   name="end_date"
+                   @if(c_event)
+                   @if(c_event.end_date)
+                   value="{{c_event.end_date.toFormat('y-MM-dd') ||''}}"
+                   @endif
+                   @endif
+                   class="form-control"
+                   id="end_date"
+                   placeholder="End Date">
+          </div>
+          </div>
+          <div class="row">
+          <div class="form-group col-md-12">
+            <label for="notes">Notes</label>
+            <input type="text"
+                   name="notes"
+                   @if(c_event)
+                   @if(c_event.notes)
+                   value="{{c_event.notes ||''}}"
+                   @endif
+                   @endif
+                   class="form-control"
+                   id="notes"
+                   placeholder="Notes">
+          </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-md-6">
+              <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="public" name="public"
+                  @if(c_event)
+                    @if(c_event.public == 0 )
+                        none
+                       @else checked
+                     @endif
+                       @else
+                       checked
+                       @endif
+               >
+                <label class="form-check-label" for="public">Public</label>
+              </div>
+            </div>
+            <div class="form-group col-md-6" >
+          <button type="submit" class="btn btn-primary" style="float: right">Submit</button>
+          @if(flashMessages.has('errors.name'))
+          <p class="alert-danger">
+            {{ flashMessages.get('errors.name')}}
+          </p>
+          @endif
+            </div>
+
+
+        </form>
+
+      </div>
+      <div class="modal-footer">
+       </div>
+    </div>
+  </div>
+</div>
+
+
 @endsection

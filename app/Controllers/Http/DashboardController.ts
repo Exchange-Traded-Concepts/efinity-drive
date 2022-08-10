@@ -5,6 +5,7 @@ import Task from "App/Models/Task";
 import Fund from "App/Models/Fund";
 import TaskStatus from "App/Models/TaskStatus";
 import SubTask from "App/Models/SubTask";
+import CalendarEvent from "App/Models/CalendarEvent";
 
 
 
@@ -40,9 +41,11 @@ export default class DashboardController {
     const maxRange = year+'-'+(indexedMonth - (-1)) +'-'+daysInMonth
     const launches = await Fund.query().whereBetween('target_launch_date',  [minRange, maxRange] )
     const seeds = await Fund.query().whereBetween('seed_date', [minRange, maxRange])
+    const appointments = await CalendarEvent.query().whereBetween('start_date', [minRange, maxRange])
+    console.log(appointments)
     let curMonth = months[indexedMonth]
 
-    return view.render('admin', {calendar: calendar[indexedMonth], months, year,  launches, indexedMonth: indexedMonth, curMonth, ctoday, seeds})
+    return view.render('admin', {calendar: calendar[indexedMonth], months, year,  launches, indexedMonth: indexedMonth, curMonth, ctoday, seeds, appointments})
 
 }
 

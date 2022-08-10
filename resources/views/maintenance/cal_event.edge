@@ -1,0 +1,146 @@
+@layout('layouts/adminDashboard')
+
+@section('content')
+
+<div class="container-fluid">
+<div>
+  @if(flashMessages.has('notification'))
+  <div class="alert alert-success">{{ flashMessages.get('notification') }}</div>
+  @endif
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <div class="card shadow mb-4">
+      <div
+        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Events</h6>
+        <div class="dropdown no-arrow">
+          <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+          </a>
+          <div class="dropdown-menu dropdow0n-menu-right shadow animated--fade-in"
+               aria-labelledby="dropdownMenuLink">
+            <div class="dropdown-header">Admin:</div>
+            <a class="dropdown-item" href="/cal_event">Events</a>
+            <!--  <a class="dropdown-item" href="#">Another action</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Something else here</a>
+          -->
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <form
+          @if(c_event)
+          action=" {{ `/cal_event/${c_event.id}?_method=PATCH`}}"
+          @else
+          action="/cal_event"
+          @end
+          method="post"
+          enctype="multipart/form-data">
+          {{ csrfField() }}
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" class="form-control {{ flashMessages.has('errors.name') ? 'alert-danger' :'' }}"
+                   id="title"
+                   name="title"
+                   @if(u_task)
+                   value="{{c_event.title ||''}}"
+                   @endif
+                   placeholder="Title">
+          </div>
+          <div class="form-group">
+            <label for="fund_id">Fund</label>
+            <select name="fund_id" id="fund_id" class="form-control">
+              @each(f in funds)
+              <option value="{{f.id}}"
+                      @if(u_task)
+                      @if(f.id == u_task.fundId)
+                      selected
+                      @end
+                      @end
+              >
+                {{f.ticker}} - {{f.fund_name}}
+              </option>
+              @end
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" class="form-control"
+                   id="description"
+                   name="description"
+                   @if(u_task)
+                   value="{{u_task.description ||''}}"
+                   @endif
+                   placeholder="Description">
+          </div>
+          <div class="form-group">
+            <label for="assigned_to">Assign To</label>
+            <select name="assigned_to_group_id" id="assigned_to_group_id" class="form-control">
+              @each(g in groups)
+              <option value="{{g.id}}"
+                      @if(u_task)
+                      @if (u_task.assigned_to_group_id == g.id)
+                      selected
+                      @end
+                      @end
+              >
+                {{g.name}}
+              </option>
+              @end
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="target_completion_date">Due Date</label>
+            <input type="date"
+                   name="target_completion_date"
+                   @if(u_task)
+                   @if(u_task.target_completion_date)
+                   value="{{u_task.target_completion_date.toFormat('y-MM-dd') ||''}}"
+                   @end
+                   @endif
+                   class="form-control"
+                   id="target_completion_date"
+                   placeholder="Due Date">
+
+          </div>
+          <div class="form-group">
+            <label for="fund_id">Status</label>
+            <select name="task_statuses_id" id="task_statuses_id" class="form-control">
+              @each(s in taskstatuses)
+              <option value="{{s.id}}"
+                      @if(u_task)
+                      @if(s.id == u_task.task_statuses_id)
+                      selected
+                      @end
+                      @end
+              >
+                {{s.name}}
+              </option>
+              @end
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Submit</button>
+          @if(flashMessages.has('errors.title'))
+          <p class="alert-danger">
+            {{ flashMessages.get('errors.title')}}
+          </p>
+          @endif
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+
+    <form action="/email" method="post">
+      {{ csrfField() }}
+      <input type="submit" value="Submit">
+    </form>
+  </div>
+</div>
+
+</div>
+@endsection
