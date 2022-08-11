@@ -96,7 +96,7 @@ header > h1{
   padding: 2px;
 }
 
-.seeds{
+.events{
   float: left;
   padding: 2px;
 }
@@ -120,27 +120,115 @@ header > h1{
 
 .time_off{
   font-size: 12px;
-  color:  #000000;
+  color:  #FFFFFF;
   border: 1px #2d2e33 solid;
   background-color: #FA6400;
   padding: 1px 2px;
-
+  clear: both;
 }
-.meeting{
+.Meeting{
   font-size: 12px;
   color: #5a5c69;
   border: 1px #2d2e33 solid;
   background-color: #1cc88a;
   padding: 1px 2px;
+  clear: both;
+
+}
+.Appointment{
+  font-size: 12px;
+  color: #FFFFFF;
+  border: 1px #2d2e33 solid;
+  background-color: purple;
+  padding: 1px 2px;
 
 }
 
+/* */
+.transition(@settings) {
+  transition: @settings;
+  -moz-transition: @settings;
+  -webkit-transition: @settings;
+  -o-transition: @settings;
+  -ms-transition: @settings;
+}
+.border-radius(@settings: 5px) {
+  border-radius: @settings;
+  -moz-border-radius: @settings;
+  -webkit-border-radius: @settings;
+  -o-border-radius: @settings;
+  -ms-border-radius: @settings;
+}
+
+
+.brick {
+    position: absolute;
+    display: block;
+    width: 50px;
+    height: 50px;
+    line-height: 30px;
+    text-align: center;
+}
+#tooltip
+{
+    opacity: 0;
+    text-align: center;
+    color: #fff;
+    background: rgba(0,0,0,0.6);
+    position: absolute;
+    z-index: 100;
+    padding: 15px;
+    pointer-events: none;
+    .border-radius;
+    .transition(all .5s ease-in-out);
+    &.top {
+      margin-top: 20px;
+    }
+    &.show {
+      opacity: 1;
+      margin-top: 10px;
+      pointer-events: all;
+      &.top {
+        margin-top: 10px;
+      }
+    }
+    &:after {
+      width: 0;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-top: 10px solid rgba(0,0,0,0.6);
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: -10px;
+      margin-left: -10px;
+    }
+    &.top:after {
+      border-top-color: transparent;
+      border-bottom: 10px solid rgba(0,0,0,0.6);
+      top: -20px;
+      bottom: auto;
+    }
+    &.left:after {
+      left: 10px;
+      margin: 0;
+    }
+    &.right:after {
+      right: 10px;
+      left: auto;
+      margin: 0;
+    }
+}
+
+/* */
 </style>
 <div class="container-fluid">
 <div style="float: left">
 <span class="sticker">Seed Date</span>
 <span class="ticker">Target Launch Date</span>
-<span class="meeting">Meeting</span>
+<span class="Meeting">Meeting</span>
+<span class="Appointment">Appointment</span>
 <span class="time_off">Time Off Request</span>
 </div>
 <div style="float: right"><a href="/cal" data-toggle="modal" data-target="#calEventModal">Calendar Event</a></div>
@@ -194,17 +282,23 @@ header > h1{
           @end
         </span>
 
-        <span class="seeds">
+        <span class="events">
            @each (s in seeds )
             @if(s.seed_date.toFormat('y-M-d') == (year+`-`+(indexedMonth-(-1))+`-`+numDate))
               <span class="sticker"><a href="{{`/fund_pipeline_details_t/${s.ticker}`}}">{{ s.ticker }}</a></span><br>
             @end
           @end
         </span>
-        <span class="seeds">
-           @each (a in appointments )
-            @if(a.start_date.toFormat('y-M-d') == (year+`-`+(indexedMonth-(-1))+`-`+numDate))
-              <span class="meeting">{{ a.title }}</span><br>
+        <span class="events">
+           @each (e in events )
+            @if(e.start_date.toFormat('y-M-d') <= (year+`-`+(indexedMonth-(-1))+`-`+numDate) && e.end_date.toFormat('y-M-d') >= (year+`-`+(indexedMonth-(-1))+`-`+numDate))
+              @if(e.public == 1 || auth.user.id  == e.created_by)
+                @if(e.type == 'time_off')
+                  <span class="{{e.type}}"  title="{{`${e.title} - ${e.notes}` }}">{{ e.createdBy.first_name }} {{e.createdBy.last_name}}</span><br>
+                 @else
+                  <span class="{{e.type}}"  title="{{e.notes}}">{{ e.title }}</span><br>
+                @end
+              @end
             @end
           @end
         </span>
@@ -226,11 +320,13 @@ header > h1{
   <div class="modal-dialog" role="document" style="max-width: 600px !important;">
     <div class="modal-content">
       <div class="modal-header">
+
         <h5 class="modal-title" id="exampleModalLabel">Calendar Event</h5>
         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
-      </div>
+        </div>
+      <div class="alert-danger" id="alertDate" style="clear: both;width: 100%;padding: 10px; font-weight: bold;display: none">End Date Must Be Greater Than Start Date<br></div>
       <div class="modal-body">
         <!-- This is the body -->
         <form
@@ -271,9 +367,9 @@ header > h1{
               @endif
               > Appointment
               </option>
-              <option value="Time Off"
+              <option value="time_off"
                 @if(c_event)
-                 @if(c_event.type == 'Time Off')
+                 @if(c_event.type == 'time_off')
                 selected
               @endif
               @endif
@@ -298,6 +394,7 @@ header > h1{
           </div>
           <div class="form-group col-md-6">
             <label for="end_date">End Date</label>
+            <!-- function in sort2.js -->
             <input type="date"
                    name="end_date"
                    @if(c_event)
@@ -306,6 +403,7 @@ header > h1{
                    @endif
                    @endif
                    class="form-control"
+                   onblur="date_check()"
                    id="end_date"
                    placeholder="End Date">
           </div>
@@ -342,14 +440,14 @@ header > h1{
               </div>
             </div>
             <div class="form-group col-md-6" >
-          <button type="submit" class="btn btn-primary" style="float: right">Submit</button>
+          <button type="submit" class="btn btn-primary" style="float: right" id="eventButton">Submit</button>
           @if(flashMessages.has('errors.name'))
           <p class="alert-danger">
             {{ flashMessages.get('errors.name')}}
           </p>
           @endif
             </div>
-
+          </div>
 
         </form>
 
@@ -360,5 +458,5 @@ header > h1{
   </div>
 </div>
 
-
+</div>
 @endsection

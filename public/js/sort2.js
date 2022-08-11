@@ -82,3 +82,18 @@ function sortTable(n, tName) {
     }
   }
 }
+
+function date_check(){
+  const start = document.getElementById('start_date').value;
+  const end = document.getElementById('end_date').value;
+ // if(end) {
+   if (end && (start > end) ) {
+     document.getElementById('eventButton').disabled = true;
+     document.getElementById('alertDate').style.display = 'block'
+   } else {
+     document.getElementById('eventButton').disabled = false;
+     document.getElementById('alertDate').style.display = 'none'
+     return true
+   }
+// }
+}
