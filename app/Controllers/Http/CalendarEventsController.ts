@@ -5,8 +5,14 @@ import CalendarEvent from "App/Models/CalendarEvent";
 export default class CalendarEventsController {
   public async index({view, auth}: HttpContextContract) {
 
+    let today = new Date();
+    let dd = String(today.getDate());//.padStart(2, '0');
+    let mm = String(today.getMonth() + 1);//.padStart(2, '0'); //January is 0!
+    let yyyy = today.getFullYear();
+
+    const ctoday = yyyy + '-' + mm + '-' + dd;
     // @ts-ignore
-    const events = await CalendarEvent.query().where('created_by', auth.user.id)
+    const events = await CalendarEvent.query().where('created_by', auth.user.id).andWhere('end_date', '>=', ctoday)
 
     return view.render('maintenance/cal_event', {events});
 
@@ -49,8 +55,16 @@ export default class CalendarEventsController {
   public async show({}: HttpContextContract) {}
 
   public async edit({view, auth, params}: HttpContextContract) {
+
+    let today = new Date();
+    let dd = String(today.getDate());//.padStart(2, '0');
+    let mm = String(today.getMonth() + 1);//.padStart(2, '0'); //January is 0!
+    let yyyy = today.getFullYear();
+
+    const ctoday = yyyy + '-' + mm + '-' + dd;
     // @ts-ignore
-    const events = await CalendarEvent.query().where('created_by', auth.user.id)
+    // @ts-ignore
+    const events = await CalendarEvent.query().where('created_by', auth.user.id).andWhere('end_date', '>=', ctoday)
     //@ts-ignore
     let c_event = await CalendarEvent.findBy('id', params.id)
 
