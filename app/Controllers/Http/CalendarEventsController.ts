@@ -46,7 +46,7 @@ export default class CalendarEventsController {
    })
 
     session.flash({notification: 'Date Added'})
-    return response.redirect('back')
+    return response.redirect('/cal');
 
   }
 
