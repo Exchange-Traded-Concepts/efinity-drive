@@ -63,7 +63,6 @@ export default class CalendarEventsController {
 
     const ctoday = yyyy + '-' + mm + '-' + dd;
     // @ts-ignore
-    // @ts-ignore
     const events = await CalendarEvent.query().where('created_by', auth.user.id).andWhere('end_date', '>=', ctoday)
     //@ts-ignore
     let c_event = await CalendarEvent.findBy('id', params.id)
@@ -114,11 +113,11 @@ export default class CalendarEventsController {
     return response.redirect('back')
   }
 
-  public async destroy({params, auth, session, response}: HttpContextContract) {
-    // @ts-ignore
-   const event = await CalendarEvent.query().where('id', params.id).andWhere('created_by', auth.user.id).delete()
-    session.flash({notification: 'Event Removed'})
-    return response.redirect('back')
+  public async destroy({params, auth, session,response}: HttpContextContract) {
+   // @ts-ignore
+   await CalendarEvent.query().where('id', params.id).andWhere('created_by', auth.user.id).delete()
+   session.flash({notification: 'Event Removed'})
+   return response.redirect().toRoute('CalendarEventsController.index');
    }
 
   private async validateInput(request) {
