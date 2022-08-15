@@ -33,8 +33,7 @@ export default class DashboardController {
       indexedMonth = 0
       year = (year - (-1))
     }
-
-    const calendar = await CalendarConfig.calcTable(year, indexedMonth)
+   const calendar = await CalendarConfig.calcTable(year, indexedMonth)
 
     let daysInMonth = new Date(year, (indexedMonth - (-1)), 0).getDate()
     const minRange = year+'-'+(indexedMonth - (-1))+'-'+'01';

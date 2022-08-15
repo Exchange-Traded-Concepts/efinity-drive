@@ -34,6 +34,10 @@ export default class CalendarEventsController {
     if(data.end_date == '' || !data.end_date) {
       data.end_date = data.start_date;
     }
+
+    let yr = data.start_date.substring(0,4)
+    let mnth = data.start_date.substring(5,7) -1
+
     await CalendarEvent.create({
       title: data.title,
       notes: data.notes,
@@ -46,7 +50,7 @@ export default class CalendarEventsController {
    })
 
     session.flash({notification: 'Date Added'})
-    return response.redirect('/cal');
+    return response.redirect(`/cal/${mnth}/${yr}`);
 
   }
 
@@ -114,8 +118,13 @@ export default class CalendarEventsController {
   }
 
   public async destroy({params, auth, session,response}: HttpContextContract) {
-   // @ts-ignore
-   await CalendarEvent.query().where('id', params.id).andWhere('created_by', auth.user.id).delete()
+   try {
+     // @ts-ignore
+     await CalendarEvent.query().where('id', params.id).andWhere('created_by', auth.user.id).delete()
+   }
+   catch (e) {
+     return response.abort('Access Denied ')
+   }
    session.flash({notification: 'Event Removed'})
    return response.redirect().toRoute('CalendarEventsController.index');
    }
