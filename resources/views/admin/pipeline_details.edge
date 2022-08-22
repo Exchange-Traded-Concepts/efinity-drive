@@ -369,8 +369,14 @@
 		@end
 		</td>
           <td>
-            @if(auth.user.id === st.assignedTo.id || auth.user.id == st.createdBy.id )
+            @if(auth.user.id === st.createdBy.id)
             <a href="{{ `/sub_tasks/${st.id}/edit` }}"><i class="fas fa-pencil-alt" style="color: #FFFFFF;"></i></a>
+            @else
+            @each(ug in user_groups)
+            @if(ug == st.assignedTo.id)
+            <a href="{{ `/sub_tasks/${st.id}/edit` }}"><i class="fas fa-pencil-alt" style="color: #FFFFFF;"></i></a>
+            @end
+            @end
             @end
           </td>
         </tr>
