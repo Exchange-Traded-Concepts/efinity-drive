@@ -1,5 +1,6 @@
 import Mail from "@ioc:Adonis/Addons/Mail";
 import Database from "@ioc:Adonis/Lucid/Database";
+import users from "App/Models/users";
 
 
 export default class EFMailer{
@@ -37,6 +38,11 @@ export default class EFMailer{
     catch (err){
       console.log(err)
     }
+  }
+
+  static async getUserEmail(user_id){
+    const user = await users.findOrFail(user_id)
+    return user.email
   }
 }
 

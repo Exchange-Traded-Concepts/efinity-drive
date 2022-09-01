@@ -177,7 +177,12 @@
           <a class="collapse-item" href="/group">Groups</a>
 
           <a class="collapse-item" href="/register">Users</a>
+          @if(auth)
+          @if(auth.user.id == 1)
           <a class="collapse-item" href="/inventory">Inventory</a>
+          <a class="collapse-item" href="/helpdesk/admin">Helpdesk Admin</a>
+          @end
+          @end
         </div>
       </div>
     </li>

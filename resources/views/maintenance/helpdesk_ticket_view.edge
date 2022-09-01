@@ -1,0 +1,87 @@
+@layout('layouts/adminDashboard')
+
+@section('content')
+
+<style>
+.comment-box{
+  border: 1px solid #0F5DAC;
+  background-color: #cdd8f6;
+  padding: 10px;
+}
+ .issue-box{
+   border: 1px solid #0F5DAC;
+   background-color: #dcdcdc;
+   padding: 10px;
+ }
+ .close_button{
+   border: 1px darkred solid;
+   color: darkred;
+   padding: 4px 12px;
+   background: transparent;
+
+ }
+</style>
+
+<div class="container-fluid">
+<div>
+  @if(flashMessages.has('notification'))
+  <div class="alert alert-success">{{ flashMessages.get('notification') }}</div>
+  @endif
+</div>
+<div class="row">
+
+  <div class="col-md-12">
+    <div class="card shadow mb-4">
+      <div
+        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Ticket Details - {{ticket[0].subject}} - {{ticket[0].priority}}</h6>
+      </div>
+      <div class="card-body">
+        <div style="float: left">Ticket #</div><div style="float: right;">
+          <form action="/helpdesk/close" method="post">
+            {{ csrfField() }}
+            <input name="help_desk_id" value="{{ ticket[0].id }}" type="hidden">
+            <button type="submit" class="close_button">Close</button>
+
+          </form>
+        </div>
+        <form
+          action="/helpdesk/add_comment"
+          method="post"
+          enctype="multipart/form-data">
+          {{ csrfField() }}
+          <div class="form-group" style="clear: both">
+            <label for="comments">Comments</label>
+            <textarea id="comments" name="comment" placeholder="Leave Comment" class="form-control"></textarea>
+            <input name="help_desk_id" value="{{ticket[0].id}}" type="hidden">
+          </div>
+          <div class="row">
+            <div class="form-group col-md-12" >
+              <button type="submit" class="btn btn-primary" style="float: right" id="eventButton">Submit</button>
+              @if(flashMessages.has('errors.name'))
+              <p class="alert-danger">
+                {{ flashMessages.get('errors.name')}}
+              </p>
+              @endif
+            </div>
+          </div>
+
+        </form>
+        @each(c in ticket[0].helpdeskcomment)
+        <div style="margin-top: 18px;">
+          {{c.createdBy.first_name}} {{c.createdBy.last_name}} - {{c.updatedAt.toFormat('M/d/y')}}
+        </div>
+        <div class="comment-box">{{c.comment}}</div>
+        @end
+        <div style="margin-top: 18px;">
+          {{ticket[0].createdBy.first_name}} {{ticket[0].createdBy.last_name}} - {{ticket[0].updatedAt.toFormat('M/d/y')}}
+        </div>
+        <div class="issue-box">{{ticket[0].issue}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+@endsection

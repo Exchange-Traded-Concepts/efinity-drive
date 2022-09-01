@@ -6,6 +6,7 @@ import Fund from "App/Models/Fund";
 import TaskStatus from "App/Models/TaskStatus";
 import SubTask from "App/Models/SubTask";
 import CalendarEvent from "App/Models/CalendarEvent";
+import HelpDesk from "App/Models/HelpDesk";
 
 
 
@@ -51,7 +52,7 @@ export default class DashboardController {
 
 }
 
-  public async index ({ view, session}: HttpContextContract){
+  public async index ({ view, session, auth}: HttpContextContract){
 
 
     const axios = require('axios');
@@ -98,6 +99,13 @@ export default class DashboardController {
       .preload('assignedTo')
       .preload('createdBy')
 
-  return view.render('admin/dashboard', {d, tasks, funds, status, user_groups, subtasks})
+    const prelaunch_count = await Fund.query().where('status', 'prelaunch')
+    const count = prelaunch_count.length
+
+    // @ts-ignore
+    const tickets = await HelpDesk.query().where('created_by', auth.user.id).andWhere('status', '!=', 'closed')
+    console.log(tickets)
+
+  return view.render('admin/dashboard', {d, tasks, funds, status, user_groups, subtasks, tickets, count})
   }
 }

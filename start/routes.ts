@@ -181,3 +181,15 @@ Route.post('/reset-password', 'PasswordRequestsController.update')
 
 Route.get('/task_by_status/:status_id', 'TasksController.task_by_status').middleware('isAdmin')
 Route.get('/to_do', 'TasksController.to_do').middleware('isAdmin')
+
+
+Route.group(() => {
+  Route.post('/helpdesk/close', 'HelpDesksController.close')
+  Route.get('/helpdesk', 'HelpDesksController.index')
+  Route.post('/helpdesk', 'HelpDesksController.store')
+  Route.get('/helpdesk/:id/view', 'HelpDesksController.view')
+  Route.patch('/helpdesk/:id', 'HelpDesksController.update')
+  Route.post('/helpdesk/add_comment', 'HelpDesksController.add_comment')
+  Route.get('/helpdesk/:id/delete', 'HelpDesksController.destroy')
+  Route.get('/helpdesk/admin', 'HelpDesksController.admin')
+}).middleware('editAdmin')

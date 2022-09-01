@@ -1,0 +1,33 @@
+@layout('layouts/adminDashboard')
+
+@section('content')
+
+
+
+<div class="container-fluid">
+<div>
+  @if(flashMessages.has('notification'))
+  <div class="alert alert-success">{{ flashMessages.get('notification') }}</div>
+  @endif
+</div>
+<div class="row">
+
+  <div class="col-md-12">
+    <div class="card shadow mb-4">
+      <div
+        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Help desk</h6>
+        <div class="dropdown no-arrow">
+          <a href="/helpdesk" data-toggle="modal" data-target="#helpDeskModal">Ticket <i class="fas fa-plus-circle"></i></a>
+        </div>
+      </div>
+      <div class="card-body">
+        @include('admin/partials/helpdeskticketlist')
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+@endsection
