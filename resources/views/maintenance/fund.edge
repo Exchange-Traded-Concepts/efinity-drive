@@ -167,6 +167,15 @@
               >
                 Launched
               </option>
+              <option value="unlikely"
+                      @if(c_fund)
+                      @if(c_fund.status == `unlikely`)
+                      selected
+                      @end
+                      @end
+              >
+                Unlikely
+              </option>
             </select>
           </div>
 

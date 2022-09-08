@@ -87,7 +87,7 @@ export default class DashboardController {
 
     const funds = await Fund.query()
       .preload('client')
-      .where('status', '!=', 'launched')
+      .whereNotIn('status',  ['launched', 'unlikely', 'other'])
       .orderBy('target_launch_date')
     console.log('userGroups V')
     console.log(session.get('user_groups'))
@@ -95,11 +95,12 @@ export default class DashboardController {
     const status = await TaskStatus.query().orderBy('rank')
 
     const subtasks = await SubTask.query().whereIn('assigned_to_group_id', user_groups).andWhereNotIn('task_statuses_id', [3,4])
-      .preload('task', (fundQuery) => {fundQuery.preload('fund')})
+
+      /*.preload('task', (fundQuery) => {fundQuery.preload('fund')})
       .preload('taskStatus')
       .preload('assignedTo')
       .preload('createdBy')
-
+      */
     const subtasks_count = subtasks.length
 
     const prelaunch_count = await Fund.query().where('status', 'prelaunch')
