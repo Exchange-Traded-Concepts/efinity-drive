@@ -12,7 +12,7 @@
   @include('partials/dashboard/top_cards')
 </div>
 <div class="row">
-
+<!--
   <div class="col-md-12">
     <div class="card shadow mb-4">
       <div
@@ -27,10 +27,10 @@
                aria-labelledby="dropdownMenuLink">
             <div class="dropdown-header">Admin:</div>
             <a class="dropdown-item" href="/tasks_add">Add Task</a>
-            <!--  <a class="dropdown-item" href="#">Another action</a>
+              <a class="dropdown-item" href="#">Another action</a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="#">Something else here</a>
-            -->
+
           </div>
         </div>
       </div>
@@ -89,7 +89,7 @@
           @each(st in t.subtasks)
           <tr x-show="{{ `selected == ${t.id}` }}" class="sub" style="background-color: #858796; color: #FFFFFF; display: none">
             <td>
-              <!-- <p><i class="fas fa-arrow-circle-right" style="color: #FFFFFF"></i></p> -->
+               <p><i class="fas fa-arrow-circle-right" style="color: #FFFFFF"></i></p>
             </td>
             <td></td>
             <td>{{st.title}}<br>
@@ -122,8 +122,9 @@
       </div>
 
     </div>
-  </div>
+  </div> -->
  </div>
+<!--
 <div class="row">
   <div class="col-md-12">
     <div class="card shadow mb-4">
@@ -164,7 +165,7 @@
       </div>
     </div>
    </div>
-</div>
+</div> -->
 
 
 <div class="row">

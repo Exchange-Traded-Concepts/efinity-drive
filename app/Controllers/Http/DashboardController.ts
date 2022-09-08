@@ -82,7 +82,8 @@ export default class DashboardController {
       .andWhere('completed', 0)
       .andWhere('task_statuses_id' ,'<=', '2')
       .orderBy('target_completion_date')
-      .limit(5)
+
+    const task_count = tasks.length
 
     const funds = await Fund.query()
       .preload('client')
@@ -99,6 +100,8 @@ export default class DashboardController {
       .preload('assignedTo')
       .preload('createdBy')
 
+    const subtasks_count = subtasks.length
+
     const prelaunch_count = await Fund.query().where('status', 'prelaunch')
     const count = prelaunch_count.length
 
@@ -106,6 +109,15 @@ export default class DashboardController {
     const tickets = await HelpDesk.query().where('created_by', auth.user.id).andWhere('status', '!=', 'closed')
     console.log(tickets)
 
-  return view.render('admin/dashboard', {d, tasks, funds, status, user_groups, subtasks, tickets, count})
+    const legend_birth = new Date("10/14/1973")
+    const today = new Date()
+
+    var diff = today.getTime() - legend_birth.getTime()
+
+    var Legend = diff / (1000 * 3600 * 24)
+
+    var Legend_Days = Legend.toFixed(0)
+
+  return view.render('admin/dashboard', {d, tasks, funds, status, user_groups, subtasks, tickets, count, subtasks_count, task_count, Legend_Days})
   }
 }
