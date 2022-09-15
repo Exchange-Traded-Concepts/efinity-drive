@@ -66,9 +66,9 @@ Route.get('/logout', 'AuthController.logout').middleware('auth')
 
 Route.group(()=> {
   Route.get('/client/:client_type_id', 'ClientsController.index').middleware('isAdmin')
-  Route.post('/client', 'ClientsController.store')
-  Route.get('/client/:id/edit', 'ClientsController.edit')
-  Route.patch('/client/:id', 'ClientsController.update')
+  Route.post('/client', 'ClientsController.store').middleware('isAdmin')
+  Route.get('/client/:id/edit', 'ClientsController.edit').middleware('isAdmin')
+  Route.patch('/client/:id', 'ClientsController.update').middleware('isAdmin')
 }).middleware('auth')
 
 Route.group(()=> {
@@ -193,3 +193,14 @@ Route.group(() => {
   Route.get('/helpdesk/:id/delete', 'HelpDesksController.destroy')
   Route.get('/helpdesk/admin', 'HelpDesksController.admin')
 }).middleware('editAdmin')
+
+Route.group(() => {
+  Route.get('/user_clients', 'UserClientsController.index')
+  Route.post('/user_clients', 'UserClientsController.store')
+  Route.get('/user_clients/:id/edit', 'UserClientsController.index')
+  Route.patch('/user_clients/:id', 'UserClientsController.update')
+}).middleware('editAdmin')
+
+Route.group(() => {
+  Route.get('/clientDashboard', 'ClientDashboardsController.index' )
+}).middleware('auth')

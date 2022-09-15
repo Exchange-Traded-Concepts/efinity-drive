@@ -47,7 +47,11 @@
             </td>
             <td style="text-align: center">
               <a href="{{ `/register/${u.id}/edit` }}"><i class="fas fa-pencil-alt"></i></a>&nbsp;
+              @if(u.is_admin)
               <a href="{{ `/user_group/${u.id}` }}"><i class="fas fa-users-cog"></i></a>
+              @else
+              <a href="{{ `/user_clients/${u.id}/edit` }}"><i class="fas fa-users-cog"></i></a>
+              @end
             </td>
       @endeach
           </tr>

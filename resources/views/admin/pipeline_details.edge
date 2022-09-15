@@ -17,19 +17,14 @@
     <h6 class="m-0 font-weight-bold text-primary"> {{ p[0].fund_name ||''}} Fund Details</h6>
     @if(auth.user.can_edit)
     <div class="dropdown no-arrow">
-      <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-      </a>
-      <div class="dropdown-menu dropdow0n-menu-right shadow animated--fade-in"
-           aria-labelledby="dropdownMenuLink">
-        <div class="dropdown-header">Admin:</div>
-        <a class="dropdown-item" href="{{`/funds/${p[0].id}/edit`}}">Edit Fund</a>
+
+
+        <a class="" href="{{`/funds/${p[0].id}/edit`}}">Edit Fund <i class="fas fa-edit"></i></a>
         <!--  <a class="dropdown-item" href="#">Another action</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="#">Something else here</a>
         -->
-      </div>
+
     </div>
     @endif
   </div>
@@ -288,19 +283,7 @@
       class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
       <h6 class="m-0 font-weight-bold text-primary">Tasks</h6>
       <div class="dropdown no-arrow">
-        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-        </a>
-        <div class="dropdown-menu dropdow0n-menu-right shadow animated--fade-in"
-             aria-labelledby="dropdownMenuLink">
-          <div class="dropdown-header">Admin:</div>
-          <a class="dropdown-item" href="/tasks_add">Add Task</a>
-          <!--  <a class="dropdown-item" href="#">Another action</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Something else here</a>
-          -->
-        </div>
+           <a class="" href="/tasks_add">Add Task <i class="fas fa-plus"></i></a>
       </div>
     </div>
     <div class="card-body">
@@ -394,19 +377,7 @@
     <h6 class="m-0 font-weight-bold text-primary">Fund Documents</h6>
     @if(auth.user.can_edit)
     <div class="dropdown no-arrow">
-      <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-      </a>
-      <div class="dropdown-menu dropdow0n-menu-right shadow animated--fade-in"
-           aria-labelledby="dropdownMenuLink">
-        <div class="dropdown-header">Admin:</div>
-        <a class="dropdown-item" href="{{ `/documents/${fund_id}/2` }}">Documents</a>
-        <!--  <a class="dropdown-item" href="#">Another action</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Something else here</a>
-        -->
-      </div>
+       <a class="" href="{{ `/documents/${fund_id}/2` }}">Documents <i class="fas fa-file"></i></a>
     </div>
     @endif
   </div>

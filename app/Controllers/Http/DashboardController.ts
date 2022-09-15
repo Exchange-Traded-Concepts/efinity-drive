@@ -108,7 +108,6 @@ export default class DashboardController {
 
     // @ts-ignore
     const tickets = await HelpDesk.query().where('created_by', auth.user.id).andWhere('status', '!=', 'closed')
-    console.log(tickets)
 
     const legend_birth = new Date("10/14/1973")
     const today = new Date()

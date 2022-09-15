@@ -1,0 +1,82 @@
+@layout('layouts/adminDashboard')
+
+@section('content')
+
+<div class="container-fluid">
+<div>
+  @if(flashMessages.has('notification'))
+  <div class="alert alert-success">{{ flashMessages.get('notification') }}</div>
+  @endif
+</div>
+<div class="row">
+
+  <div class="col-md-12">
+
+    <div class="card shadow mb-4">
+      <!-- Card Header - Dropdown -->
+      <div
+        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary" style="text-transform: capitalize"></h6>
+      </div>
+      <div class="card-body">
+        <table class="table table-striped">
+          <tr>
+          <th>
+            Ticker
+          </th>
+            <th>
+              Name
+            </th>
+            <th>
+              Exchange
+            </th>
+            <th>
+              Trust
+            </th>
+            <th>
+              Admin
+            </th>
+            <th>
+              Launch date
+            </th>
+            <th>
+              Organization
+            </th>
+          </tr>
+        @each(f in funds)
+          <tr>
+            <td>
+              {{f.ticker ||''}}
+            </td>
+            <td>
+              {{f.fund_name ||''}}
+            </td>
+            <td>
+              {{f.exchange ||''}}
+            </td>
+            <td>
+              {{f.trust ||''}}
+            </td>
+            <td>
+              {{f.admin ||''}}
+            </td>
+            <td>
+              @if(f.launch_date)
+              {{f.launch_date.toFormat('M/d/y')}}
+              @end
+            </td>
+            <td>
+              {{f.client.name}}
+            </td>
+          </tr>
+        @end
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+@endsection

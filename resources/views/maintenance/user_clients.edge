@@ -1,0 +1,70 @@
+@layout('layouts/adminDashboard')
+
+@section('content')
+<div class="container-fluid">
+<div>
+  @if(flashMessages.has('notification'))
+  <div class="alert alert-success">{{ flashMessages.get('notification') }}</div>
+  @endif
+</div>
+<div class="row">
+
+  <div class="col-md-12">
+    <div class="card shadow mb-12">
+      <div
+        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary"></h6>
+      </div>
+
+      <form
+        action="/user_clients"
+        method="post"
+        enctype="multipart/form-data">
+        {{ csrfField() }}
+       <div class="card-body">
+        <div class="row">
+        <div class="col-lg-4">
+        <div class="form-group">
+          <label for="user_id">User</label>
+        <select name="user_id" id="user_id" class="form-control">
+          @if(clientUsers)
+          @each(u in clientUsers)
+            <option value="{{u.id}}"
+            @if(user == u.id)
+              selected
+            @end
+            >{{ u.first_name }} {{u.last_name}}</option>
+          @end
+          @end
+        </select>
+        </div>
+        </div>
+        </div>
+        </div>
+         <div class="card-body">
+          <div class="row">
+          @each(c in clients)
+            <div class="col-lg-4">
+                {{ c.id }}
+                <input type="checkbox" name="client_id[]" value="{{c.id}}"
+                @if(currentSelections)
+                  @each(cs in currentSelections[0])
+
+                    @if(cs.client_id == c.id)
+                       checked
+                    @end
+                  @end
+                @end
+                > {{ c.name }}
+            </div>
+          @end
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+
+@endsection

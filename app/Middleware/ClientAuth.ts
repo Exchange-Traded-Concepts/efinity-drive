@@ -1,12 +1,13 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
-export default class IsAdmin {
+export default class ClientAuth {
   public async handle({auth, response}: HttpContextContract, next: () => Promise<void>) {
     // code for middleware goes here. ABOVE THE NEXT CALL
     // @ts-ignore
-    if (auth.isLoggedIn && (auth.user.is_admin === 1) && auth.user.is_active) {
+    if (auth.isLoggedIn && auth.user.can_edit) {
       await next()
-    } else {
+    }
+    else {
       return response.redirect('/')
     }
   }

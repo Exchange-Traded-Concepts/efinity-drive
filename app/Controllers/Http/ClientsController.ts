@@ -26,7 +26,7 @@ export default class ClientsController {
     session.get('area_code')
     // Write value
     session.put('area_code', 777)
-    return view.render('client/index', {data, states, maint, client_type_id : params.client_type_id, type: client_type[params.client_type_id]})
+    return view.render('admin/client', {data, states, maint, client_type_id : params.client_type_id, type: client_type[params.client_type_id]})
   }
   public async store ({request, session, response}: HttpContextContract) {
   //console.log('IN LOG')
@@ -101,7 +101,7 @@ export default class ClientsController {
     const maint = 'show'
     const client_type = {1: "client", 2: "distributor", 3: "custodian", 4:"vendor"}
     // @ts-ignore
-    return view.render('client/index', { client: client, states, data, maint, type: client_type[client.client_type_id], client_type_id : client.client_type_id})
+    return view.render('admin/client', { client: client, states, data, maint, type: client_type[client.client_type_id], client_type_id : client.client_type_id})
 
   }
 

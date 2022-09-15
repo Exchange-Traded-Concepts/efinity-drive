@@ -45,39 +45,49 @@ export default class AuthController {
   }
 
   public async login({ request, auth, session, response }: HttpContextContract) {
-    const { email, password } = request.all()
+    const {email, password} = request.all()
 
-    try {
-      let x = []
-      const cur_user  =  await auth.attempt(email, password)
-      // @ts-ignore
-      const user_groups = await Database.rawQuery('SELECT group_id FROM user_groups where user_id =? ', [auth.user.id])
 
-      console.log(user_groups[0])
-
-      for (let i = 0; i < user_groups[0].length; i++) {
-        console.log('start loop ' + i)
-        console.log('loop is '+ user_groups[0].length + ' long')
-        console.log('ID V')
-        console.log(user_groups[0][i])
-        console.log(user_groups[0][i].group_id)
+      try {
+        let x = []
+        const cur_user = await auth.attempt(email, password)
         // @ts-ignore
-        x.push( user_groups[0][i].group_id )
+        const user_groups = await Database.rawQuery('SELECT group_id FROM user_groups where user_id =? ', [auth.user.id])
+
+        for (let i = 0; i < user_groups[0].length; i++) {
+          // @ts-ignore
+          x.push(user_groups[0][i].group_id)
+        }
+
+        if (x) session.put('user_groups', x)// cur_user.groups = user_groups
+
+        session.put('cur_user', {cur_user})
+
+        // @ts-ignore
+        if(auth.isLoggedIn && !auth.user.can_edit && auth.user.is_active){
+
+         // @ts-ignore
+          const user_clients = await Database.rawQuery('SELECT client_id FROM user_clients where user_id =? ', [auth.user.id])
+          let z = []
+
+          for (let i = 0; i < user_clients[0].length; i++) {
+            // @ts-ignore
+            z.push(user_clients[0][i].client_id)
+          }
+          if (z) session.put('user_clients', z)// cur_user.groups = user_groups
+          return response.redirect('/clientDashboard')
+        }
+        else {
+
+          return response.redirect('/dashboard')
+        }
+      } catch (error) {
+        session.flash('notification', "We couldn't verify your credentials.")
+
+        return response.redirect('back')
       }
-      console.log('outside of loop')
-      console.log(x)
-      console.log('x should br that ^')
-
-      if(x) session.put('user_groups', x)// cur_user.groups = user_groups
-
-      session.put('cur_user', {cur_user})
-      return response.redirect('/dashboard')
-    } catch (error) {
-      session.flash('notification', "We couldn't verify your credentials.")
-
-      return response.redirect('back')
     }
-  }
+
 
   public async logout({ auth, response, session }: HttpContextContract) {
     await auth.logout()
