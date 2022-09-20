@@ -1,4 +1,4 @@
-@layout('layouts.adminDashboard')
+@layout('layouts/adminDashboard')
 
 @section('content')
 <div class="container-fluid">
@@ -144,9 +144,15 @@
             <label class="label">Password</label>
             <input
                 type="password"
+                id="password"
                 class="input form-control {{ flashMessages.get('errors.password') ? 'is-danger' : '' }}"
                 name="password"
                 placeholder="Password" >
+            <!--
+                <div class="input-group-addon">
+                   <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
+                </div>
+            -->
             </div>
             @if (flashMessages.has('errors.password'))
             <p class="help is-danger">
@@ -158,10 +164,11 @@
           <div class="form-group">
             <label class="label">Confirm Password</label>
               <input
+                id="password_confirmation"
                 type="password"
                 class="input form-control {{ flashMessages.get('errors.password_confirmation') ? 'is-danger' : '' }}"
                 name="password_confirmation"
-                placeholder="Confirm Password">
+                placeholder="Confirm Password" onBlur="confirmPassword()">
             </div>
 
             @if (flashMessages.has('errors.password_confirmation'))
@@ -200,7 +207,10 @@
             >
             <label for="can_edit" class="form-check-label">Allow Full Edit Permissions</label>
           </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <div class="alert-danger" id="error_display" style="display: none;padding: 10px;">
+            Passwords do not match
+          </div>
+          <button type="submit" class="btn btn-primary" id="register_submit">Submit</button>
         </form>
       </div>
     </div>
