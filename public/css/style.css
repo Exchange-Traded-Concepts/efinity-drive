@@ -1,0 +1,9 @@
+.input-group-addon{
+  background-color: #cdd8f6;
+  color: #2d2e33;
+  border: #2d2e33 1px solid;
+  align-content: center;
+  text-align: center;
+  padding: .3rem;
+  cursor: pointer;
+}
