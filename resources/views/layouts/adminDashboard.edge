@@ -530,6 +530,90 @@
 <script src="/js/tooltip.js"></script>
 <script src="/js/password.js"></script>
 
+<script>
+  let warningTimeout = 600000;
+  let warningTimerID;
+  let counterDisplay = document.getElementById('numCount');
+  logoutUrl = "/logout";
 
+  function startTimer() {
+    // window.setTimeout returns an ID that can be used to start and stop the timer
+    warningTimerID = window.setTimeout(idleLogout, warningTimeout);
+    animate(counterDisplay, 5, 0, warningTimeout);
+  }
+  //function for resetting the timer
+  function resetTimer() {
+    window.clearTimeout(warningTimerID);
+    startTimer();
+  }
+
+  // Logout the user.
+  function idleLogout() {
+    window.location = logoutUrl;
+  }
+
+  function startCountdown() {
+  document.addEventListener("mousemove", resetTimer);
+  document.addEventListener("mousedown", resetTimer);
+  document.addEventListener("keypress", resetTimer);
+  document.addEventListener("touchmove", resetTimer);
+  document.addEventListener("onscroll", resetTimer);
+  document.addEventListener("wheel", resetTimer);
+  startTimer();
+  }
+  //the animating function
+  function animate(obj, initVal, lastVal, duration) {
+
+    let startTime = null;
+
+    //get the current timestamp and assign it to the currentTime variable
+
+    let currentTime = Date.now();
+
+    //pass the current timestamp to the step function
+
+    const step = (currentTime ) => {
+
+      //if the start time is null, assign the current time to startTime
+
+      if (!startTime) {
+        startTime = currentTime ;
+      }
+
+      //calculate the value to be used in calculating the number to be displayed
+
+      const progress = Math.min((currentTime  - startTime) / duration, 1);
+
+      //calculate what is to be displayed using the value gotten above
+
+      displayValue = Math.floor(progress * (lastVal - initVal) + initVal);
+      obj.innerHTML = displayValue;
+
+      //checking to make sure the counter does not exceed the last value(lastVal)
+
+      if (progress < 1) {
+        window.requestAnimationFrame(step);
+      }else{
+        window.cancelAnimationFrame(window.requestAnimationFrame(step));
+      }
+    };
+
+    //start animating
+    window.requestAnimationFrame(step);
+  }
+
+  startCountdown();
+
+</script>
+
+<div class="d-flex align-items-center justify-content-center vw-60 vh-70" style="padding-bottom: 3vh">
+  <div class="card border-dark  container">
+    <div class="card-body border-dark row" style="background-color: #035050">
+      <p class="card-text">
+      <h6 class="text-white">The page will take you to the login page after</h6>&nbsp;<h5 style="color: #0af53a" id="numCount"><h5>&nbsp;<h6 class="text-white">seconds of inactivity.</h6>
+      </p>
+    </div>
+  </div>
+</div>
 </body>
 </html>
