@@ -48,6 +48,8 @@ export default class DashboardController {
       .orderBy('type')
     let curMonth = months[indexedMonth]
 
+    console.log(events)
+
     return view.render('admin', {calendar: calendar[indexedMonth], months, year,  launches, indexedMonth: indexedMonth, curMonth, ctoday, seeds, events})
 
 }

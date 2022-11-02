@@ -282,20 +282,25 @@ header > h1{
           @end
         </span>
 
-        <span class="events">
+        <span class="seeds">
            @each (s in seeds )
             @if(s.seed_date.toFormat('y-M-d') == (year+`-`+(indexedMonth-(-1))+`-`+numDate))
-              <span class="sticker"><a href="{{`/fund_pipeline_details_t/${s.ticker}`}}">{{ s.ticker }}</a></span><br>
+               <span class="sticker"><a href="{{`/fund_pipeline_details_t/${s.ticker}`}}">{{ s.ticker }}</a></span><br>
             @end
           @end
         </span>
         <span class="events">
+
            @each (e in events )
-            @if(e.start_date.toFormat('y-M-d') <= (year+`-`+(indexedMonth-(-1))+`-`+numDate) && e.end_date.toFormat('y-M-d') >= (year+`-`+(indexedMonth-(-1))+`-`+numDate))
-              @if(e.public == 1 || auth.user.id  == e.created_by)
+            @if(e.start_date.toFormat('y-M-dd') <= (year+`-`+(indexedMonth-(-1))+`-`+numDate) && e.end_date.toFormat('y-M-dd') >= (year+`-`+(indexedMonth-(-1))+`-`+numDate)
+            ||
+            e.start_date.toFormat('y-M-dd') <= (year+`-`+(indexedMonth-(-1))+`-0`+numDate) && e.end_date.toFormat('y-M-dd') >= (year+`-`+(indexedMonth-(-1))+`-0`+numDate)
+           )
+          @if(e.start_date.toFormat('dd') <= numDate && e.end_date.toFormat('dd') >= numDate)
+             @if(e.public == 1 || auth.user.id  == e.created_by)
                 @if(e.type == 'time_off')
                   <span class="{{e.type}}"  title="{{`${e.title} - ${e.notes}` }}">{{ e.createdBy.first_name }} {{e.createdBy.last_name}}
-                  @if(e.created_by == auth.user.id)
+                 @if(e.created_by == auth.user.id)
                     <a href="{{`/cal_event/${e.id}/edit`}}" style="text-decoration: none; color: #FFFFFF;">&#8226</a>
                   @end
                   </span><br>
@@ -305,6 +310,7 @@ header > h1{
                       <a href="{{`/cal_event/${e.id}/edit`}}" style="text-decoration: none; color: #FFFFFF;">&#8226</a>
                    @end
                   </span><br>
+                @end
                 @end
               @end
             @end
