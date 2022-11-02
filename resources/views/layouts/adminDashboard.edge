@@ -539,7 +539,7 @@
   function startTimer() {
     // window.setTimeout returns an ID that can be used to start and stop the timer
     warningTimerID = window.setTimeout(idleLogout, warningTimeout);
-    animate(counterDisplay, 5, 0, warningTimeout);
+  //  animate(counterDisplay, 5, 0, warningTimeout);
   }
   //function for resetting the timer
   function resetTimer() {
@@ -562,6 +562,8 @@
   startTimer();
   }
   //the animating function
+  //Save this for later https://www.section.io/engineering-education/javascript-animation-counter/
+  /*
   function animate(obj, initVal, lastVal, duration) {
 
     let startTime = null;
@@ -601,6 +603,7 @@
     //start animating
     window.requestAnimationFrame(step);
   }
+  */
 
   startCountdown();
 
