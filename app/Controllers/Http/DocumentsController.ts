@@ -60,12 +60,32 @@ export default class DocumentsController {
 
   public async show({}: HttpContextContract) {}
 
-  public async edit({}: HttpContextContract) {}
+  public async edit({params, view}: HttpContextContract) {
 
-  public async update({}: HttpContextContract) {}
+    console.log('HERRO' )
+    const doc = await Document.findOrFail(params.id)
+    console.log(doc)
+   return view.render('maintenance/document', {doc, resource_id: doc.resource_id})
 
+  }
+
+  public async update({request, params, session, response}: HttpContextContract) {
+
+    const document = await Document.findOrFail( params.id)
+    const data = await this.validateInput(request)
+
+    document.merge({
+      name: data.name,
+    })
+
+    await document.save()
+    session.flash('notification', 'Document Saved.')
+    return response.redirect().back()
+
+  }
   public async destroy({params, session, response}: HttpContextContract) {
     const f = await Document.findOrFail(params.id)
+    console.log(f)
     await FileUpload.DeleteFile(f.url)
     await f.delete()
     session.flash('notification', 'File deleted!')

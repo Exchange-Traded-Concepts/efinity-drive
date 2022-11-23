@@ -41,7 +41,8 @@
               {{d.size}}
             </td>
             <td>
-              <a href="{{ `/documents/${d.id}/edit` }}">Edit</a> <a href="{{ `/documents/${d.id}/delete` }}">X</a> <br>
+              <a href="{{ `/fund_documents/${d.id}/edit` }}"><i class="fas fa-pencil-alt" title="Edit"></i></a>
+              &nbsp; &nbsp;<a href="{{ `/fund_documents/${d.id}/delete` }}" onclick="return confirm('Are you sure you want to delete this document?');"><i class="fa fa-trash" style="color: #cc0000;"></i></a> <br>
             </td>
           </tr>
           @end
@@ -58,7 +59,7 @@
       </div>
       <div class="card-body">
         <form
-          @if(custo)
+          @if(doc)
           action=" {{ `/documents/${doc.id}?_method=PATCH`}}"
           @else
           action="/documents"

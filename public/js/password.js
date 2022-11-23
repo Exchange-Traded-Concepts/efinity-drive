@@ -28,9 +28,9 @@ function confirmPassword(){
   const val1 = document.getElementById('password').value
   const val2 = document.getElementById('password_confirmation').value
 
-  if(val1.length < 6 ){
+  if(val1.length < 8 ){
     document.getElementById('error_display').style.display = 'block'
-    document.getElementById('error_display').innerHTML = "Password must be at least 6 characters long"
+    document.getElementById('error_display').innerHTML = "Password must be at least 8 characters long"
     document.getElementById('register_submit').disabled = true;
     return
   }
@@ -82,10 +82,10 @@ function checkpassword(password) {
   if(password.length === 0){ display.innerHTML = "";
   }
 
-  if (password.length < 6 && password.length !==0) {
-    display.innerHTML = "minimum password length is 6";
+  if (password.length < 8 && password.length !==0) {
+    display.innerHTML = "minimum password length is 8";
   }
-  if(password.length > 6 && password.length < 12) { display.innerHTML = "";
+  if(password.length > 8 && password.length < 15) { display.innerHTML = "";
 
   }
   if (password.length > 12) {

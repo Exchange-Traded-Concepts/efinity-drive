@@ -1,5 +1,6 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import FundDocument from "App/Models/FundDocument";
+import Document from "App/Models/Document";
 import Fund from "App/Models/Fund";
 import FileUpload from "App/utils/fileUploader";
 import {rules, schema} from "@ioc:Adonis/Core/Validator";
@@ -67,12 +68,21 @@ export default class FundDocumentsController {
 
   public async show({}: HttpContextContract) {}
 
-  public async edit({}: HttpContextContract) {}
+  public async edit({params, view}: HttpContextContract) {
+    const doc = await Document.findOrFail(params.id)
+    const Documents = await Document.query().where('resource_id', doc.resource_id).andWhere('doc_type_id', doc.doc_type_id)
+    return view.render('maintenance/document', {doc, resource_id: doc.resource_id, doc_type_id:doc.doc_type_id, Documents})
+  }
 
   public async update({}: HttpContextContract) {}
 
   public async destroy({params, session, response}: HttpContextContract) {
-    const f = await FundDocument.findOrFail(params.id)
+
+     console.log('HERE!!!!!!!!!!!!!!!')
+    const f = await Document.findOrFail(params.id)
+
+    console.log(f)
+
     await FileUpload.DeleteFile(f.url)
     await f.delete()
     session.flash('notification', 'File deleted!')

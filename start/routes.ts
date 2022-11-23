@@ -126,8 +126,10 @@ Route.group(() => {
   Route.get('/documents/:resource_id/:doc_type_id', 'DocumentsController.index')
   Route.post('/documents', 'DocumentsController.store')
   Route.get('/fund_documents/:id/edit', 'FundDocumentsController.edit')
+  Route.get('/documents/:id/edit', 'DocumentsController.edit')
+  Route.patch('/documents/:id', 'DocumentsController.update')
   Route.patch('/fund_documents/:id', 'FundDocumentsController.update')
-  Route.get('/documents/:id/delete', 'FundDocumentsController.destroy')
+  Route.get('/fund_documents/:id/delete', 'FundDocumentsController.destroy')
 }).middleware('editAdmin')
 
 

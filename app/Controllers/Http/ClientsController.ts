@@ -39,11 +39,7 @@ export default class ClientsController {
       dataUrl = data.url
     }
 
-    console.log('I Bet that data url is null')
-
-    const data = await this.validateInput(request)
-
-    console.log(data)
+   const data = await this.validateInput(request)
 
     await Client.create({
       name: data.name,
@@ -161,7 +157,7 @@ export default class ClientsController {
   private async validateInput(request) {
 
     const valSchema = schema.create({
-      name: schema.string({ trim: true }, [rules.maxLength(150), rules.required()]),
+      name: schema.string({ trim: true }, [rules.maxLength(150)]),
       address: schema.string.nullable({trim: true}, [rules.maxLength(255)]),
       city: schema.string.nullable({trim: true}, [rules.maxLength(255)]),
       state: schema.string({trim: true}, [rules.maxLength(3)]),
@@ -175,8 +171,8 @@ export default class ClientsController {
     return await request.validate({
       schema: valSchema,
       messages: {
-        'name.required': 'Name is required',
-        'name.maxLength': 'Name allows upto 150 characters',
+        'name.required' : 'Company Name Required',
+        'name.maxLength' : 'Name cannot be over 150 characters',
       },
     })
   }

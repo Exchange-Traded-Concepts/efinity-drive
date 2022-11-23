@@ -1,6 +1,33 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <style>
+    /* The Modal (background) */
+    .modalT {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 1; /* Sit on top */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgb(0,0,0); /* Fallback color */
+      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content/Box */
+    .modal-contentW {
+      background-color: #fefefe;
+      border: 2px solid #cc0000;
+      margin: 15% auto; /* 15% from the top and centered */
+      padding: 20px;
+      border: 1px solid #888;
+      width: 40%; /* Could be more or less, depending on screen size */
+    }
+
+  </style>
+
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -511,6 +538,16 @@
   </div>
 </div>
 
+<!-- The Modal -->
+<div id="myModal" class="modalT">
+
+  <!-- Modal content -->
+  <div class="modal-contentW">
+     <p class="text-center" style="font-size: 22px;">You are about to be logged out due to inactivity</p>
+  </div>
+
+</div>
+
 
 <!-- Optional JavaScript -->
 
@@ -533,19 +570,30 @@
 <script>
   let warningTimeout = 600000;
   let warningTimerID;
+  let displayTimeoutID;
   let counterDisplay = document.getElementById('numCount');
+  let closeA = document.getElementsByClassName("closeAlert");
   logoutUrl = "/logout";
 
   function startTimer() {
     // window.setTimeout returns an ID that can be used to start and stop the timer
     warningTimerID = window.setTimeout(idleLogout, warningTimeout);
+    displayTimeoutID = window.setTimeout(displayTimeout, warningTimeout - 120000)
   //  animate(counterDisplay, 5, 0, warningTimeout);
   }
   //function for resetting the timer
   function resetTimer() {
     window.clearTimeout(warningTimerID);
+    window.clearTimeout(displayTimeoutID);
+    document.getElementById('myModal').style.display = 'none';
     startTimer();
   }
+
+  //display warning modal
+  function displayTimeout(){
+    document.getElementById('myModal').style.display = 'block';
+  }
+
 
   // Logout the user.
   function idleLogout() {

@@ -30,6 +30,7 @@ export default class FundsController {
       .preload('client')
       .preload('custodian')
       .preload('distributor')
+      .orderBy('ticker')
 
     return view.render('admin/funds', {funds})
 
