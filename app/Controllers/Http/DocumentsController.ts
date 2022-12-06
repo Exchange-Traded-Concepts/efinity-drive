@@ -28,6 +28,7 @@ export default class DocumentsController {
        try {
         const data = await FileUpload.uploadToS3(request.file('upload'), 'uploads', null)
         dataUrl = data.url
+         // @ts-ignore
         fileSize = (data.stats.size / (1024 * 1024)).toFixed(2)
         fileExt = data.extension
       }
