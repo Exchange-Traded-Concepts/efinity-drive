@@ -9,6 +9,7 @@ import TaskStatus from "App/Models/TaskStatus";
 import SubTask from "App/Models/SubTask";
 import EFMailer from "App/utils/mailer";
 import Env from "@ioc:Adonis/Core/Env";
+import Note from "App/Models/Note";
 
 export default class FundsController {
   public async index({view}: HttpContextContract) {
@@ -1010,11 +1011,14 @@ export default class FundsController {
 
     const docs = await Document.query().preload('createdBy')
       .where('resource_id', params.id).andWhere('doc_type_id', 2)
+    const notes = await Note.query().preload('createdBy').where('note_type_id', 2).andWhere('resource_id', params.id).orderBy('id', 'desc')
+    const trunc_notes =  await Note.query().preload('createdBy').where('note_type_id', 2).andWhere('resource_id', params.id).orderBy('id', 'desc').limit(3)
+
 
     const fund_id = params.id
     const user_groups = session.get('user_groups')
 
-    return view.render('admin/pipeline_details', {user_groups, p, tasks, fund_id, docs, status})
+    return view.render('admin/pipeline_details', {user_groups, p, tasks, fund_id, docs, status, notes, trunc_notes, resource_id: params.id, note_type_id: 2})
 
 
   }

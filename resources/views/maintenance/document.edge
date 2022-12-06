@@ -22,6 +22,7 @@
             <th>Name</th>
             <th>URL</th>
             <th>Size</th>
+            <th>Type</th>
             <th>Options</th>
           </tr>
           @each(d in Documents)
@@ -38,7 +39,10 @@
               @end
             </td>
             <td>
-              {{d.size}}
+              {{d.size}}MB
+            </td>
+            <td>
+              {{ d.type }}
             </td>
             <td>
               <a href="{{ `/fund_documents/${d.id}/edit` }}"><i class="fas fa-pencil-alt" title="Edit"></i></a>
@@ -79,21 +83,19 @@
                    @endif
                    placeholder="Name">
           </div>
+          @if(!doc)
             <div class="form-group">
             <label for="document">Document</label>
             <input type="file"
                    class="form-control"
                    id="document"
                    name="upload"
-                   @if(client)
+                   @if(doc)
                    value="{{ doc.url || ''}}"
                    @endif
                    placeholder="Document">
           </div>
-
-
-
-
+          @end
           <button type="submit" class="btn btn-primary">Submit</button>
           @if(flashMessages.has('errors.title'))
           <p class="alert-danger">

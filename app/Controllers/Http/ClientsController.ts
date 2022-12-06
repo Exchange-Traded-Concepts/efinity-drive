@@ -7,6 +7,7 @@ import {rules, schema} from "@ioc:Adonis/Core/Validator";
 import Fund from "App/Models/Fund";
 import ClientContact from "App/Models/ClientContact";
 import Document from "App/Models/Document";
+import Note from "App/Models/Note";
 
 export default class ClientsController {
 
@@ -145,9 +146,11 @@ export default class ClientsController {
       .preload('distributor')
       .where('client_id', params.client_id)
 
+    const notes = await Note.query().preload('createdBy').where('note_type_id', 1).andWhere('resource_id', params.client_id).orderBy('id', 'desc')
+    const trunc_notes =  await Note.query().preload('createdBy').where('note_type_id', 1).andWhere('resource_id', params.client_id).orderBy('id', 'desc').limit(3)
     const docs = await Document.query().where('doc_type_id', 1).andWhere('resource_id', params.client_id)
     const contacts = ClientContact.query().where('client_id', params.client_id)
-    return view.render('admin/client_details', {data, funds, contacts, docs})
+    return view.render('admin/client_details', {data, funds, contacts, docs, notes, trunc_notes,  resource_id: params.client_id, note_type_id: 1})
   }
 
 

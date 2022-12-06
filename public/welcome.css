@@ -40,7 +40,7 @@ section {
 section:before {
   content: "";
   position: absolute;
-  background: url("/efinity-logo-blue.png") no-repeat;
+  background: url("/img/efinity-logo-white.png") no-repeat;
   background-size: 100%;
   width: 100%;
   height: 402px;
@@ -58,7 +58,7 @@ section:before {
 }
 
 .title {
-  background: url("/efinity-audiowide-white.png") no-repeat;
+  /* background: url("/efinity-audiowide-white.png") no-repeat; */
   width: 350px;
   height: 48px;
   background-size: 100%;

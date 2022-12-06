@@ -95,6 +95,7 @@
 	    </td>
             <td>
               @if(auth.user.id === st.assignedTo.id || auth.user.id == st.createdBy.id )
+              <a href="{{ `/sub_tasks/${st.id}/edit` }}"><i class="fas fa-sticky-note" style="color: #FFFFFF;"></i></a> &nbsp
               <a href="{{ `/sub_tasks/${st.id}/edit` }}"><i class="fas fa-pencil-alt" style="color: #FFFFFF;"></i></a>
               @end
             </td>
@@ -162,9 +163,41 @@
         </div>
       </div>
     </div>
+<!-- Notes HERE -->
+
+
+    <div class="card shadow mb-4">
+      <div
+        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Sub Task Notes</h6>
+        @if(auth.user.can_edit)
+        <div class="dropdown no-arrow">
+          @include('admin/partials/notes_modal')
+        </div>
+        @endif
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12">
+
+            <h4>Newest 3 notes</h4>
+            <hr>
+            <div class="notes_section row">
+              <div class="col-12">
+                @each(n in trunc_notes)
+                <span class="note-small">{{n.createdBy.first_name}} {{n.createdBy.last_name}} - {{n.createdAt.toFormat('M/d/y') ||''}}</span><br>
+                <p class="note-text">{{n.text}}</p><hr>
+                @end
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
 
 
+  <!-- End -->
   </div>
   <div class="col-md-6">
     <div class="card shadow mb-4">

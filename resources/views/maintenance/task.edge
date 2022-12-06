@@ -110,6 +110,10 @@
 		@end
 </td>
             <td>
+              <!--
+                Note Icon here
+             -->
+              <a href="{{ `/sub_tasks/${st.id}/edit` }}"><i class="fas fa-sticky-note" style="color: #FFFFFF;"></i></a>
               @if(auth.user.id === st.createdBy.id)
               <a href="{{ `/sub_tasks/${st.id}/edit` }}"><i class="fas fa-pencil-alt" style="color: #FFFFFF;"></i></a>
               @else

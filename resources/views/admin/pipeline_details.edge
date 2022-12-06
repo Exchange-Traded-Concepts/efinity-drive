@@ -276,8 +276,37 @@
 
 </div>
 </div>
-
-
+<!-- Start Notes -->
+<div class="card shadow mb-4">
+  <div
+    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+    <h6 class="m-0 font-weight-bold text-primary">Latest Notes</h6>
+    <div class="dropdown no-arrow">
+       @include('admin/partials/notes_modal')
+    </div>
+  </div>
+  <div class="card-body">
+    <table class="table table-striped" x-data="{selected:null}" id="sortTable">
+      <thead>
+      <TR>
+        <th>By</th>
+        <th>Date</th>
+        <th>Note</th>
+      </TR>
+      </thead>
+    <tbody>
+    @each(tt in trunc_notes)
+    <tr>
+      <td>{{tt.createdBy.first_name}} {{tt.createdBy.last_name}}</td>
+      <td>{{tt.createdAt.toFormat('M/d/y') ||''}}</td>
+      <td>{{tt.text}}</td>
+    </tr>
+    @end
+    </tbody>
+    </table>
+  </div>
+</div>
+<!-- End Notes -->
 <div class="card shadow mb-4">
     <div
       class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -403,7 +432,7 @@
               {{d.type}}
             </td>
             <td>
-              {{d.size}}
+              {{d.size}}MB
             </td>
           </tr>
           @end

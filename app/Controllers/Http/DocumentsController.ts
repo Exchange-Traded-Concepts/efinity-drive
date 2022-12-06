@@ -2,6 +2,8 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Document from "App/Models/Document";
 import FileUpload from "App/utils/fileUploader";
 import {rules, schema} from "@ioc:Adonis/Core/Validator";
+import is from "@sindresorhus/is";
+import number = is.number;
 
 export default class DocumentsController {
   public async index({params, view}: HttpContextContract) {
@@ -16,18 +18,18 @@ export default class DocumentsController {
   public async store({  request, response, auth, session}: HttpContextContract) {
 
     let dataUrl = ''
-    let fileSize = 0
-    let fileType: string | undefined = ''
+    let fileSize = number
+    let fileExt: string | undefined = ''
     if (request.file('upload')) {
+      // @ts-ignore
       const new_file = request.file('upload')
 
         // @ts-ignore
-        // console.log(new_file)
-      try {
+       try {
         const data = await FileUpload.uploadToS3(request.file('upload'), 'uploads', null)
         dataUrl = data.url
-        fileSize = data.stats.size
-        fileType = new_file?.type
+        fileSize = (data.stats.size / (1024 * 1024)).toFixed(2)
+        fileExt = data.extension
       }
       catch (error){
         console.log(error.original)
@@ -47,7 +49,7 @@ export default class DocumentsController {
       url : dataUrl,
       // @ts-ignore
       created_by: auth.user.id,
-      type : fileType,
+      type : fileExt,
       // @ts-ignore
       size: fileSize
 

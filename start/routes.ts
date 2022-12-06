@@ -204,5 +204,12 @@ Route.group(() => {
 }).middleware('editAdmin')
 
 Route.group(() => {
+  Route.get('/notes/:id', 'NotesController.index').middleware('isAdmin')
+  Route.post('/notes', 'NotesController.create').middleware('isAdmin')
+  }).middleware('editAdmin')
+
+
+
+Route.group(() => {
   Route.get('/clientDashboard', 'ClientDashboardsController.index' )
 }).middleware('auth')

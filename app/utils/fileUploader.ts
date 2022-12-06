@@ -2,6 +2,7 @@ import path from 'path';
 import Drive from '@ioc:Adonis/Core/Drive';
 //import Application from '@ioc:Adonis/Core/Application'
 import {createReadStream,ReadStream} from 'fs';
+import * as console from "console";
 export default class FileUpload {
 
   // @ts-ignore
@@ -57,6 +58,9 @@ export default class FileUpload {
 
     try {
       await Drive.use('s3').put(s3Path, buffers, {ACL: 'public-read', ContentType: `${file.type}/${file.subtype}`})
+
+      console.log(file.extname)
+
     }
     catch (e){
       console.log(e.original)
@@ -73,6 +77,7 @@ export default class FileUpload {
       path: s3Path,
       stats: fileStats,
       url: fileUrl,
+      extension: file.extname,
       ext:contents,
     }
   }

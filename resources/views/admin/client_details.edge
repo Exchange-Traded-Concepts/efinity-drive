@@ -22,7 +22,19 @@
 
       </div>
       <div class="col-md-6">
-
+      <div class="col-12">
+        @include('admin/partials/notes_modal')
+        <h4>Newest 3 notes</h4>
+        <hr>
+        <div class="notes_section row">
+          <div class="col-12">
+          @each(n in trunc_notes)
+          <span class="note-small">{{n.createdBy.first_name}} {{n.createdBy.last_name}} - {{n.createdAt.toFormat('M/d/y') ||''}}</span><br>
+          <p class="note-text">{{n.text}}</p><hr>
+          @end
+        </div>
+      </div>
+      </div>
       </div>
 
 

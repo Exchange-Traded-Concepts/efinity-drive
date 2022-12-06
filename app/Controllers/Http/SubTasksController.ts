@@ -8,6 +8,7 @@ import Document from "App/Models/Document";
 import Group from "App/Models/Group";
 import EFMailer from "App/utils/mailer";
 import Env from "@ioc:Adonis/Core/Env";
+import Note from "App/Models/Note";
 
 
 
@@ -76,8 +77,14 @@ export default class SubTasksController {
     // @ts-ignore
     const docs = await Document.query().where('doc_type_id', 3).andWhere('resource_id', subTask.taskId)
 
+    const notes = await Note.query().preload('createdBy').where('note_type_id', 4)
+      .andWhere('resource_id', params.id)
+      .orderBy('id', 'desc')
+    const trunc_notes =  await Note.query().preload('createdBy').where('note_type_id', 4)
+      .andWhere('resource_id', params.id)
+      .orderBy('id', 'desc').limit(3)
 
-    return view.render('maintenance/subtask', { params, etcUsers, subTask, tasks, status, docs , groups, user_groups})
+   return view.render('maintenance/subtask', { params, etcUsers, subTask, tasks, status, docs , groups, user_groups, notes, trunc_notes, resource_id: params.id, note_type_id: 4 })
   }
 
   public async add_subtask_to_task({params, view, session}: HttpContextContract){
