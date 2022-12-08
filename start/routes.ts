@@ -24,6 +24,10 @@ Route.get('/', async ({ view }) => {
   return view.render('welcome')
 })
 
+Route.get('/logged', () => {
+  return 'Session Refreshed'
+})
+
 Route.post('/search', 'SearchesController.index').middleware('isAdmin')
 
 Route.get('/test', async () => {return 'working'} )

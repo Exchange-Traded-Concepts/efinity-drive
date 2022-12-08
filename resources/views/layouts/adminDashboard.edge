@@ -543,7 +543,15 @@
 
   <!-- Modal content -->
   <div class="modal-contentW">
-     <p class="text-center" style="font-size: 22px;">You are about to be logged out due to inactivity</p>
+     <p class="text-center" style="font-size: 22px;">You are about to be logged out due to inactivity
+     <button onclick="stayLogged()" style=" background-color: #2e59d9; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;">Keep Me Logged In</button></p>
   </div>
 
 </div>
@@ -578,7 +586,7 @@
   function startTimer() {
     // window.setTimeout returns an ID that can be used to start and stop the timer
     warningTimerID = window.setTimeout(idleLogout, warningTimeout);
-    displayTimeoutID = window.setTimeout(displayTimeout, warningTimeout - 120000)
+    displayTimeoutID = window.setTimeout(displayTimeout, warningTimeout - 120000) //120000
   //  animate(counterDisplay, 5, 0, warningTimeout);
   }
   //function for resetting the timer
@@ -601,12 +609,13 @@
   }
 
   function startCountdown() {
-  document.addEventListener("mousemove", resetTimer);
+  /*document.addEventListener("mousemove", resetTimer);
   document.addEventListener("mousedown", resetTimer);
   document.addEventListener("keypress", resetTimer);
   document.addEventListener("touchmove", resetTimer);
   document.addEventListener("onscroll", resetTimer);
   document.addEventListener("wheel", resetTimer);
+     */
   startTimer();
   }
   //the animating function
@@ -652,6 +661,15 @@
     window.requestAnimationFrame(step);
   }
   */
+
+   function stayLogged(){
+      fetch('/logged', {
+      method: 'get',
+      headers: { 'Content-Type': 'application/json' },
+      // body: JSON.stringify(this.formData)
+    })
+     resetTimer()
+  }
 
   startCountdown();
 
