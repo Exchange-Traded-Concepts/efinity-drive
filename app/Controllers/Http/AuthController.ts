@@ -89,10 +89,10 @@ export default class AuthController {
     }
 
 
-  public async logout({ auth, response, session }: HttpContextContract) {
+  public async logout({ auth, session, view }: HttpContextContract) {
     await auth.logout()
     session.clear()
-    return response.redirect('/')
+    return view.render('auth/logged-out')
   }
 
 

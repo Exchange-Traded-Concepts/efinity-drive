@@ -12,7 +12,7 @@
   <div class="title"></div>
   <p><br>&nbsp<br></p>
   <div class="subtitle">
-    <p>Exchange Traded Concepts Client Portal<br>Forgot Password</p>
+    <p>Exchange Traded Concepts Client Portal</p>
     <!--<p>
       Don't know where to start? Read the <a href="https://adonisjs.com/docs">documentation</a>.
     </p>
@@ -20,18 +20,8 @@
   </div>
 
   <div>
-    @if (flashMessages.has('notification'))
-    <div class="notification is-danger is-light">
-      {{ flashMessages.get('notification') }}
-    </div>
-    @endif
-    <form class="form" action="/forgot-password" method="POST">
-      {{ csrfField() }}
-      <input type="text" placeholder="email" name="email">
 
-      <button type="submit" id="login-button">Submit</button>
-    </form>
-    <center><a href="/">Back</a></center>
+    <a href="/"><button href="/">Login Page</button></a>
   </div>
 </section>
 

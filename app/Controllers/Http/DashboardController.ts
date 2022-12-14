@@ -120,6 +120,15 @@ export default class DashboardController {
 
     var Legend_Days = Legend.toFixed(0)
 
-  return view.render('admin/dashboard', {d, tasks, funds, status, user_groups, subtasks, tickets, count, subtasks_count, task_count, Legend_Days})
+    let cal_events = await CalendarEvent.query().whereRaw('start_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 10 DAY) ' +
+      ' OR end_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 10 DAY)')
+      .andWhere('type' ,'!=' , 'time_off').orderBy('start_date')
+
+    let launch_dates = await Fund.query().whereRaw('target_launch_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 10 DAY)')
+
+    let seed_dates = await Fund.query().whereRaw('seed_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 10 DAY)')
+
+  return view.render('admin/dashboard', {d, tasks, funds, status, user_groups, subtasks, tickets,
+    count, subtasks_count, task_count, Legend_Days, cal_events, launch_dates, seed_dates})
   }
 }
