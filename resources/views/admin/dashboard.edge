@@ -78,9 +78,17 @@
         <p style="font-weight: bold">Calendar Dates</p>
         @each(cc in cal_events)
         @if(cc.public === 0 && cc.created_by === auth.user.id)
-          <span title="{{cc.notes}}" style="color: #DE3163">{{ cc.start_date.toFormat('M/d/y') ||'' }} {{cc.title}}</span><hr>
+          <span title="{{cc.notes}}" style="color: #DE3163">{{ cc.start_date.toFormat('M/d/y') ||'' }}
+            @if(cc.start_date.toFormat('M/d/y') !== cc.end_date.toFormat('M/d/y'))
+              - {{cc.end_date.toFormat('M/d/y')}}
+            @end
+            {{cc.title}}</span><hr>
         @elseif(cc.public === 1)
-        <span title="{{cc.notes}}">{{ cc.start_date.toFormat('M/d/y') ||'' }} {{cc.title}}</span><hr>
+        <span title="{{cc.notes}}">{{ cc.start_date.toFormat('M/d/y') ||'' }}
+          @if(cc.start_date.toFormat('M/d/y') !== cc.end_date.toFormat('M/d/y'))
+              - {{cc.end_date.toFormat('M/d/y')}}
+            @end
+          {{cc.title}}</span><hr>
         @end
         @end
 

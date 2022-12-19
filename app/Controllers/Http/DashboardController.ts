@@ -120,9 +120,9 @@ export default class DashboardController {
 
     var Legend_Days = Legend.toFixed(0)
 
-    let cal_events = await CalendarEvent.query().whereRaw('start_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 10 DAY) ' +
-      ' OR end_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 10 DAY)')
-      .andWhere('type' ,'!=' , 'time_off').orderBy('start_date')
+    let cal_events = await CalendarEvent.query().where('type' ,'<>' , 'time_off')
+      .andWhereRaw('( start_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 10 DAY) OR end_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 10 DAY) )' )
+      .orderBy('start_date')
 
     let launch_dates = await Fund.query().whereRaw('target_launch_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 10 DAY)')
 
