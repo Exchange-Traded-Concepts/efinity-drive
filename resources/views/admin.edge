@@ -77,7 +77,7 @@ header > h1{
 
 .date{
   height: 14vh;
-  text-align: center;
+  /*text-align: center; */
 }
 
 .active {
@@ -92,7 +92,7 @@ header > h1{
 }
 
 .launches{
-  float: left;
+ /* float: left; */
   padding: 2px;
 }
 
@@ -128,7 +128,7 @@ header > h1{
 }
 .Meeting{
   font-size: 12px;
-  color: #5a5c69;
+  color: #FFFFFF;
   border: 1px #2d2e33 solid;
   background-color: #1cc88a;
   padding: 1px 2px;
@@ -141,6 +141,16 @@ header > h1{
   border: 1px #2d2e33 solid;
   background-color: purple;
   padding: 1px 2px;
+
+}
+
+.Fund_dates{
+  font-size: 12px;
+  color: #FFFFFF;
+  border: 1px #2d2e33 solid;
+  background-color: #DC143C;
+  padding: 1px 2px;
+  clear: both;
 
 }
 
@@ -230,6 +240,7 @@ header > h1{
 <span class="Meeting">Meeting</span>
 <span class="Appointment">Appointment</span>
 <span class="time_off">Time Off Request</span>
+  <span class="Fund_dates">Important Fund Dates</span>
 </div>
 <div style="float: right"><a href="/cal" data-toggle="modal" data-target="#calEventModal">Calendar Event <i class="fas fa-plus-circle"></i></a></div>
 <div style="clear: both"></div>
@@ -299,7 +310,7 @@ header > h1{
           @if(e.start_date.toFormat('dd') <= numDate && e.end_date.toFormat('dd') >= numDate)
              @if(e.public == 1 || auth.user.id  == e.created_by)
                 @if(e.type == 'time_off')
-                  <span class="{{e.type}}"  title="{{`${e.title} - ${e.notes}` }}">{{ e.createdBy.first_name }} {{e.createdBy.last_name}}
+                  <span class="{{e.type}}"  title="{{`${e.title || ''} - ${e.notes || ''}` }}">{{ e.createdBy.first_name }} {{e.createdBy.last_name}}
                  @if(e.created_by == auth.user.id)
                     <a href="{{`/cal_event/${e.id}/edit`}}" style="text-decoration: none; color: #FFFFFF;">&#8226</a>
                   @end
@@ -325,7 +336,15 @@ header > h1{
 </div>
 
 <!--@endeach-->
+  <!--
+<div style="text-align: center">Jump To:
+<form>
 
+  <select></select>
+
+</form>
+</div>
+  -->
 </div>
 <!-- /.container-fluid -->
 
@@ -388,6 +407,14 @@ header > h1{
               @endif
               @endif
               > Time Off
+              </option>
+              <option value="Fund_dates"
+                      @if(c_event)
+                      @if(c_event.type == 'Fund_dates')
+              selected
+              @endif
+              @endif
+              > Important Fund Dates
               </option>
            </select>
           </div>

@@ -126,6 +126,14 @@
               @endif
               > Time Off
               </option>
+              <option value="Fund_dates"
+                      @if(c_event)
+                      @if(c_event.type == 'Fund_dates')
+              selected
+              @endif
+              @endif
+              > Important Fund Dates
+              </option>
             </select>
           </div>
 
