@@ -34,8 +34,20 @@ export default class FundsController {
       .orderBy('ticker')
 
     return view.render('admin/funds', {funds})
-
   }
+
+  public async show_status({view, params}: HttpContextContract) {
+
+    const funds = await Fund.query()
+      .preload('client')
+      .preload('custodian')
+      .preload('distributor')
+      .where('status', '=', params.status )
+      .orderBy('ticker')
+
+    return view.render('admin/funds', {funds})
+  }
+
 
   public async showPipeline({view, params}: HttpContextContract) {
 

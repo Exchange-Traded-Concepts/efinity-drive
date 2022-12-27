@@ -14,17 +14,22 @@ export default class HelpDesksController {
 
   public async store({session, response, request, auth}: HttpContextContract) {
 
+    try {
 
-    await HelpDesk.create({
-      subject: request.input('subject'),
-      issue: request.input('issue'),
-      priority: request.input( 'priority'),//data.public,
-      doc: request.input('doc'),
-      groups_id: 1,
-      // @ts-ignore
-      created_by: auth.user.id,
-      status: 'open',
-    })
+      await HelpDesk.create({
+        subject: request.input('subject'),
+        issue: request.input('issue'),
+        priority: request.input('priority'),//data.public,
+        doc: request.input('doc'),
+        groups_id: 1,
+        // @ts-ignore
+        created_by: auth.user.id,
+        status: 'open',
+      })
+    }
+  catch (e) {
+    return response.abort(e)
+  }
 
     const mailTo = await EFMailer.getUserEmail(1)
 

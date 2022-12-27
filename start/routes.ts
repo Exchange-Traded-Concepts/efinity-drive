@@ -138,6 +138,7 @@ Route.group(() => {
 
 
 Route.get('/admin_funds', 'FundsController.show').middleware('isAdmin')
+Route.get('/admin_funds/:status', 'FundsController.show_status').middleware('isAdmin')
 Route.get('/admin_clients/', 'ClientsController.clients').middleware('isAdmin')
 Route.get('/admin_dist/', 'ClientsController.distributor').middleware('isAdmin')
 Route.get('/admin_cust/', 'ClientsController.custodian').middleware('isAdmin')

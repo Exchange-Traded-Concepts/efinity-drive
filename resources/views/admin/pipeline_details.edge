@@ -39,10 +39,10 @@
 </div>
 <div class="row">
   <div class="col-md-6">
-    Status: <span style="text-transform:capitalize">{{p[0].status || ''}}</span>
+    Status: <span style="text-transform:capitalize" class="values">{{p[0].status || ''}}</span>
   </div>
   <div class="col-md-6">
-    Strategy: <span>{{p[0].strategy ||''}}</span>
+    Strategy: <span class="values">{{p[0].strategy ||''}}</span>
   </div>
 </div>
 
@@ -51,11 +51,11 @@
       <div class="col-md-6">
         Distributor:
         @if(p[0].distributor)
-        {{p[0].distributor.name ||''}} <a href="{{`/c_contacts/${p[0].distributor.id}`}}"><i class="fas fa-address-card"></i></a>
+        <span class="values">{{p[0].distributor.name ||''}} <a href="{{`/c_contacts/${p[0].distributor.id}`}}" ><i class="fas fa-address-card"></i></a></span>
         @end
       </div>
       <div class="col-md-6">
-        Role: {{ p[0].role || '' }}
+        Role: <span class="values">{{ p[0].role || '' }}</span>
       </div>
     </div>
 
@@ -63,31 +63,31 @@
       <div class="col-md-6">
         Custodian:
         @if(p[0].custodian)
-        {{p[0].custodian.name ||''}}  <a href="{{`/c_contacts/${p[0].custodian.id}`}}"><i class="fas fa-address-card"></i></a>
+        <span class="values">{{p[0].custodian.name ||''}}  <a href="{{`/c_contacts/${p[0].custodian.id}`}}"><i class="fas fa-address-card"></i></a></span>
         @end
       </div>
       <div class="col-md-6">
-        Trust: {{ p[0].trust || '' }}
+        Trust: <span class="values">{{ p[0].trust || '' }}</span>
       </div>
     </div>
 
     <div class="row">
       <div class="col-md-6">
-        Exchange: {{p[0].exchange ||''}}
+        Exchange: <span class="values">{{p[0].exchange ||''}}</span>
       </div>
       <div class="col-md-6">
-        Dividend Frequency: {{ p[0].dividend_frequency || '' }}
+        Dividend Frequency: <span class="values">{{ p[0].dividend_frequency || '' }}</span>
       </div>
     </div>
 
     <div class="row">
       <div class="col-md-6">
-        Fiscal Year End: {{p[0].fiscal_year_end ||''}}
+        Fiscal Year End: <span class="values">{{p[0].fiscal_year_end ||''}}</span>
       </div>
       <div class="col-md-6">
         Prospectus Date:
         @if(p[0].prospectus_date)
-          {{ p[0].prospectus_date.toFormat('M/d/y') || '' }}
+        <span class="values">{{ p[0].prospectus_date.toFormat('M/d/y') || '' }}</span>
         @end
       </div>
     </div>
@@ -96,13 +96,13 @@
       <div class="col-md-6">
         Sample Portfolio Data Received:
         @if(p[0].client_sent_sample_portfolio_data)
-          {{p[0].client_sent_sample_portfolio_data.toFormat('M/d/y') ||''}}
+        <span class="values">{{p[0].client_sent_sample_portfolio_data.toFormat('M/d/y') ||''}}</span>
         @end
       </div>
       <div class="col-md-6">
        Proposal Sent:
         @if(p[0].proposal_sent)
-          {{ p[0].proposal_sent.toFormat('M/d/y') || '' }}
+        <span class="values">{{ p[0].proposal_sent.toFormat('M/d/y') || '' }}</span>
         @end
       </div>
     </div>
@@ -111,11 +111,11 @@
       <div class="col-md-6">
         Diligence Sent:
         @if(p[0].diligence_sent)
-          {{p[0].diligence_sent.toFormat('M/d/y') ||''}}
+        <span class="values">{{p[0].diligence_sent.toFormat('M/d/y') ||''}}</span>
         @end
       </div>
       <div class="col-md-6">
-        485 Status: {{ p[0].four_eighty_five_status || '' }}
+        485 Status: <span class="values">{{ p[0].four_eighty_five_status ||''}}</span>
       </div>
     </div>
 
@@ -123,13 +123,13 @@
       <div class="col-md-6">
         Diligence Received:
         @if(p[0].diligence_received)
-          {{p[0].diligence_received.toFormat('M/d/y') ||''}}
+        <span class="values">{{p[0].diligence_received.toFormat('M/d/y') ||''}}</span>
         @end
       </div>
       <div class="col-md-6">
         485 Effective Date:
         @if (p[0].four_eighty_five_effective_date)
-          {{ p[0].four_eighty_five_effective_date.toFormat('M/d/y') || '' }}
+        <span class="values">{{ p[0].four_eighty_five_effective_date.toFormat('M/d/y') || '' }}</span>
         @end
       </div>
     </div>
@@ -138,13 +138,13 @@
       <div class="col-md-6">
         Target Launch Date:
         @if(p[0].target_launch_date)
-          {{p[0].target_launch_date.toFormat('M/d/y') ||''}}
+        <span class="values"> {{p[0].target_launch_date.toFormat('M/d/y') ||''}}</span>
         @end
       </div>
       <div class="col-md-6">
         Launch Date:
         @if(p[0].launch_date)
-          {{ p[0].launch_date.toFormat('M/d/y') || '' }}
+        <span class="values"> {{ p[0].launch_date.toFormat('M/d/y') || '' }}</span>
         @end
       </div>
     </div>
@@ -153,13 +153,13 @@
       <div class="col-md-6">
         15 (C) Approval:
         @if(p[0].fifteenc_approval)
-          {{p[0].fifteenc_approval.toFormat('M/d/y') ||''}}
+        <span class="values">{{p[0].fifteenc_approval.toFormat('M/d/y') ||''}}</span>
         @end
       </div>
       <div class="col-md-6">
         PEA:
         @if(p[0].pea)
-          {{ p[0].pea.toFormat('M/d/y') || '' }}
+        <span class="values">{{ p[0].pea.toFormat('M/d/y') || '' }}</span>
         @end
       </div>
     </div>
@@ -168,13 +168,13 @@
       <div class="col-md-6">
         Client Questionnaire Sent:
         @if(p[0].client_questionnaire_sent)
-          {{p[0].client_questionnaire_sent.toFormat('M/d/y') ||''}}
+        <span class="values">{{p[0].client_questionnaire_sent.toFormat('M/d/y') ||''}}</span>
         @end
       </div>
       <div class="col-md-6">
         Client Questionnaire Received:
         @if(p[0].client_questionnaire_completed)
-          {{ p[0].client_questionnaire_completed.toFormat('M/d/y') || '' }}
+        <span class="values">{{ p[0].client_questionnaire_completed.toFormat('M/d/y') || '' }}</span>
         @end
       </div>
     </div>
@@ -183,13 +183,13 @@
       <div class="col-md-6">
         PSA Form Sent:
         @if(p[0].psa_form_sent)
-          {{p[0].psa_form_sent.toFormat('M/d/y')}}
+        <span class="values">{{p[0].psa_form_sent.toFormat('M/d/y')}}</span>
         @end
       </div>
       <div class="col-md-6">
         License/Sponsorship:
         @if(p[0].license_sponsorship)
-          {{ p[0].license_sponsorship.toFormat('M/d/y') }}
+        <span class="values">{{ p[0].license_sponsorship.toFormat('M/d/y') }}</span>
         @end
       </div>
     </div>
@@ -198,13 +198,13 @@
       <div class="col-md-6">
         CUSIP:
         @if(p[0].cusip)
-        {{p[0].cusip ||''}}
+         <span class="values">{{p[0].cusip ||''}}</span>
         @end
       </div>
       <div class="col-md-6">
         Proxy:
         @if(p[0].proxy)
-        {{ p[0].proxy ||''}}
+        <span class="values">{{ p[0].proxy ||''}}</span>
         @end
       </div>
     </div>
@@ -213,13 +213,13 @@
       <div class="col-md-6">
         Management Fee:
         @if(p[0])
-        {{p[0].management_fee ||''}}
+        <span class="values">{{p[0].management_fee ||''}}</span>
         @end
       </div>
       <div class="col-md-6">
         Exp. Ratio:
         @if(p[0].exp_ratio)
-        {{ p[0].exp_ratio ||''}}
+        <span class="values">{{ p[0].exp_ratio ||''}}</span>
         @end
       </div>
     </div>
@@ -228,13 +228,13 @@
       <div class="col-md-6">
         PSA Form Received:
         @if(p[0].psa_form_complete)
-          {{p[0].psa_form_complete.toFormat('M/d/y')}}
+        <span class="values">{{p[0].psa_form_complete.toFormat('M/d/y')}}</span>
         @end
       </div>
       <div class="col-md-6">
         Sub Advisor Agreement:
         @if( p[0].sub_advisor_agreement)
-          {{ p[0].sub_advisor_agreement.toFormat('M/d/y') }}
+        <span class="values"> {{ p[0].sub_advisor_agreement.toFormat('M/d/y') }}</span>
         @end
       </div>
     </div>
@@ -243,34 +243,34 @@
       <div class="col-md-6">
         Code of Ethics Complete:
         @if(p[0].code_of_ethics_complete)
-        {{p[0].code_of_ethics_complete.toFormat('M/d/y')}}
+        <span class="values"> {{p[0].code_of_ethics_complete.toFormat('M/d/y')}}</span>
         @end
       </div>
       <div class="col-md-6">
         Fund Website:
         @if( p[0].fund_website)
-        {{ p[0].fund_website}}
+        <span class="values"> <a href="{{`https://${p[0].fund_website}`}}" target="_blank">{{ p[0].fund_website}}</a></span>
         @end
       </div>
     </div>
     <div class="row">
       <div class="col-md-6">
-        Admin: {{p[0].admin  ||'' }}
+        Admin: <span class="values">{{p[0].admin  ||'' }}</span>
       </div>
       <div class="col-md-6">
         Seed Date:
         @if(p[0].seed_date)
-        {{p[0].seed_date.toFormat('M/d/y')}}
+        <span class="values"> {{p[0].seed_date.toFormat('M/d/y')}}</span>
         @end
       </div>
     </div>
 
     <div class="row">
       <div class="col-md-6">
-        SEC Notes: {{p[0].sec_notes}}
+        SEC Notes: <span class="values">{{p[0].sec_notes}}</span>
       </div>
       <div class="col-md-6">
-        Notes: {{ p[0].notes }}
+        Notes: <span class="values">{{ p[0].notes }}</span>
       </div>
     </div>
 
