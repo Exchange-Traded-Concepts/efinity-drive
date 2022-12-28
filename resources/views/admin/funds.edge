@@ -48,10 +48,10 @@
 
           <tr>
             <td style="{{ `border-left: 8px solid ${d.color}` }} ">
-            <a href="{{ `/fund_pipeline_details_t/${d.ticker}`}}">{{ d.ticker }}</a>
+            <a href="{{ `/fund_pipeline_details_t/${d.ticker}`}}">{{ d.ticker ||'' }}</a>
               </td>
             <td>
-              {{d.fund_name}}
+              {{d.fund_name || ''}}
               <a href="{{ `/fund_pipeline_details/${d.id}`}}"><i class="fa fa-plus-square-o"></i></a>
             </td>
 
@@ -60,8 +60,8 @@
               <a href="{{`/client_details/${d.client.id}`}}"><i class="fa fa-plus-square-o"></i></a>
             </td>
 
-            <td>{{d.trust}}</td>
-            <td>{{d.exchange}}</td>
+            <td>{{d.trust || ''}}</td>
+            <td>{{d.exchange || ''}}</td>
                        <td>
               @if(d.distributor)
               {{d.distributor.name}}  <a href="{{`/c_contacts/${d.distributor.id}`}}"><i class="fas fa-address-card"></i></a>
