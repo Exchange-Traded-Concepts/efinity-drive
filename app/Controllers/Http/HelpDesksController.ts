@@ -89,7 +89,7 @@ export default class HelpDesksController {
   }
 
   public async admin({view}: HttpContextContract){
-    const tickets = await HelpDesk.query()
+    const tickets = await HelpDesk.query().orderBy('status', 'desc').orderBy('updatedAt')
     return view.render('admin/helpdesk_admin', {tickets})
   }
 
