@@ -1,4 +1,3 @@
-
 import {HttpContextContract} from "@ioc:Adonis/Core/HttpContext";
 import CalendarConfig from "App/utils/calendarConfig";
 import Task from "App/Models/Task";
