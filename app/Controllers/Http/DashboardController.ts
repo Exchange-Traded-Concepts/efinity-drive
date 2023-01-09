@@ -7,7 +7,6 @@ import TaskStatus from "App/Models/TaskStatus";
 import SubTask from "App/Models/SubTask";
 import CalendarEvent from "App/Models/CalendarEvent";
 import HelpDesk from "App/Models/HelpDesk";
-import {flatten} from "@poppinss/utils";
 import Env from "@ioc:Adonis/Core/Env";
 
 
