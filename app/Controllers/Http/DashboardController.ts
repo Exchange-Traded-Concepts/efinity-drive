@@ -7,6 +7,8 @@ import TaskStatus from "App/Models/TaskStatus";
 import SubTask from "App/Models/SubTask";
 import CalendarEvent from "App/Models/CalendarEvent";
 import HelpDesk from "App/Models/HelpDesk";
+import {flatten} from "@poppinss/utils";
+import Env from "@ioc:Adonis/Core/Env";
 
 
 
@@ -128,7 +130,21 @@ export default class DashboardController {
 
     let seed_dates = await Fund.query().whereRaw('seed_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 30 DAY)')
 
-  return view.render('admin/dashboard', {d, tasks, funds, status, user_groups, subtasks, tickets,
-    count, subtasks_count, task_count, Legend_Days, cal_events, launch_dates, seed_dates})
+    //let scroll = 'BITQ;AMOM;QRFT;UTRN;EMQQ;PAYC'
+
+    let tickers = await Fund.query().where('status', '=', 'launched' ).select('ticker')
+
+    const  trr = []
+    for (let i = 0; i < tickers.length; i++) {
+     // @ts-ignore
+      trr.push(tickers[i].ticker)
+    }
+
+    let mpp = trr.join(';')
+
+    let stockdonoKey = Env.get('STOCKDIO')
+
+    return view.render('admin/dashboard', {d, tasks, funds, status, user_groups, subtasks, tickets,
+    count, subtasks_count, task_count, Legend_Days, cal_events, launch_dates, seed_dates, tickers: mpp, stockdonoKey})
   }
 }
