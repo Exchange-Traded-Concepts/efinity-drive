@@ -159,6 +159,12 @@ export default class Fund extends BaseModel {
   @column.dateTime()
   public seed_date: DateTime
 
+  @column.dateTime()
+  public lei_renewal_date: DateTime
+
+  @column()
+  public lei: string
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 

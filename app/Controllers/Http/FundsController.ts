@@ -122,7 +122,9 @@ export default class FundsController {
       proxy: data.proxy,
       color: data.color,
       code_of_ethics_complete: data.code_of_ethics_complete,
-      seed_date: data.seed_date
+      seed_date: data.seed_date,
+      lei: data.lei,
+      lei_renewal_date: data.lei_renewal_date
     })
 
     let f = await Fund.query().orderBy('id', 'desc')
@@ -336,7 +338,9 @@ export default class FundsController {
       proxy: data.proxy,
       color: data.color,
       code_of_ethics_complete: data.code_of_ethics_complete,
-      seed_date : data.seed_date
+      seed_date : data.seed_date,
+      lei: data.lei,
+      lei_renewal_date: data.lei_renewal_date
     })
 
     await fund.save()
@@ -986,6 +990,8 @@ export default class FundsController {
       color: schema.string.nullableAndOptional(),
       code_of_ethics_complete: schema.string.nullableAndOptional({trim:true}),
       seed_date: schema.string.nullableAndOptional({trim:true}),
+      lei: schema.string.nullableAndOptional({trim:true}),
+      lei_renewal_date: schema.string.nullableAndOptional({trim:true}),
        })
 
     return await request.validate({

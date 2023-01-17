@@ -223,7 +223,16 @@
         @end
       </div>
     </div>
-
+    <!-- LEI -->
+    <div class="row">
+      <div class="col-md-6">LEI:
+        <span class="values">{{ p[0].lei || ''}}</span></div>
+      <div class="col-md-6">LEI Renewal Date:
+        @if(p[0].lei_renewal_date)
+          <span class="values">{{p[0].lei_renewal_date.toFormat('M/d/y')}}</span>
+        @end
+      </div>
+    </div>
     <div class="row">
       <div class="col-md-6">
         PSA Form Received:

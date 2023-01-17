@@ -622,6 +622,35 @@
                      placeholder="PSA Complete">
             </div>
           </div>
+          <!-- -->
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label for="LEI">LEI</label>
+              <input type="text"
+                     name="lei"
+                     @if(c_fund)
+                     value="{{c_fund.lei ||''}}"
+                     @endif
+                     class="form-control"
+                     id="LEI"
+                     placeholder="LEI">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="lei_renewal_date">LEI Renewal Date</label>
+              <input type="date"
+                     name="lei_renewal_date"
+                     @if(c_fund)
+                     @if(c_fund.lei_renewal_date)
+                     value="{{c_fund.lei_renewal_date.toFormat('y-MM-dd') ||''}}"
+                     @endif
+                     @endif
+                     class="form-control"
+                     id="lei_renewal_date"
+                     placeholder="LEI Renewal Date">
+            </div>
+          </div>
+
+          <!-- -->
           <div class="form-group">
             <label for="portfolio_notes">Portfolio Notes</label>
             @if(c_fund)
