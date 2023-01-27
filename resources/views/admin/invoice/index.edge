@@ -1,0 +1,90 @@
+@layout('layouts/adminDashboard')
+
+@section('content')
+
+<div class="container-fluid">
+<div>
+  @if(flashMessages.has('notification'))
+  <div class="alert alert-success">{{ flashMessages.get('notification') }}</div>
+  @endif
+</div>
+<div class="row">
+  <form
+    action="/invoice"
+    method="POST"
+    enctype="multipart/form-data"
+  >
+    {{ csrfField() }}
+  <div class="col-md-12 form-group">
+    <label for="state">Fund</label>
+      <select name="fund_id" class="form-control" id="fund_id" aria-describedby="fund_id">
+        @each(f in funds)
+        <option value="{{f.id }}"
+
+        > {{ f.ticker }} - {{f.fund_name}}</option>
+        @end
+      </select>
+    </div>
+  <div class="row">
+    <div class="form-group col-md-6" >
+      <label for="zip">Invoice Date</label>
+      <input type="date"
+             name="invoice_date"
+             class="form-control"
+             id="invocie_date"
+             @if(inv)
+             value="{{ inv.invoice_date || ''}}"
+             @endif
+             placeholder="Invoice Date">
+    </div>
+
+    <div class="form-group col-md-6" >
+      <label for="invoice_date_for">Invoice Date For</label>
+      <input type="date"
+             name="invoice_date_for"
+             class="form-control"
+             id="invoice_date_for"
+             @if(inv)
+             value="{{ inv.invoice_date_for || ''}}"
+             @endif
+             placeholder="Invoice Date For">
+    </div>
+  </div>
+    <!-- New Row -->
+    <div class="row">
+      <div class="form-group col-md-6" >
+        <label for="zip">Days in Month</label>
+        <input type="text"
+               name="days_in_month"
+               class="form-control"
+               id="days_in_month"
+               @if(inv)
+               value="{{ inv.days_in_month || ''}}"
+               @endif
+               placeholder="Days In Month">
+      </div>
+
+      <div class="form-group col-md-6" >
+        <label for="invoice_number">Invoice Number</label>
+        <input type="text"
+               name="invoice_number"
+               class="form-control"
+               id="invoice_number"
+               @if(inv)
+               value="{{ inv.invoice_number || ''}}"
+               @endif
+               placeholder="Invoice Number">
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <!-- New Row -->
+  </form>
+</div>
+
+
+</div>
+
+
+
+
+@endsection

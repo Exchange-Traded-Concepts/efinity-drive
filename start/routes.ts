@@ -213,7 +213,12 @@ Route.group(() => {
   Route.post('/notes', 'NotesController.create').middleware('isAdmin')
   }).middleware('editAdmin')
 
-
+Route.group(() => {
+  Route.get('/invoice', 'InvoicesController.index').middleware('isAdmin')
+  Route.get('/invoice/:id', 'InvoicesController.transactions').middleware('isAdmin')
+  Route.post('/invoice', 'InvoicesController.create').middleware('isAdmin')
+  Route.post('/invoice_transactions', 'InvoicesController.update').middleware('isAdmin')
+}).middleware('editAdmin')
 
 Route.group(() => {
   Route.get('/clientDashboard', 'ClientDashboardsController.index' )

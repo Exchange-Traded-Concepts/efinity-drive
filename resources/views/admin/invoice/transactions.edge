@@ -1,0 +1,141 @@
+@layout('layouts/adminDashboard')
+
+@section('content')
+
+<style>
+.invoice_input{
+  border: 1px solid #d1d3e2;
+  border-radius: 0.35rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  text-align: right;
+}
+
+.desc_input{
+  border: 1px solid #d1d3e2;
+  border-radius: 0.35rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  text-align: left;
+}
+
+
+.income_input {
+
+  font-weight: bold;
+  width: 190px;
+
+  padding-right: 20px;
+  margin-top: 12px;
+
+
+}
+.type_label{
+  font-weight: bold;
+ }
+
+.exp_input{
+  font-weight: bold;
+  width: 90px;
+ /*margin-left: 40px*/;
+
+}
+.desc_label{
+  font-weight: bold;
+  margin-left: 22px;
+}
+
+</style>
+
+<div class="container-fluid">
+<div>
+  @if(flashMessages.has('notification'))
+  <div class="alert alert-success">{{ flashMessages.get('notification') }}</div>
+  @endif
+</div>
+<!-- HEADER -->
+<div class="card shadow mb-4">
+  <div
+    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+    <h6 class="m-0 font-weight-bold text-primary">Invoice</h6>
+    <div>Invoice Date {{invoice[0].invoice_date.toFormat('M/d/y') ||''}}</div>
+  </div>
+  <div class="card-body">
+<form
+  action="/invoice_transactions"
+  method="POST"
+  enctype="multipart/form-data"
+>
+  {{ csrfField() }}
+<div class="row">
+  <div class="col-md-6">
+    Fund: {{invoice[0].fund.ticker}} <br>{{invoice[0].fund.fund_name}}
+  </div>
+
+  <div class="col-md-6">
+    Invoice Date: {{invoice[0].invoice_date.toFormat('M/d/y') ||''}}<br>
+    Invoice For Date: {{invoice[0].invoice_for_date.toFormat('M/d/y') ||''}} <input type="hidden" name="invoice_for_date" id ="invoice_for_date" value="{{invoice[0].invoice_for_date}}"> <br>
+    Invoice #: {{invoice[0].invoice_number}}<br>
+    Days In Month: {{invoice[0].days_in_month}}<br>
+
+  </div>
+</div>
+  <hr>
+  <div class="row">
+    <div class="col-md-4">
+      <div>
+      <label class="income_input">Month End Assets:</label> <input type="number" name="month_end_assets" class="invoice_input"> <br>
+      </div>
+      <div>
+      <label class="income_input">Average Daily Assets:</label> <input type="number" name="avg_daily_assets"  id="avg_daily_assets" onblur="etc_fee()" class="invoice_input"> <br>
+      </div>
+    <div><label class="income_input">Expense Ratio:</label> <input type="number" name="month_end_assets" class="invoice_input" value="{{invoice[0].fund.exp_ratio}}"> <br></div>
+      <div><label class="income_input">Income:</label> <input type="number" name="income" class="invoice_input" id="income"></div>
+   </div>
+    <div class="col-md-4" >
+      <label class="income_input">Bps:</label> <input name="bps"  type="number"  id="bps" value=".001" size="5" onblur="etc_fee()" class="invoice_input"><br>
+      <label class="income_input">Vendor Bps:</label> <input name="vendor_bps"  type="number"  id="vendor_bps" value=".001" size="5" onblur="vendor_fee()" class="invoice_input"><br>
+      <label class="income_input">Days in Year:</label> <input name="days_in_yr" type="number"  id="days_in_yr" value="" size="3" onblur="etc_fee()" class="invoice_input"><br>
+      <label class="income_input">Days In Month:</label> <input name="days_in_month"  type="number"  id="days_in_month" value="{{invoice[0].days_in_month}}" onblur="etc_fee()" class="invoice_input"><br>
+
+
+    </div>
+
+    <div class="col-md-4" >
+      <label class="income_input">ETC Fee Total:</label> <input name="bps_total" id="bps_total"  type="number" value="" onblur="etc_fee()" class="invoice_input"><br>
+      <label class="income_input">Vendor Fee Total:</label> <input name="vendor_total" id="vendor_total"  type="number" value="" onblur="vendor_fee()" class="invoice_input">
+      <label class="income_input"></label><button type="button" class="btn btn-primary" style="text-align: right" onclick="add_vendor_fees()" value="Add Fees to Invoice">Add Fees to Invoice</button>
+    </div>
+
+
+  </div>
+<hr>
+  <input type="hidden" name="invoice_id" value="{{invoice_id}}">
+  <table id="invoice_transactions">
+    <thead></thead>
+    <tbody>
+    </tbody>
+    <tfoot>
+    <tr>
+      <td></td>
+      <td colspan="4"></td>
+      <td><label class="desc_label">Total:</label><input class="invoice_input" name="sheet_total" type="text" id="sheet_total" onblur="calc_sheet()"></td>
+    </tr>
+      <tr>
+        <td><a href="#" onclick="addFields()" style="text-decoration: none"><i class="fas fa-plus"></i></a></td>
+        <td colspan="4"></td>
+        <td align="right"><button type="submit" class="btn btn-primary" style="text-align: right">Submit</button></td>
+      </tr>
+    </tfoot>
+
+  </table>
+
+
+<div style="clear: both"><p><br></p></div>
+
+
+</form>
+</div>
+</div>
+</div>
+<script defer>days_in_yr()</script>
+
+@endsection
