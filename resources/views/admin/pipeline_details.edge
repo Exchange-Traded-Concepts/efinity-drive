@@ -37,14 +37,7 @@
     Client: <a href="{{`/client_details/${p[0].client.id}` }}">{{p[0].client.name ||'' }}<a/>
   </div>
 </div>
-<div class="row">
-  <div class="col-md-6">
-    Status: <span style="text-transform:capitalize" class="values">{{p[0].status || ''}}</span>
-  </div>
-  <div class="col-md-6">
-    Strategy: <span class="values">{{p[0].strategy ||''}}</span>
-  </div>
-</div>
+
 
 
     <div class="row">
@@ -209,6 +202,7 @@
       </div>
     </div>
 
+
     <div class="row">
       <div class="col-md-6">
         Management Fee:
@@ -223,6 +217,7 @@
         @end
       </div>
     </div>
+
     <!-- LEI -->
     <div class="row">
       <div class="col-md-6">LEI:
@@ -273,6 +268,16 @@
         @end
       </div>
     </div>
+    <fieldset class="border p-2 rounded">
+      <legend  class="w-auto">Notes</legend>
+    <div class="row">
+      <div class="col-md-6">
+        Status: <span style="text-transform:capitalize" class="values">{{p[0].status || ''}}</span>
+      </div>
+      <div class="col-md-6">
+        Strategy: <span class="values">{{p[0].strategy ||''}}</span>
+      </div>
+    </div>
 
     <div class="row">
       <div class="col-md-6">
@@ -282,7 +287,7 @@
         Notes: <span class="values">{{ p[0].notes }}</span>
       </div>
     </div>
-
+    </fieldset>
 </div>
 </div>
 <!-- Start Notes -->

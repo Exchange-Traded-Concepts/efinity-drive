@@ -171,16 +171,21 @@ function days_in_yr(){
 function calc_row_total(row_id){
 
   let qty = parseFloat(document.getElementById('qty'+row_id).value);
-  let min_pmnt = parseFloat(document.getElementById('minpmnt'+row_id).value);
-  let calc_pmnt = document.getElementById('calc_pmnt'+row_id).value;
+  let min_pmnt = document.getElementById('minpmnt'+row_id).value;
+  min_pmnt = min_pmnt.replaceAll(',','');
+  let str = document.getElementById('calc_pmnt'+row_id).value;
+  calc_pmnt = str.replaceAll(',','');
+
 
   if (min_pmnt>=calc_pmnt){
-    let cal_amount = eval(qty * min_pmnt);
-    return document.getElementById('total'+row_id).value = cal_amount.toFixed(2);
+    let cal_amount = parseFloat(eval(qty * min_pmnt));
+    cal_amount = number_format(cal_amount, 2, '.', ',')
+    return document.getElementById('total'+row_id).value = cal_amount;
    }else
    {
-     let cal_amount = eval(qty * calc_pmnt);
-     return document.getElementById('total'+row_id).value = cal_amount.toFixed(2);
+     let cal_amount = parseFloat(eval(qty * calc_pmnt));
+     cal_amount = number_format(cal_amount, 2, '.', ',')
+     return document.getElementById('total'+row_id).value = cal_amount;
    }
 
 }
@@ -192,14 +197,41 @@ function calc_sheet(){
   console.log(totalRowCount);
 
   let income = document.getElementById('income').value;
+  income = income.replaceAll(',','');
 
   for(let i =1; i<= totalRowCount; i++){
-    total += parseFloat(document.getElementById('total'+i).value);
+    total += parseFloat(document.getElementById('total'+i).value.replace(',', ''));
     console.log(total)
   }
   total = (1*total)
   total = parseFloat(income - total);
-  return document.getElementById('sheet_total').value =total.toFixed(2);
+
+  total = number_format(total, 2, '.', ',')
+  return document.getElementById('sheet_total').value =total;
   //alert(total)
 
+}
+
+function number_format (number, decimals, dec_point, thousands_sep) {
+  // Strip all characters but numerical ones.
+  number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
+  var n = !isFinite(+number) ? 0 : +number,
+    prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+    sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+    dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+    s = '',
+    toFixedFix = function (n, prec) {
+      var k = Math.pow(10, prec);
+      return '' + Math.round(n * k) / k;
+    };
+  // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+  s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+  if (s[0].length > 3) {
+    s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+  }
+  if ((s[1] || '').length < prec) {
+    s[1] = s[1] || '';
+    s[1] += new Array(prec - s[1].length + 1).join('0');
+  }
+  return s.join(dec);
 }
