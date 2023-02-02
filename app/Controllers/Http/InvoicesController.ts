@@ -3,8 +3,8 @@ import {rules, schema} from "@ioc:Adonis/Core/Validator";
 import Invoice from "App/Models/Invoice";
 import Fund from "App/Models/Fund";
 import * as console from "console";
-import * as puppeteer from "puppeteer";
-import Route from "@ioc:Adonis/Core/Route";
+//import * as puppeteer from "puppeteer";
+//import Route from "@ioc:Adonis/Core/Route";
 
 export default class InvoicesController {
   public async index({view}: HttpContextContract) {
@@ -56,8 +56,8 @@ export default class InvoicesController {
   }
   public async store({}: HttpContextContract) {}
 
-  public async show({view, params}: HttpContextContract) {
-
+  public async show({}: HttpContextContract) {
+/*
     const options = { expiresIn: '3m', invoice_id: params.id }
     const path = Route.makeSignedUrl('pdf.invoice', params, options)
     const signedInvoicePath = path
@@ -68,6 +68,8 @@ export default class InvoicesController {
     const pdf = await page.pdf({ format: 'a4' })
     console.log(pdf)
     return view.render('admin/invoice/invoice')
+
+ */
   }
 
   public async generate({ request, response, view}: HttpContextContract) {
