@@ -3,6 +3,8 @@ import {rules, schema} from "@ioc:Adonis/Core/Validator";
 import Invoice from "App/Models/Invoice";
 import Fund from "App/Models/Fund";
 import * as console from "console";
+import * as puppeteer from "puppeteer";
+import Route from "@ioc:Adonis/Core/Route";
 
 export default class InvoicesController {
   public async index({view}: HttpContextContract) {
@@ -54,7 +56,35 @@ export default class InvoicesController {
   }
   public async store({}: HttpContextContract) {}
 
-  public async show({}: HttpContextContract) {}
+  public async show({view, params}: HttpContextContract) {
+
+    const options = { expiresIn: '3m', invoice_id: params.id }
+    const path = Route.makeSignedUrl('pdf.invoice', params, options)
+    const signedInvoicePath = path
+    const browser = await puppeteer.launch()
+    const page = await browser.newPage()
+    await page.emulateMediaType('screen')
+    await page.goto(`http://localhost:3333${signedInvoicePath}`, { waitUntil: 'networkidle0' })
+    const pdf = await page.pdf({ format: 'a4' })
+    console.log(pdf)
+    return view.render('admin/invoice/invoice')
+  }
+
+  public async generate({ request, response, view}: HttpContextContract) {
+    if (!request.hasValidSignature()) {
+      return response.badRequest('The route signature is invalid')
+    }
+   // const recipient = request.qs().recipient
+   // const user = await users.findOrFail(params.uid)
+
+    return view.render('invoice', {})
+  }
+
+  public async send({ response }: HttpContextContract) {
+
+      return response.redirect().toPath('/')
+  }
+
 
   public async edit({}: HttpContextContract) {}
 

@@ -216,6 +216,9 @@ Route.group(() => {
 Route.group(() => {
   Route.get('/invoice', 'InvoicesController.index').middleware('isAdmin')
   Route.get('/invoice/:id', 'InvoicesController.transactions').middleware('isAdmin')
+  Route.get('/show_invoice', 'InvoicesController.show')
+  Route.post('/invoice/send', 'InvoicesController.send')//.middleware('isAdmin')
+  Route.get('/pdf/invoice/', 'InvoicesController.generate').as('pdf.invoice')
   Route.post('/invoice', 'InvoicesController.create').middleware('isAdmin')
   Route.post('/invoice_transactions', 'InvoicesController.update').middleware('isAdmin')
 }).middleware('editAdmin')
