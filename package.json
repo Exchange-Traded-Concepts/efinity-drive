@@ -28,6 +28,7 @@
     "@adonisjs/view": "^6.1.1",
     "@aws-sdk/signature-v4-crt": "^3.41.0",
     "argon2": "^0.30.3",
+    "ical-generator": "^3.2.1",
     "luxon": "^2.1.1",
     "moment": "^2.29.4",
     "mysql": "^2.18.1",
@@ -35,7 +36,6 @@
     "phc-argon2": "^1.1.2",
     "phc-bcrypt": "^1.0.7",
     "proxy-addr": "^2.0.7",
-    "puppeteer": "^19.6.2",
     "reflect-metadata": "^0.1.13",
     "source-map-support": "^0.5.20"
   }
