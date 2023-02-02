@@ -133,7 +133,7 @@ export default class FundsController {
 
 
     await Task.create({
-      title: 'Pre-PEA',
+      title: 'Pre-PSA',
       description:'All the sub-tasks that need to be completed prior to executing the PSA',
       // @ts-ignore
       assigned_to_group_id: 6,
@@ -259,8 +259,9 @@ export default class FundsController {
 
     let date = request.input('target_launch_date')
 
-    await this.prePsa(date, fund_id, auth)
+    await this.prePea(date, fund_id, auth)
     await this.prefifteenc(date, fund_id, auth)
+    await this.preaLaunch(date, fund_id, auth)
 
    const mailstring = await EFMailer.getEmailByGroupArray([2,4,5,6,7,9])
 
@@ -350,10 +351,10 @@ export default class FundsController {
 
   }
 
-  public async prePsa(date, fund_id, auth){
+  public async prePea(date, fund_id, auth){
     await Task.create({
-      title: 'Pre-PSA',
-      description:'All the sub-tasks that need to be completed prior to executing the PSA',
+      title: 'Pre-PEA',
+      description:'All the sub-tasks that need to be completed prior to executing the PEA',
       // @ts-ignore
       assigned_to_group_id: 6,
       // @ts-ignore
@@ -527,10 +528,10 @@ export default class FundsController {
     ])
   }
 
-  public async seedFinal(date, fund_id, auth){
+  public async preaLaunch(date, fund_id, auth){
     await Task.create({
-      title: 'Seed Finalized',
-      description:'Seed Finalized',
+      title: 'Pre Launch',
+      description:'Tasks to be completed before launch',
       // @ts-ignore
       assigned_to_group_id: 6,
       // @ts-ignore
@@ -546,6 +547,17 @@ export default class FundsController {
     let task_id = t[0].id
 
     await SubTask.createMany([
+      {
+        title: 'Seed Finalized',
+        assigned_to_group_id: 6,
+        // @ts-ignore
+        created_by: auth.user.id,
+        taskId : task_id,
+        target_completion_date: date,
+        notes: 'Auto Created',
+        task_statuses_id : 1,
+      },
+
       {
         title: 'Lead Market Maker Finalized',
         assigned_to_group_id: 9,
@@ -887,7 +899,7 @@ export default class FundsController {
         task_statuses_id : 1,
       },
       {
-        title: 'Initiate Initial Seed Investment. 2-3 days prior to launch e',
+        title: 'Initiate Initial Seed Investment. 2-3 days prior to launch',
         assigned_to_group_id: 6,
         // @ts-ignore
         created_by: auth.user.id,
