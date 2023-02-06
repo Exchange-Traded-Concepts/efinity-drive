@@ -20,6 +20,10 @@ export default class DashboardController {
     let mm = String(today.getMonth() + 1);//.padStart(2, '0'); //January is 0!
     let yyyy = today.getFullYear();
 
+    const fye = await Fund.query().where('fiscal_year_end', '=', mm)
+
+    console.log(fye)
+
     const ctoday = yyyy + '-' + mm + '-' + dd;
 
     let year = params.year || new Date().getFullYear();
@@ -49,9 +53,10 @@ export default class DashboardController {
       .orderBy('type')
     let curMonth = months[indexedMonth]
 
-    console.log(events)
+    //console.log(events)
 
-    return view.render('admin', {calendar: calendar[indexedMonth], months, year,  launches, indexedMonth: indexedMonth, curMonth, ctoday, seeds, events})
+    return view.render('admin', {calendar: calendar[indexedMonth], months, year,  launches, indexedMonth: indexedMonth,
+      curMonth, ctoday, seeds, events, fye, daysInMonth})
 
 }
 
@@ -119,6 +124,13 @@ export default class DashboardController {
     const month = parseInt(String(today.getMonth() + 1))
     console.log(month)
     console.log('END Month')
+    const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth()+1, 0);
+    console.log('lastDay--> '+lastDayOfMonth)
+    const year =  new Date().getFullYear();
+    const daysInMonth =  new Date(year, month, 0).getDate();
+
+    console.log('daysInMonth--> '+daysInMonth)
+
     const fye = await Fund.query().where('fiscal_year_end', '=' , month)
 
     var diff = today.getTime() - legend_birth.getTime()
