@@ -20,9 +20,7 @@ export default class DashboardController {
     let mm = String(today.getMonth() + 1);//.padStart(2, '0'); //January is 0!
     let yyyy = today.getFullYear();
 
-    const fye = await Fund.query().where('fiscal_year_end', '=', mm)
 
-    console.log(fye)
 
     const ctoday = yyyy + '-' + mm + '-' + dd;
 
@@ -46,6 +44,7 @@ export default class DashboardController {
     const maxRange = year+'-'+(indexedMonth - (-1)) +'-'+daysInMonth
     const launches = await Fund.query().whereBetween('target_launch_date',  [minRange, maxRange] )
     const seeds = await Fund.query().whereBetween('seed_date', [minRange, maxRange])
+    const fye = await Fund.query().where('fiscal_year_end', '=', (indexedMonth - (-1)))
     const events = await CalendarEvent.query()
       .preload('createdBy')
       .whereBetween('start_date', [minRange, maxRange])
