@@ -110,6 +110,10 @@
         @each(t in launch_dates)
         <span title="Launch Date" style="color:#27AE60">Launch Date - {{ t.target_launch_date.toFormat('M/d/y') ||'' }} {{t.ticker}} - {{t.fund_name}}</span><hr>
         @end
+        <p style="font-weight: bold">Fiscal Year End</p>
+        @each(ye in fye)
+        <span>{{ye.ticker}} - {{ye.fund_name}}</span><hr>
+        @end
       </div>
     </div>
 

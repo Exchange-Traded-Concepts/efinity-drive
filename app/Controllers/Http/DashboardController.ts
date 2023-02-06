@@ -7,6 +7,7 @@ import SubTask from "App/Models/SubTask";
 import CalendarEvent from "App/Models/CalendarEvent";
 import HelpDesk from "App/Models/HelpDesk";
 import Env from "@ioc:Adonis/Core/Env";
+import * as console from "console";
 
 
 
@@ -114,6 +115,12 @@ export default class DashboardController {
     const legend_birth = new Date("10/14/1973")
     const today = new Date()
 
+    console.log('MONTH')
+    const month = parseInt(String(today.getMonth() + 1))
+    console.log(month)
+    console.log('END Month')
+    const fye = await Fund.query().where('fiscal_year_end', '=' , month)
+
     var diff = today.getTime() - legend_birth.getTime()
 
     var Legend = diff / (1000 * 3600 * 24)
@@ -143,6 +150,6 @@ export default class DashboardController {
     let stockdonoKey = Env.get('STOCKDIO')
 
     return view.render('admin/dashboard', {d, tasks, funds, status, user_groups, subtasks, tickets,
-    count, subtasks_count, task_count, Legend_Days, cal_events, launch_dates, seed_dates, tickers: mpp, stockdonoKey})
+    count, subtasks_count, task_count, Legend_Days, cal_events, launch_dates, seed_dates, tickers: mpp, stockdonoKey, fye})
   }
 }
