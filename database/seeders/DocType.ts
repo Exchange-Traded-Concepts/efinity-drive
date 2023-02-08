@@ -14,6 +14,9 @@ export default class DocTypeSeeder extends BaseSeeder {
       {
         name: 'Task'
       },
+      {
+        name: 'SubTask'
+      }
 
     ])
   }

@@ -156,9 +156,20 @@ header > h1{
 
 .fye{
   font-size: 12px;
-  color: #FFFFFF;
+  color: #000000;
   border: 1px #2d2e33 solid;
   background-color: pink;
+  padding: 1px 2px;
+  clear: both;
+  margin-left:1px ;
+
+}
+
+.semi{
+  font-size: 12px;
+  color: #000000;
+  border: 1px #2d2e33 solid;
+  background-color: hotpink;
   padding: 1px 2px;
   clear: both;
   margin-left:1px ;
@@ -253,6 +264,7 @@ header > h1{
 <span class="time_off">Time Off Request</span>
   <span class="Fund_dates">Important Fund Dates</span>
   <span class="fye">Fiscal Year End</span>
+  <span class="semi">Semi Annual</span>
 </div>
 <div style="float: right"><a href="/cal" data-toggle="modal" data-target="#calEventModal">Calendar Event <i class="fas fa-plus-circle"></i></a></div>
 <div style="clear: both"></div>
@@ -300,6 +312,9 @@ header > h1{
         @if(numDate == daysInMonth)
             @each(ye in fye)
               <span class="fye"> {{ye.ticker}}</span>
+            @end
+            @each(sa in semi_annual)
+              <span class="semi"> {{sa.ticker}}</span>
             @end
         @end
         <span class="launches">
