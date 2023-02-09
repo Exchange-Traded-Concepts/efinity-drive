@@ -46,15 +46,23 @@ export default class DashboardController {
       [16,4],
       [17,5],
       [18,6],
-      [19,7]
+      [19,7],
+      [20, 8],
+      [21, 9],
+      [22, 10]
      ];
 
-    let semi_month = eval(String(indexedMonth - (-7)));
+    let semi_month = eval(String(indexedMonth - (-9)));
     if(semi_month >= 13){
       semi_month = months_add_arr[semi_month]
     }
     console.log('semi')
     console.log(semi_month)
+
+    let annual_report = eval(String(indexedMonth - (-3)))
+    if(annual_report >= 13){
+      annual_report = months_add_arr[annual_report]
+    }
     let daysInMonth = new Date(year, (indexedMonth - (-1)), 0).getDate()
     const minRange = year+'-'+(indexedMonth - (-1))+'-'+'01';
     const maxRange = year+'-'+(indexedMonth - (-1)) +'-'+daysInMonth
@@ -62,6 +70,7 @@ export default class DashboardController {
     const seeds = await Fund.query().whereBetween('seed_date', [minRange, maxRange])
     const fye = await Fund.query().where('fiscal_year_end', '=', (indexedMonth - (-1)))
     const semi_annual = await Fund.query().where('fiscal_year_end', '=', semi_month)
+    const ar = await Fund.query().where('fiscal_year_end', '=', annual_report)
     const events = await CalendarEvent.query()
       .preload('createdBy')
       .whereBetween('start_date', [minRange, maxRange])
@@ -72,7 +81,7 @@ export default class DashboardController {
     //console.log(events)
 
     return view.render('admin', {calendar: calendar[indexedMonth], months, year,  launches, indexedMonth: indexedMonth,
-      curMonth, ctoday, seeds, events, fye, daysInMonth, semi_annual})
+      curMonth, ctoday, seeds, events, fye, daysInMonth, semi_annual, ar})
 
 }
 
