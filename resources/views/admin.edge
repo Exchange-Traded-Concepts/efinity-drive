@@ -319,7 +319,7 @@ header > h1{
       <!--{{ year+`-`+(indexedMonth-(-1))+`-`+numDate}} == {{ctoday}}-->
       <div id="" >
         <span class="numdate">
-               {{ numDate }}
+               {{ numDate }} <a href="#" data-toggle="modal" data-target="#listEventModal" onclick="{{`populateList(${year}, ${(indexedMonth-(-1))}, ${numDate})` }}"></a>
          </span>
         @if(numDate == daysInMonth)
             @each(ye in fye)
@@ -545,6 +545,21 @@ header > h1{
     </div>
   </div>
 </div>
+
+
+<div class="modal fade" id="listEventModal" tabindex="-1" role="dialog" aria-labelledby="calEventModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document" style="max-width: 600px !important;">
+    <div class="modal-content">
+      <div class="modal-header">
+      </div>
+      <div class="modal-body" id="list-events">
+          This is a test
+      </div>
+    </div>
+  </div>
+</div>
+
 
 </div>
 @endsection

@@ -235,3 +235,32 @@ function number_format (number, decimals, dec_point, thousands_sep) {
   }
   return s.join(dec);
 }
+
+async function populateList(year, month, day){
+
+  if(month.length > 2){
+    month = '0'+month
+  }
+  if(day.length >2){
+    day = '0'+day
+  }
+  let date_string = year+'-'+month+'-'+day
+  let content = document.getElementById('list-events')
+/*
+  await fetch('/cal_list_date/'+date_string, {
+    method: 'get',
+    headers: { 'Content-Type': 'application/json' },
+    // body: JSON.stringify(this.formData)
+  })
+    .then(()=>{
+     content.innerHTML = date;
+
+    })
+    .catch(() => {
+      this.message = 'Ooops! Something went wrong!'
+    })
+
+ */
+  content.innerHTML = year+' '+month+' '+day;
+
+}

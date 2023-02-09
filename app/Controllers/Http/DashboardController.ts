@@ -39,18 +39,18 @@ export default class DashboardController {
     }
    const calendar = await CalendarConfig.calcTable(year, indexedMonth)
 
-    let months_add_arr = [
-      [13,1],
-      [14,2],
-      [15,3],
-      [16,4],
-      [17,5],
-      [18,6],
-      [19,7],
-      [20, 8],
-      [21, 9],
-      [22, 10]
-     ];
+    let months_add_arr = {
+      13: 1,
+      14: 2,
+      15: 3,
+      16: 4,
+      17: 5,
+      18: 6,
+      19: 7,
+      20: 8,
+      21: 9,
+      22: 10,
+    };
 
     let semi_month = eval(String(indexedMonth - (-9)));
     if(semi_month >= 13){
@@ -63,6 +63,8 @@ export default class DashboardController {
     if(annual_report >= 13){
       annual_report = months_add_arr[annual_report]
     }
+    console.log('AR')
+    console.log(annual_report)
     let daysInMonth = new Date(year, (indexedMonth - (-1)), 0).getDate()
     const minRange = year+'-'+(indexedMonth - (-1))+'-'+'01';
     const maxRange = year+'-'+(indexedMonth - (-1)) +'-'+daysInMonth
