@@ -107,6 +107,8 @@ header > h1{
   border: 1px #2d2e33 solid;
   background-color: #b3e4ec;
   padding: 1px 2px;
+  font-weight: bold;
+  border-radius: 3px;
 }
 
 .sticker{
@@ -116,6 +118,8 @@ header > h1{
   background-color: yellow;
   padding: 1px 2px;
   display: inline-block;
+  font-weight: bold;
+  border-radius: 3px;
 }
 
 .time_off{
@@ -123,7 +127,10 @@ header > h1{
   color:  #FFFFFF;
   border: 1px #2d2e33 solid;
   background-color: #FA6400;
+  text-rendering: geometricPrecision;
   padding: 1px 2px;
+  font-weight: bold;
+  border-radius: 3px;
   clear: both;
 }
 .Meeting{
@@ -132,6 +139,8 @@ header > h1{
   border: 1px #2d2e33 solid;
   background-color: #1cc88a;
   padding: 1px 2px;
+  font-weight: bold;
+  border-radius: 3px;
   clear: both;
 
 }
@@ -141,6 +150,8 @@ header > h1{
   border: 1px #2d2e33 solid;
   background-color: purple;
   padding: 1px 2px;
+  font-weight: bold;
+  border-radius: 3px;
 
 }
 
@@ -151,6 +162,8 @@ header > h1{
   background-color: #DC143C;
   padding: 1px 2px;
   clear: both;
+  font-weight: bold;
+  border-radius: 3px;
 
 }
 
@@ -162,6 +175,8 @@ header > h1{
   padding: 1px 2px;
   clear: both;
   margin-left:1px ;
+  font-weight: bold;
+  border-radius: 3px;
 
 }
 
@@ -173,6 +188,8 @@ header > h1{
   padding: 1px 2px;
   clear: both;
   margin-left:1px ;
+  font-weight: bold;
+  border-radius: 3px;
 
 }
 
@@ -184,6 +201,8 @@ header > h1{
   padding: 1px 2px;
   clear: both;
   margin-left:1px ;
+  font-weight: bold;
+  border-radius: 3px;
 
 }
 
@@ -321,8 +340,18 @@ header > h1{
         <span class="numdate">
                <a href="#" data-toggle="modal" data-target="#listEventModal" onclick="{{`populateList(${year}, ${(indexedMonth-(-1))}, ${numDate})` }}">{{ numDate }}</a>
          </span>
+
         @if(numDate == daysInMonth)
-            @each(ye in fye)
+        <a href="#" data-toggle="modal" style="    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    font-size: 14px;
+    text-rendering: geometricPrecision;
+    overflow: hidden;
+    height: 100%;
+    background-color: var(--surface);"
+           data-target="#listEventModal"
+           onclick="{{`populateList(${year}, ${(indexedMonth-(-1))}, ${numDate})` }}">FYE, AR, SAR</a>
+        {{--    @each(ye in fye)
               <span class="fye" title="Fiscal Year End"> {{ye.ticker}}</span>
             @end
         @each(arp in ar)
@@ -331,6 +360,8 @@ header > h1{
             @each(sa in semi_annual)
               <span class="semi" title="Semi Annual Report"> {{sa.ticker}}</span>
             @end
+        @end
+        --}}
         @end
         <span class="launches">
           @each (l in launches )
