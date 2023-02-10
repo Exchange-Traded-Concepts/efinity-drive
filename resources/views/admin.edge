@@ -319,7 +319,7 @@ header > h1{
       <!--{{ year+`-`+(indexedMonth-(-1))+`-`+numDate}} == {{ctoday}}-->
       <div id="" >
         <span class="numdate">
-               {{ numDate }} <a href="#" data-toggle="modal" data-target="#listEventModal" onclick="{{`populateList(${year}, ${(indexedMonth-(-1))}, ${numDate})` }}"></a>
+               <a href="#" data-toggle="modal" data-target="#listEventModal" onclick="{{`populateList(${year}, ${(indexedMonth-(-1))}, ${numDate})` }}">{{ numDate }}</a>
          </span>
         @if(numDate == daysInMonth)
             @each(ye in fye)

@@ -1,6 +1,8 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import {rules, schema} from "@ioc:Adonis/Core/Validator";
 import CalendarEvent from "App/Models/CalendarEvent";
+import Fund from "App/Models/Fund";
+import * as console from "console";
 
 export default class CalendarEventsController {
   public async index({view, auth}: HttpContextContract) {
@@ -115,6 +117,21 @@ export default class CalendarEventsController {
     await event.save()
     session.flash('notification', 'Event Updated')
     return response.redirect('back')
+  }
+
+  public async dayList({params}:HttpContextContract){
+    const day = params.date
+    console.log(day)
+
+    const tickers = await Fund.query().where('fiscal_year_end', '=', 8)
+
+    return tickers
+
+  }
+
+  public async tickerByMonth({params}:HttpContextContract){
+    const funds = await Fund.query().where('fiscal_year_end', '=', params.month)
+    return funds
   }
 
   public async destroy({params, auth, session,response}: HttpContextContract) {

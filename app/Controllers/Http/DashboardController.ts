@@ -52,6 +52,7 @@ export default class DashboardController {
       22: 10,
     };
 
+
     let semi_month = eval(String(indexedMonth - (-9)));
     if(semi_month >= 13){
       semi_month = months_add_arr[semi_month]
@@ -59,7 +60,7 @@ export default class DashboardController {
     console.log('semi')
     console.log(semi_month)
 
-    let annual_report = eval(String(indexedMonth - (-3)))
+    let annual_report = eval(String(indexedMonth - 1))
     if(annual_report >= 13){
       annual_report = months_add_arr[annual_report]
     }

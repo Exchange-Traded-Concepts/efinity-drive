@@ -238,6 +238,28 @@ function number_format (number, decimals, dec_point, thousands_sep) {
 
 async function populateList(year, month, day){
 
+  let fye = await monthFetch(month)
+  let annualReport = await monthFetch(annualReportArr(month))
+  let semiAnnualReport = await monthFetch(semiAnnualArr(month))
+
+  let HTML = '<div>';
+  for(let i = 0; i< fye.length; i++){
+   HTML += fye[i].ticker +  " FYE<br>"
+  }
+  HTML += '</div>'
+
+  HTML += '<div>';
+  for(let i = 0; i< annualReport.length; i++){
+    HTML += annualReport[i].ticker +  " AR Due<br>"
+  }
+  HTML += '</div>'
+
+  HTML += '<div>';
+  for(let i = 0; i< semiAnnualReport.length; i++){
+    HTML += semiAnnualReport[i].ticker +  " Semi-Annual Due<br>"
+  }
+  HTML += '</div>'
+
   if(month.length > 2){
     month = '0'+month
   }
@@ -246,21 +268,61 @@ async function populateList(year, month, day){
   }
   let date_string = year+'-'+month+'-'+day
   let content = document.getElementById('list-events')
-/*
-  await fetch('/cal_list_date/'+date_string, {
-    method: 'get',
-    headers: { 'Content-Type': 'application/json' },
-    // body: JSON.stringify(this.formData)
-  })
-    .then(()=>{
-     content.innerHTML = date;
+  content.innerHTML = HTML;
 
-    })
-    .catch(() => {
-      this.message = 'Ooops! Something went wrong!'
-    })
+}
+async function getFYE(month){
+  let fye = await populateList()
+}
 
- */
-  content.innerHTML = year+' '+month+' '+day;
+async function monthFetch(month) {
+  let tickers;
+  try {
+    const response = await fetch('/cal_list_date_month/' + month, {
+      method: 'get',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    const tickers = await response.json();
+    return tickers;
+  } catch (error) {
+    throw new Error('Ooops! Something went wrong! ' + error);
+  }
+}
+
+function semiAnnualArr(key){
+ let  arr = {
+    5:1,
+    6:2,
+    7:3,
+    8:4,
+    9:5,
+    10:6,
+    11:7,
+    12:8,
+    1:9,
+    2:10,
+    3:11,
+    4:12
+  };
+ return arr[key];
+}
+
+function annualReportArr(key){
+
+  let arr = {
+      3:1,
+      4:2,
+      5:3,
+      6:4,
+      7:5,
+      8:6,
+      9:7,
+      10:8,
+      11:9,
+      12:10,
+      1:11,
+      2:12
+    }
+  return arr[key]
 
 }
