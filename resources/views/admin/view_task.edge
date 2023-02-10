@@ -1,0 +1,139 @@
+@layout('layouts/adminDashboard')
+
+@section('content')
+
+<div class="container-fluid">
+<div>
+  @if(flashMessages.has('notification'))
+  <div class="alert alert-success">{{ flashMessages.get('notification') }}</div>
+  @endif
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <div class="card shadow mb-4">
+      <div
+        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Task</h6>
+        <div class="dropdown no-arrow">
+          <span style="{{`color:${task[0].taskStatus.color}`}}" title="{{ task[0].taskStatus.name }}">{{ task[0].taskStatus.name }} <i class="fas fa-check-circle"></i></span>
+        </div>
+      </div>
+      <div class="card-body">
+        <h3>{{task[0].title}}</h3>
+        <p>{{task[0].description}}</p>
+        <div>{{task[0].fund.ticker}}</div>
+        <div>
+          @if(task[0].target_completion_date)
+            {{task[0].target_completion_date}}
+          @end
+        </div>
+      </div>
+    </div>
+  <!-- -->
+    <div class="card shadow mb-4">
+      <div
+        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Task Documents</h6>
+        @if(auth.user.can_edit)
+        <div class="dropdown no-arrow">
+          <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+          </a>
+          <div class="dropdown-menu dropdow0n-menu-right shadow animated--fade-in"
+               aria-labelledby="dropdownMenuLink">
+            <div class="dropdown-header">Admin:</div>
+            <a class="dropdown-item" href="{{ `/documents/${tasks[0].id}/3` }}">Documents</a>
+            <!--  <a class="dropdown-item" href="#">Another action</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Something else here</a>
+            -->
+          </div>
+        </div>
+        @endif
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="table-responsive">
+            <div class="table-responsive">
+              <table class="table table-striped" >
+                <tr>
+                  <th>File</th>
+                  <th>Type</th>
+                  <th>Size</th>
+                </tr>
+                @each(d in docs)
+                <tr>
+                  <td>
+                    <a href="{{d.url}}" target="_blank">{{d.name}}</a>
+                  </td>
+                  <td>
+                    {{d.type}}
+                  </td>
+                  <td>
+                    {{d.size}}
+                  </td>
+                </tr>
+                @end
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <!-- End Docs//-->
+    <div class="card shadow mb-4">
+      <div
+        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Task Notes</h6>
+        @if(auth.user.can_edit)
+        <div class="dropdown no-arrow">
+          @include('admin/partials/notes_modal')
+        </div>
+        @endif
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12">
+
+            <h4>Newest 3 notes</h4>
+            <hr>
+            <div class="notes_section row">
+              <div class="col-12">
+               @each(n in trunc_notes)
+                @if(n.createdBy)
+                <span class="note-small">{{n.createdBy.first_name}} {{n.createdBy.last_name}} - {{n.createdAt.toFormat('M/d/y') ||''}}</span><br>
+                <p class="note-text">{{n.text}}</p><hr>
+                @end
+                @end
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+  <div class="col-md-6">
+    <div class="card shadow mb-4">
+      <div
+        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Sub Tasks</h6>
+        <div class="dropdown no-arrow">
+
+        </div>
+      </div>
+      <div class="card-body">
+        @each(sub in task[0].subtasks)
+          <span>{{sub.title}}</span>
+        @end
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</div>
+@endsection
+

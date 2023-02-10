@@ -7,6 +7,7 @@ import TaskStatus from "App/Models/TaskStatus";
 import Group from "App/Models/Group";
 import EFMailer from "App/utils/mailer";
 import Env from "@ioc:Adonis/Core/Env";
+import Note from "App/Models/Note";
 
 
 export default class TasksController {
@@ -38,6 +39,30 @@ export default class TasksController {
     //const sub = await SubTask.query().preload('task').preload('createdBy').preload('assignedTo').preload('fund')
 
        return view.render('maintenance/task', {etcUsers, tasks, funds, sub, status})
+  }
+
+  public async viewTask({params, view}: HttpContextContract){
+    const task = await Task.query()
+      .preload('fund')
+      .preload('taskStatus')
+      .preload('createdBy')
+      .preload('subtasks', (assignedToQuery) => {assignedToQuery.preload('assignedTo').preload('createdBy').preload('taskStatus')})
+      .preload('assignedTo')
+      .preload('createdBy')
+      .where('id', '=', params.id)
+
+      const trunc_notes = await Note.query().where('resource_id', '=', params.id)
+        .andWhere('note_type_id', '=', 3)
+
+    const docs = await Database.rawQuery("SELECT d.id, d.doc_type_id, d.name, d.url, d.size, d.type, d.created_at, t.title " +
+      " FROM documents as d, tasks as t " +
+      "WHERE d.resource_id = t.id AND t.id = ? AND d.doc_type_id = 3 ORDER BY d.created_at ", [params.id])
+
+    const sub_docs = await Database.rawQuery("SELECT d.id, d.doc_type_id, d.name, d.url, d.size, d.type, d.created_at, st.title " +
+      " FROM documents as d, tasks as t, sub_tasks as st " +
+      "WHERE d.resource_id = st.id AND st.task_id = ? AND d.doc_type_id = 4 ORDER BY d.created_at ", [params.id])
+
+    return view.render('admin/view_task', {task, resource_id: params.id, note_type_id:3, trunc_notes, docs, sub_docs })
   }
 
   public async create({request,auth, response, session }: HttpContextContract) {

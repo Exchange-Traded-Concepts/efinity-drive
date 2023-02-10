@@ -291,18 +291,18 @@ async function monthFetch(month) {
 
 function semiAnnualArr(key){
  let  arr = {
-    5:1,
-    6:2,
-    7:3,
-    8:4,
-    9:5,
-    10:6,
-    11:7,
-    12:8,
-    1:9,
-    2:10,
-    3:11,
-    4:12
+    1:5,
+    2:6,
+    3:7,
+    4:8,
+    5:9,
+    6:10,
+    7:11,
+    8:12,
+    9:1,
+    10:2,
+    11:3,
+    12:4
   };
  return arr[key];
 }
