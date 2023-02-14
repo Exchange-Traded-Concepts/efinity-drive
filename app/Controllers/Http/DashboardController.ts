@@ -16,8 +16,8 @@ export default class DashboardController {
   public async cal ({ view, params }: HttpContextContract){
 
     let today = new Date();
-    let dd = String(today.getDate());//.padStart(2, '0');
-    let mm = String(today.getMonth() + 1);//.padStart(2, '0'); //January is 0!
+    let dd = String(today.getDate()); //.padStart(2, '0');
+    let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     let yyyy = today.getFullYear();
 
 
@@ -66,12 +66,14 @@ export default class DashboardController {
     }
     console.log('AR')
     console.log(annual_report)
+    let indexedMonthPlus = String(indexedMonth - (-1)).padStart(2, '0')
     let daysInMonth = new Date(year, (indexedMonth - (-1)), 0).getDate()
     const minRange = year+'-'+(indexedMonth - (-1))+'-'+'01';
     const maxRange = year+'-'+(indexedMonth - (-1)) +'-'+daysInMonth
+
     const launches = await Fund.query().whereBetween('target_launch_date',  [minRange, maxRange] )
     const seeds = await Fund.query().whereBetween('seed_date', [minRange, maxRange])
-    const fye = await Fund.query().where('fiscal_year_end', '=', (indexedMonth - (-1)))
+    const fye = await Fund.query().where('fiscal_year_end', '=', indexedMonthPlus)
     const semi_annual = await Fund.query().where('fiscal_year_end', '=', semi_month)
     const ar = await Fund.query().where('fiscal_year_end', '=', annual_report)
     const events = await CalendarEvent.query()
@@ -79,12 +81,18 @@ export default class DashboardController {
       .whereBetween('start_date', [minRange, maxRange])
       .orWhereBetween('end_date',[minRange, maxRange])
       .orderBy('type')
+    for(let i =0; i < events.length; i++){
+      console.log(events[i].title)
+    }
+
+
     let curMonth = months[indexedMonth]
 
+    let dayArr = {1:'01', 2:'02', 3: '03', 4:'04', 5: '05', 6:'06', 7:'07', 8:'08', 9:'09', 10:10, 11:11, 12:12, 13: 13, 14:14, 15:15, 16:16, 17:17, 18:18, 19:19, 20:20, 21:21, 22:22, 23:23, 24:24, 25:25, 26:26, 27:27, 28:28, 29:29, 30:30, 31:31}
     //console.log(events)
 
     return view.render('admin', {calendar: calendar[indexedMonth], months, year,  launches, indexedMonth: indexedMonth,
-      curMonth, ctoday, seeds, events, fye, daysInMonth, semi_annual, ar})
+      curMonth, ctoday, seeds, events, fye, daysInMonth, semi_annual, ar, indexedMonthPlus, dayArr})
 
 }
 

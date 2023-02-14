@@ -15,12 +15,12 @@ export default class CalendarConfig {
 
   //  for (let month = 0; month < arr.length; month++) {
       // What day number the grid starts for the month
-      let startDayInWeek = new Date(year, month, 0).getDay() + 1;
+      let startDayInWeek = String(new Date(year, month, 0).getDay() + 1).padStart(2,'0');
 
     // console.log(startDayInWeek)
       // Number of days in a month +1
       let monthLong = new Date(year, (month -(-1))  , 0).getDate() +1 ;
-
+      String(monthLong).padStart(2, '0');
       let beforCount = 0;
       let counter = 1;
       let startCount = false;
@@ -31,6 +31,7 @@ export default class CalendarConfig {
       for (let x = 0; x < 6; x++) {
         for (let y = 0; y < arr[month][x].length; y++) {
 
+          // @ts-ignore
           if (beforCount == startDayInWeek) {
             startCount = true;
           } else {

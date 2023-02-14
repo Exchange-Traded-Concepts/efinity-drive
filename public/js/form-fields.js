@@ -267,8 +267,23 @@ async function populateList(year, month, day){
     day = '0'+day
   }
   let date_string = year+'-'+month+'-'+day
+  let calEvents = await dayFetch(date_string)
+  console.log(calEvents)
+
+  let HTML2 = '<div>';
+  for(let i = 0; i< calEvents.length; i++){
+    HTML2 += calEvents[i].title +  " "+calEvents[i].type +" Event<br>"
+  }
+  HTML2 += '</div>'
+
   let content = document.getElementById('list-events')
-  content.innerHTML = HTML;
+  let title = document.getElementById('calListHeader')
+  let content2 = document.getElementById('dailyEvents')
+  let titleText = showMonth(month) + " "+ year;
+
+  title.innerHTML = titleText;
+  content.innerHTML = HTML + HTML2;
+  content2.innerHTML = HTML2;
 
 }
 async function getFYE(month){
@@ -288,6 +303,22 @@ async function monthFetch(month) {
     throw new Error('Ooops! Something went wrong! ' + error);
   }
 }
+
+async function dayFetch(dateString) {
+  let events;
+  try {
+    const response = await fetch('/cal_list_date/' + dateString, {
+      method: 'get',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    const events = await response.json();
+    return events;
+  } catch (error) {
+    throw new Error('Ooops! Something went wrong! ' + error);
+  }
+}
+
+async
 
 function semiAnnualArr(key){
  let  arr = {
@@ -325,4 +356,10 @@ function annualReportArr(key){
     }
   return arr[key]
 
+}
+
+function showMonth(month){
+
+  let monthArr = {1: 'January', 2: 'February', 3: 'March', 4: 'April', 5: 'May', 6: 'June', 7: "July", 8: "August", 9: "September", 10: "October", 11: "November", 12: "December"}
+  return monthArr[month];ß
 }

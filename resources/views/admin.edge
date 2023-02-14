@@ -319,6 +319,8 @@ header > h1{
 <div class="calendar-container">
 <!--@each((month, index) in months) -->
 
+
+
 <div class="month-container" id="{{curMonth }}">
   <div class="day-of-week">
     <span>Sun</span><span>Mon</span><span>Tue</span>
@@ -329,17 +331,21 @@ header > h1{
        @each((numDate, numDayofWeek) in calendar[week])
     <div class="date"
          @if (numDate)
-         @if((year+`-`+(indexedMonth-(-1))+`-`+numDate) == ctoday)
+         @if((year+`-`+indexedMonthPlus+`-`+numDate) == ctoday)
            style=" padding: 5px; background: #36b9cc; color: white !important; "
          @end
          style="border: 1px solid #000000;"
           @end
     >
+
       <!--{{ year+`-`+(indexedMonth-(-1))+`-`+numDate}} == {{ctoday}}-->
       <div id="" >
         <span class="numdate">
-               <a href="#" data-toggle="modal" data-target="#listEventModal" onclick="{{`populateList(${year}, ${(indexedMonth-(-1))}, ${numDate})` }}">{{ numDate }}</a>
+               <a href="#" data-toggle="modal" data-target="#listEventModal" onclick="{{`populateList(${year}, ${(indexedMonth-(-1))}, ${numDate})` }}">
+                 {{ numDate }}
+               </a>
          </span>
+        <!-- Make numDate double digit for date comparison -->
 
         @if(numDate == daysInMonth)
         <a href="#" data-toggle="modal" style="    margin: 0;
@@ -381,11 +387,11 @@ header > h1{
         <span class="events">
 
            @each (e in events )
-            @if(e.start_date.toFormat('y-M-dd') <= (year+`-`+(indexedMonth-(-1))+`-`+numDate) && e.end_date.toFormat('y-M-dd') >= (year+`-`+(indexedMonth-(-1))+`-`+numDate)
+            @if(e.start_date.toFormat('y-MM-dd') <= (year+`-`+indexedMonthPlus+`-`+numDate) && e.end_date.toFormat('y-MM-dd') >= (year+`-`+indexedMonthPlus+`-`+numDate)
             ||
             e.start_date.toFormat('y-M-dd') <= (year+`-`+(indexedMonth-(-1))+`-0`+numDate) && e.end_date.toFormat('y-M-dd') >= (year+`-`+(indexedMonth-(-1))+`-0`+numDate)
            )
-          @if(e.start_date.toFormat('dd') <= numDate && e.end_date.toFormat('dd') >= numDate)
+          @if(e.start_date.toFormat('yMMdd') <= year+indexedMonthPlus+dayArr[numDate] && e.end_date.toFormat('yMMdd') >= year+indexedMonthPlus+dayArr[numDate])
              @if(e.public == 1 || auth.user.id  == e.created_by)
                 @if(e.type == 'time_off')
                   <span class="{{e.type}}"  title="{{`${e.title || ''} - ${e.notes || ''}` }}">{{ e.createdBy.first_name }} {{e.createdBy.last_name}}
@@ -582,10 +588,17 @@ header > h1{
      aria-hidden="true">
   <div class="modal-dialog" role="document" style="max-width: 600px !important;">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header" >
+        <div id="calListHeader"></div>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
       </div>
-      <div class="modal-body" id="list-events">
-          This is a test
+      <div class="modal-body" >
+        <div class="row">
+           <div class="col-6" id="dailyEvents" >On This Day</div>
+           <div class="col-6" id="list-events" style="border-left: #000000 1px solid"></div>
+        </div>
       </div>
     </div>
   </div>

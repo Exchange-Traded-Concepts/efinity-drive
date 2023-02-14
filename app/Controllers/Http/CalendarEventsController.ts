@@ -123,9 +123,9 @@ export default class CalendarEventsController {
     const day = params.date
     console.log(day)
 
-    const tickers = await Fund.query().where('fiscal_year_end', '=', 8)
-
-    return tickers
+    const events = await CalendarEvent.query().where("start_date", "<=" , params.date).andWhere("end_date", ">=", params.date )
+      .andWhere('public', "=", 1);
+    return events
 
   }
 
