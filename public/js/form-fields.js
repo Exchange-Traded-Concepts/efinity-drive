@@ -282,7 +282,7 @@ async function populateList(year, month, day){
   let titleText = showMonth(month) + " "+ year;
 
   title.innerHTML = titleText;
-  content.innerHTML = HTML + HTML2;
+  content.innerHTML = HTML;
   content2.innerHTML = HTML2;
 
 }
