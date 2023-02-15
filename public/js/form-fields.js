@@ -271,7 +271,12 @@ async function populateList(year, month, day){
 
   let HTML2 = '<div>';
   for(let i = 0; i< calEvents.length; i++){
-    HTML2 += "<div class="+calEvents[i].type+" style='font-size:1rem;margin-bottom:4px;'>"+calEvents[i].title +  " "+checkContent(calEvents[i].notes) + "</div>"
+    HTML2 += "<div class="+calEvents[i].type+" style='font-size:1rem;margin-bottom:4px;'>"
+
+      if(calEvents[i].type === 'time_off'){
+        HTML2 += calEvents[i].createdBy.first_name+ " "+calEvents[i].createdBy.last_name+" ";
+      }
+      HTML2 += calEvents[i].title +  " "+checkContent(calEvents[i].notes) + "</div>"
 
   }
   HTML2 += '</div>'
