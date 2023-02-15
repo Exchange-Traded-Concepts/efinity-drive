@@ -244,19 +244,19 @@ async function populateList(year, month, day){
 
   let HTML = '<div>';
   for(let i = 0; i< fye.length; i++){
-   HTML += fye[i].ticker +  " FYE<br>"
+   HTML += "<span class='fye' style='font-size:1rem;margin-bottom:4px;display:inline-block'>"+fye[i].ticker +  " FYE</span><br>"
   }
   HTML += '</div>'
 
   HTML += '<div>';
   for(let i = 0; i< annualReport.length; i++){
-    HTML += annualReport[i].ticker +  " AR Due<br>"
+    HTML += "<span class='ar' style='font-size:1rem;margin-bottom:4px;display:inline-block'>"+annualReport[i].ticker +  " AR Due</span><br>"
   }
   HTML += '</div>'
 
   HTML += '<div>';
   for(let i = 0; i< semiAnnualReport.length; i++){
-    HTML += semiAnnualReport[i].ticker +  " Semi-Annual Due<br>"
+    HTML += "<span class='semi' style='font-size:1rem;margin-bottom:4px;display:inline-block'>"+semiAnnualReport[i].ticker +  " Semi-Annual Due</span><br>"
   }
   HTML += '</div>'
 
@@ -268,18 +268,18 @@ async function populateList(year, month, day){
   }
   let date_string = year+'-'+month+'-'+day
   let calEvents = await dayFetch(date_string)
-  console.log(calEvents)
 
   let HTML2 = '<div>';
   for(let i = 0; i< calEvents.length; i++){
-    HTML2 += calEvents[i].title +  " "+calEvents[i].type +" Event<br>"
+    HTML2 += "<div class="+calEvents[i].type+" style='font-size:1rem;margin-bottom:4px;'>"+calEvents[i].title +  " "+checkContent(calEvents[i].notes) + "</div>"
+
   }
   HTML2 += '</div>'
 
   let content = document.getElementById('list-events')
   let title = document.getElementById('calListHeader')
   let content2 = document.getElementById('dailyEvents')
-  let titleText = showMonth(month) + " "+ year;
+  let titleText = showMonth(month) + " "+day+", "+ year;
 
   title.innerHTML = titleText;
   content.innerHTML = HTML;
@@ -356,6 +356,13 @@ function annualReportArr(key){
     }
   return arr[key]
 
+}
+
+function checkContent(c){
+  if(c === null){
+    return "";
+  }
+  else return c;
 }
 
 function showMonth(month){
