@@ -1043,11 +1043,11 @@ export default class FundsController {
     //const docs = await Document.query().preload('createdBy')
     //  .where('resource_id', params.id).andWhere('doc_type_id', 2)
 
-    let docs = await Database.rawQuery('SELECT * FROM  documents WHERE doc_type_id = 2 AND resource_id = 20 ' +
+    let docs = await Database.rawQuery('SELECT id, name, url, size, type,  DATE_FORMAT(created_at, "%m/%d/%Y") as createdAt  FROM  documents WHERE doc_type_id = 2 AND resource_id = ? ' +
       ' UNION ' +
-      ' SELECT * FROM  documents WHERE doc_type_id = 3 AND resource_id IN (SELECT id FROM tasks WHERE fund_id = 20)' +
+      ' SELECT id, name, url, size, type,  DATE_FORMAT(created_at, "%m/%d/%Y") as createdAt FROM  documents WHERE doc_type_id = 3 AND resource_id IN (SELECT id FROM tasks WHERE fund_id = ?)' +
       ' UNION ' +
-      ' SELECT * FROM documents WHERE doc_type_id = 4 AND resource_id IN (SELECT sub_tasks.id from sub_tasks, tasks WHERE sub_tasks.task_id = tasks.id AND tasks.fund_id = 20 )')
+      ' SELECT id, name, url, size, type,  DATE_FORMAT(created_at, "%m/%d/%Y") as createdAt FROM documents WHERE doc_type_id = 4 AND resource_id IN (SELECT sub_tasks.id from sub_tasks, tasks WHERE sub_tasks.task_id = tasks.id AND tasks.fund_id = ? )', [params.id, params.id, params.id])
 
     docs = docs[0];
 
