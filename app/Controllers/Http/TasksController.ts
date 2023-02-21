@@ -8,6 +8,8 @@ import Group from "App/Models/Group";
 import EFMailer from "App/utils/mailer";
 import Env from "@ioc:Adonis/Core/Env";
 import Note from "App/Models/Note";
+import * as console from "console";
+import Document from "App/Models/Document";
 
 
 export default class TasksController {
@@ -51,18 +53,45 @@ export default class TasksController {
       .preload('createdBy')
       .where('id', '=', params.id)
 
-      const trunc_notes = await Note.query().where('resource_id', '=', params.id)
-        .andWhere('note_type_id', '=', 3)
+      const trunc_notes = await Note.query()
+        .preload('createdBy')
+        .where('resource_id', '=', params.id)
+        .andWhere('note_type_id', '=', 3).limit(3)
 
-    const docs = await Database.rawQuery("SELECT d.id, d.doc_type_id, d.name, d.url, d.size, d.type, d.created_at, t.title " +
+    const notes = await Note.query()
+      .preload('createdBy')
+      .where('resource_id', '=', params.id)
+      .andWhere('note_type_id', '=', 3)
+
+
+    let sub_notes = await Database.rawQuery("SELECT st.title, st.description, st.created_by, st.target_completion_date," +
+       "   n.id, n.note_type_id, n.resource_id, n.text, n.created_at " +
+       " FROM notes n, users u, sub_tasks st WHERE n.created_by = u.id AND n.resource_id = st.id AND note_type_id = 4 " +
+       " AND st.task_id = ?" , [params.id])
+
+      sub_notes = sub_notes[0];
+
+    console.log(sub_notes)
+
+    /*const docs = await Database.rawQuery("SELECT d.id, d.doc_type_id, d.name, d.url, d.size, d.type, d.created_at, t.title " +
       " FROM documents as d, tasks as t " +
       "WHERE d.resource_id = t.id AND t.id = ? AND d.doc_type_id = 3 ORDER BY d.created_at ", [params.id])
+      .debug(true)
+    */
 
-    const sub_docs = await Database.rawQuery("SELECT d.id, d.doc_type_id, d.name, d.url, d.size, d.type, d.created_at, st.title " +
-      " FROM documents as d, tasks as t, sub_tasks as st " +
+    const docs = await Document.query().where('doc_type_id', '=',3 ).andWhere('resource_id', '=', params.id)
+
+    let sub_docs = await Database.rawQuery("SELECT d.id, d.doc_type_id, d.name, d.url, d.size, d.type, d.created_at, st.title " +
+      " FROM documents as d, sub_tasks as st " +
       "WHERE d.resource_id = st.id AND st.task_id = ? AND d.doc_type_id = 4 ORDER BY d.created_at ", [params.id])
 
-    return view.render('admin/view_task', {task, resource_id: params.id, note_type_id:3, trunc_notes, docs, sub_docs })
+    sub_docs = sub_docs[0]
+
+    console.log(sub_docs)
+
+
+
+    return view.render('admin/view_task', {task, resource_id: params.id, note_type_id:3, trunc_notes, docs, sub_docs, sub_notes, notes })
   }
 
   public async create({request,auth, response, session }: HttpContextContract) {

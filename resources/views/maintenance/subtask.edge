@@ -111,11 +111,11 @@
   </div>
 <div class="row">
   <div class="col-md-6">
-
+  @if(subTask)
     <div class="card shadow mb-4">
       <div
         class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-        <h6 class="m-0 font-weight-bold text-primary">Task Documents</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Sub Task Documents</h6>
         @if(auth.user.can_edit)
         <div class="dropdown no-arrow">
           <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
@@ -125,7 +125,7 @@
           <div class="dropdown-menu dropdow0n-menu-right shadow animated--fade-in"
                aria-labelledby="dropdownMenuLink">
             <div class="dropdown-header">Admin:</div>
-            <a class="dropdown-item" href="{{ `/documents/${tasks[0].id}/3` }}">Documents</a>
+            <a class="dropdown-item" href="{{ `/documents/${subTask.id}/4` }}">Documents</a>
             <!--  <a class="dropdown-item" href="#">Another action</a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="#">Something else here</a>
@@ -156,6 +156,7 @@
                   {{d.size}}
                 </td>
               </tr>
+
               @end
             </table>
               </div>
@@ -163,6 +164,7 @@
         </div>
       </div>
     </div>
+    @end
 <!-- Notes HERE -->
 
 

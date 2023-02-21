@@ -24,7 +24,7 @@
         <div>{{task[0].fund.ticker}}</div>
         <div>
           @if(task[0].target_completion_date)
-            {{task[0].target_completion_date}}
+            {{task[0].target_completion_date.toFormat('M/d/y')}}
           @end
         </div>
       </div>
@@ -43,7 +43,7 @@
           <div class="dropdown-menu dropdow0n-menu-right shadow animated--fade-in"
                aria-labelledby="dropdownMenuLink">
             <div class="dropdown-header">Admin:</div>
-            <a class="dropdown-item" href="{{ `/documents/${tasks[0].id}/3` }}">Documents</a>
+            <a class="dropdown-item" href="{{ `/documents/${task[0].id}/3` }}">Documents</a>
             <!--  <a class="dropdown-item" href="#">Another action</a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="#">Something else here</a>
@@ -101,10 +101,10 @@
             <div class="notes_section row">
               <div class="col-12">
                @each(n in trunc_notes)
-                @if(n.createdBy)
+
                 <span class="note-small">{{n.createdBy.first_name}} {{n.createdBy.last_name}} - {{n.createdAt.toFormat('M/d/y') ||''}}</span><br>
                 <p class="note-text">{{n.text}}</p><hr>
-                @end
+
                 @end
               </div>
             </div>
@@ -125,14 +125,99 @@
         </div>
       </div>
       <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped" >
+              <tr>
+                <th>SubTask</th>
+                <th>Due</th>
+                <th>Assigned To</th>
+                <th>Options</th>
+              </tr>
+
         @each(sub in task[0].subtasks)
-          <span>{{sub.title}}</span>
-        @end
+        <tr>
+          <td>
+            <span style="{{`color:${sub.taskStatus.color}`}}" title="{{ sub.taskStatus.name }}"><i class="fas fa-check-circle"></i></span> {{sub.title}}
+          </td>
+          <td>
+            {{sub.target_completion_date.toFormat('M/d/y')}}
+          </td>
+          <td>
+            {{sub.assignedTo.name}}
+          </td>
+          <td>
+            <a href="{{ `/sub_tasks/${sub.id}/edit` }}"><i class="fab fa-cloudsmith"></i></a>
+          </td>
+       </tr>
+              @end
+            </table>
+          </div>
+      </div>
+    </div>
+<!-- SUBTASKS -->
+
+    <div class="card shadow mb-4">
+      <div
+        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Sub Task Documents</h6>
+        @if(auth.user.can_edit)
+        <div class="dropdown no-arrow">
+          <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+          </a>
+          <div class="dropdown-menu dropdow0n-menu-right shadow animated--fade-in"
+               aria-labelledby="dropdownMenuLink">
+            <div class="dropdown-header">Admin:</div>
+            <a class="dropdown-item" href="{{ `/documents/${task[0].id}/4` }}">Documents</a>
+            <!--  <a class="dropdown-item" href="#">Another action</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Something else here</a>
+            -->
+          </div>
+        </div>
+        @endif
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="table-responsive">
+            <div class="table-responsive">
+              <table class="table table-striped" >
+                <tr>
+                  <th>SubTask</th>
+                  <th>File</th>
+                  <th>Type</th>
+                  <th>Size</th>
+                </tr>
+                @each(sd in sub_docs)
+                <tr>
+                  <td>
+                    {{sd.title}}
+                  </td>
+                  <td>
+                    <a href="{{sd.url}}" target="_blank">{{sd.name}}</a>
+                  </td>
+                  <td>
+                    {{sd.type}}
+                  </td>
+                  <td>
+                    {{sd.size}}
+                  </td>
+                </tr>
+                @end
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
+<!-- /END SUBTASKS-->
   </div>
 </div>
+
+
+
 
 </div>
 @endsection

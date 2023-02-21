@@ -3,13 +3,14 @@ import {rules, schema} from "@ioc:Adonis/Core/Validator";
 import Fund from "App/Models/Fund";
 import Client from "App/Models/Client";
 import Task from "App/Models/Task";
-import Document from "App/Models/Document";
+//import Document from "App/Models/Document";
 import States from "App/utils/USState";
 import TaskStatus from "App/Models/TaskStatus";
 import SubTask from "App/Models/SubTask";
 import EFMailer from "App/utils/mailer";
 import Env from "@ioc:Adonis/Core/Env";
 import Note from "App/Models/Note";
+import Database from "@ioc:Adonis/Lucid/Database";
 
 export default class FundsController {
   public async index({view}: HttpContextContract) {
@@ -1039,8 +1040,17 @@ export default class FundsController {
 
     const status = await TaskStatus.query().orderBy('rank')
 
-    const docs = await Document.query().preload('createdBy')
-      .where('resource_id', params.id).andWhere('doc_type_id', 2)
+    //const docs = await Document.query().preload('createdBy')
+    //  .where('resource_id', params.id).andWhere('doc_type_id', 2)
+
+    let docs = await Database.rawQuery('SELECT * FROM  documents WHERE doc_type_id = 2 AND resource_id = 20 ' +
+      ' UNION ' +
+      ' SELECT * FROM  documents WHERE doc_type_id = 3 AND resource_id IN (SELECT id FROM tasks WHERE fund_id = 20)' +
+      ' UNION ' +
+      ' SELECT * FROM documents WHERE doc_type_id = 4 AND resource_id IN (SELECT sub_tasks.id from sub_tasks, tasks WHERE sub_tasks.task_id = tasks.id AND tasks.fund_id = 20 )')
+
+    docs = docs[0];
+
     const notes = await Note.query().preload('createdBy').where('note_type_id', 2).andWhere('resource_id', params.id).orderBy('id', 'desc')
     const trunc_notes =  await Note.query().preload('createdBy').where('note_type_id', 2).andWhere('resource_id', params.id).orderBy('id', 'desc').limit(3)
 

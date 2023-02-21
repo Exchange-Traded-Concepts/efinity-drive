@@ -75,7 +75,7 @@ export default class SubTasksController {
       // @ts-ignore
       .where('id', subTask.taskId).orderBy('target_completion_date')
     // @ts-ignore
-    const docs = await Document.query().where('doc_type_id', 3).andWhere('resource_id', subTask.taskId)
+    const docs = await Document.query().where('doc_type_id', 4).andWhere('resource_id', params.id)
 
     const notes = await Note.query().preload('createdBy').where('note_type_id', 4)
       .andWhere('resource_id', params.id)
