@@ -140,7 +140,9 @@
             <span style="{{`color:${sub.taskStatus.color}`}}" title="{{ sub.taskStatus.name }}"><i class="fas fa-check-circle"></i></span> {{sub.title}}
           </td>
           <td>
+            @if(sub.target_completion_date)
             {{sub.target_completion_date.toFormat('M/d/y')}}
+            @end
           </td>
           <td>
             {{sub.assignedTo.name}}
