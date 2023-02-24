@@ -57,6 +57,7 @@ export default class TasksController {
         .preload('createdBy')
         .where('resource_id', '=', params.id)
         .andWhere('note_type_id', '=', 3).limit(3)
+        .orderBy('created_at', 'desc')
 
     const notes = await Note.query()
       .preload('createdBy')
@@ -71,8 +72,6 @@ export default class TasksController {
 
       sub_notes = sub_notes[0];
 
-    console.log(sub_notes)
-
     /*const docs = await Database.rawQuery("SELECT d.id, d.doc_type_id, d.name, d.url, d.size, d.type, d.created_at, t.title " +
       " FROM documents as d, tasks as t " +
       "WHERE d.resource_id = t.id AND t.id = ? AND d.doc_type_id = 3 ORDER BY d.created_at ", [params.id])
@@ -81,17 +80,15 @@ export default class TasksController {
 
     const docs = await Document.query().where('doc_type_id', '=',3 ).andWhere('resource_id', '=', params.id)
 
-    let sub_docs = await Database.rawQuery("SELECT d.id, d.doc_type_id, d.name, d.url, d.size, d.type, d.created_at, st.title " +
+    let sub_docs = await Database.rawQuery("SELECT d.id, d.doc_type_id, d.name, d.url, d.size, d.type, DATE_FORMAT(d.created_at, '%m/%d/%Y') as createdAt, st.title " +
       " FROM documents as d, sub_tasks as st " +
       "WHERE d.resource_id = st.id AND st.task_id = ? AND d.doc_type_id = 4 ORDER BY d.created_at ", [params.id])
 
     sub_docs = sub_docs[0]
 
-    console.log(sub_docs)
+    const status = await TaskStatus.query().orderBy('rank')
 
-
-
-    return view.render('admin/view_task', {task, resource_id: params.id, note_type_id:3, trunc_notes, docs, sub_docs, sub_notes, notes })
+    return view.render('admin/view_task', {status, task, t: task[0], resource_id: params.id, note_type_id:3, trunc_notes, docs, sub_docs, sub_notes, notes })
   }
 
   public async create({request,auth, response, session }: HttpContextContract) {
@@ -203,13 +200,19 @@ export default class TasksController {
 
   }
 
-  public async add({view}: HttpContextContract) {
+  public async add({view, params}: HttpContextContract) {
 
     const etcUsers = await users.query().where('is_admin', 1)
     const groups = await Group.all()
+    const fund = await Fund.findBy('id', params.id)
+    console.log(fund)
+    let u_task = fund
+    // @ts-ignore
+    u_task.fundId = u_task.id
     const funds  = await Fund.query().orderBy('ticker')
     const taskstatuses = await TaskStatus.query().orderBy('rank')
-    return view.render('maintenance/add_task', {groups, etcUsers, funds, taskstatuses})
+    // @ts-ignore
+    return view.render('maintenance/add_task', {groups, etcUsers, funds, taskstatuses, fund_id : fund.id, u_task})
   }
 
   public async email({}){

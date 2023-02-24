@@ -1,7 +1,9 @@
 @layout('layouts/adminDashboard')
 
 @section('content')
+<style>
 
+</style>
 <div class="container-fluid">
 <div>
   @if(flashMessages.has('notification'))
@@ -15,16 +17,17 @@
         class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
         <h6 class="m-0 font-weight-bold text-primary">Task</h6>
         <div class="dropdown no-arrow">
-          <span style="{{`color:${task[0].taskStatus.color}`}}" title="{{ task[0].taskStatus.name }}">{{ task[0].taskStatus.name }} <i class="fas fa-check-circle"></i></span>
+          @include('admin/partials/task_status')
+        <!--  <span style="{{`color:${task[0].taskStatus.color}`}}" title="{{ task[0].taskStatus.name }}">{{ task[0].taskStatus.name }} <i class="fas fa-check-circle"></i></span> -->
         </div>
       </div>
       <div class="card-body">
-        <h3>{{task[0].title}}</h3>
+        <h3>{{task[0].title}}  <a href="{{ `/tasks/${t.id}/edit` }}"><i class="fas fa-pencil-alt"></i></a></h3>
         <p>{{task[0].description}}</p>
-        <div>{{task[0].fund.ticker}}</div>
+        <div>Fund: <a href="{{`/fund_pipeline_details_t/${task[0].fund.ticker}`}}">{{task[0].fund.ticker}}</a></div>
         <div>
           @if(task[0].target_completion_date)
-            {{task[0].target_completion_date.toFormat('M/d/y')}}
+           Due Date:  {{task[0].target_completion_date.toFormat('M/d/y')}}
           @end
         </div>
       </div>
@@ -36,19 +39,7 @@
         <h6 class="m-0 font-weight-bold text-primary">Task Documents</h6>
         @if(auth.user.can_edit)
         <div class="dropdown no-arrow">
-          <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-          </a>
-          <div class="dropdown-menu dropdow0n-menu-right shadow animated--fade-in"
-               aria-labelledby="dropdownMenuLink">
-            <div class="dropdown-header">Admin:</div>
-            <a class="dropdown-item" href="{{ `/documents/${task[0].id}/3` }}">Documents</a>
-            <!--  <a class="dropdown-item" href="#">Another action</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Something else here</a>
-            -->
-          </div>
+          <a class="" href="{{ `/documents/${task[0].id}/3` }}">Documents <i class="fas fa-file"></i></a>
         </div>
         @endif
       </div>
@@ -56,16 +47,24 @@
         <div class="row">
           <div class="table-responsive">
             <div class="table-responsive">
-              <table class="table table-striped" >
+              <table class="table table-striped" id="fundDocSort">
+                <thead>
                 <tr>
-                  <th>File</th>
+                  <th onclick="sortTable(0, 'fundDocSort')" class="cursor-pointer select-none">File</th>
+                  <th onclick="sortTable(1, 'fundDocSort')" class="cursor-pointer select-none">Created</th>
                   <th>Type</th>
                   <th>Size</th>
                 </tr>
+                </thead>
                 @each(d in docs)
                 <tr>
                   <td>
                     <a href="{{d.url}}" target="_blank">{{d.name}}</a>
+                  </td>
+                  <td>
+                    @if(d.createdAt)
+                    {{d.createdAt.toFormat('M/d/y')}}
+                    @end
                   </td>
                   <td>
                     {{d.type}}
@@ -121,40 +120,40 @@
         class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
         <h6 class="m-0 font-weight-bold text-primary">Sub Tasks</h6>
         <div class="dropdown no-arrow">
-
+          <a href="{{`/add_sub_tasks/${task[0].id}`}}">Add SubTask <i class="fas fa-plus-circle"> </i></a>
         </div>
       </div>
       <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-striped" >
+          <table class="table table-striped" id="subTasks">
+            <thead>
               <tr>
-                <th>SubTask</th>
-                <th>Due</th>
-                <th>Assigned To</th>
+                <th onclick="sortTable(0, 'subTasks')" class="cursor-pointer select-none">SubTask</th>
+                <th onclick="sortTable(1, 'subTasks')" class="cursor-pointer select-none date">Due</th>
+                <th onclick="sortTable(2, 'subTasks')" class="cursor-pointer select-none">Assigned To</th>
                 <th>Options</th>
               </tr>
-
-        @each(sub in task[0].subtasks)
+            </thead>
+        @each(st in task[0].subtasks)
         <tr>
-          <td>
-            <span style="{{`color:${sub.taskStatus.color}`}}" title="{{ sub.taskStatus.name }}"><i class="fas fa-check-circle"></i></span> {{sub.title}}
+          <td >
+            {{st.title}}<br>
+            @include('admin/partials/sub_task_status')
           </td>
-          <td>
-            @if(sub.target_completion_date)
-            {{sub.target_completion_date.toFormat('M/d/y')}}
+          <td >
+            @if(st.target_completion_date)
+            {{st.target_completion_date.toFormat('M/d/y')}}
             @end
           </td>
           <td>
-            {{sub.assignedTo.name}}
+            {{st.assignedTo.name}}
           </td>
           <td>
-            <a href="{{ `/sub_tasks/${sub.id}/edit` }}"><i class="fab fa-cloudsmith"></i></a>
+            <a href="{{ `/sub_tasks/${st.id}/edit` }}"><i class="fas fa-pencil-alt"></i></a>
           </td>
        </tr>
               @end
             </table>
           </div>
-      </div>
     </div>
 <!-- SUBTASKS -->
 
@@ -162,42 +161,31 @@
       <div
         class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
         <h6 class="m-0 font-weight-bold text-primary">Sub Task Documents</h6>
-        @if(auth.user.can_edit)
-        <div class="dropdown no-arrow">
-          <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-          </a>
-          <div class="dropdown-menu dropdow0n-menu-right shadow animated--fade-in"
-               aria-labelledby="dropdownMenuLink">
-            <div class="dropdown-header">Admin:</div>
-            <a class="dropdown-item" href="{{ `/documents/${task[0].id}/4` }}">Documents</a>
-            <!--  <a class="dropdown-item" href="#">Another action</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Something else here</a>
-            -->
-          </div>
-        </div>
-        @endif
       </div>
       <div class="card-body">
         <div class="row">
           <div class="table-responsive">
             <div class="table-responsive">
-              <table class="table table-striped" >
+              <table class="table table-striped" id="subTaskDocs">
+                <thead>
                 <tr>
-                  <th>SubTask</th>
-                  <th>File</th>
-                  <th>Type</th>
+                  <th onclick="sortTable(0, 'subTaskDocs')" class="cursor-pointer select-none">SubTask</th>
+                  <th onclick="sortTable(1, 'subTaskDocs')" class="cursor-pointer select-none">File</th>
+                  <th onclick="sortTable(2, 'subTaskDocs')" class="cursor-pointer select-none date">Created</th>
+                  <th></th>
                   <th>Size</th>
                 </tr>
+                </thead>
                 @each(sd in sub_docs)
                 <tr>
                   <td>
                     {{sd.title}}
                   </td>
                   <td>
-                    <a href="{{sd.url}}" target="_blank">{{sd.name}}</a>
+                    {{sd.name}} <a href="{{sd.url}}" target="_blank"><i class="fas fa-file"></i></a>
+                  </td>
+                  <td>
+                    {{sd.createdAt}}
                   </td>
                   <td>
                     {{sd.type}}

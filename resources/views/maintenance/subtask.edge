@@ -46,7 +46,7 @@
           </thead>
           @each(t in tasks)
           <tr>
-            <td>{{ t.id }} </td>
+            <td><a href="{{`/task_view/${t.id}`}}">{{ t.id }}</a> </td>
             @if(t.subtasks != '')
             <td @click=" {{ `selected !== ${ t.id } ? selected = ${ t.id } : selected = null` }} " >
               <i class="fas fa-arrow-circle-right" style="cursor: pointer; color: #0f6848"></i>

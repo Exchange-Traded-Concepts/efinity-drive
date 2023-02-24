@@ -14,6 +14,7 @@
   <div
     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
     <h6 class="m-0 font-weight-bold text-primary">Tasks</h6>
+    <!--
     <div class="dropdown no-arrow">
       <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -23,12 +24,12 @@
            aria-labelledby="dropdownMenuLink">
         <div class="dropdown-header">Admin:</div>
         <a class="dropdown-item" href="/tasks">All Assigned Tasks</a>
-          <!--  <a class="dropdown-item" href="#">Another action</a>
+          <a class="dropdown-item" href="#">Another action</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="#">Something else here</a>
-        -->
+
       </div>
-    </div>
+    </div>-->
   </div>
   <div class="card-body">
     <form
@@ -55,8 +56,8 @@
         <select name="fund_id" id="fund_id" class="form-control">
           @each(f in funds)
           <option value="{{f.id}}"
-                  @if(u_task)
-                  @if(f.id == u_task.fundId)
+                  @if(u_task || fund_id)
+                  @if(f.id == u_task.fundId || f.id == fund_id)
                   selected
                   @end
                   @end

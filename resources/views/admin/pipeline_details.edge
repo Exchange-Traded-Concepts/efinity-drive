@@ -326,7 +326,7 @@
       class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
       <h6 class="m-0 font-weight-bold text-primary">Tasks</h6>
       <div class="dropdown no-arrow">
-           <a class="" href="/tasks_add">Add Task <i class="fas fa-plus"></i></a>
+           <a class="" href="{{`/tasks_add/${p[0].id}`}}">Add Task <i class="fas fa-plus"></i></a>
       </div>
     </div>
     <div class="card-body">
@@ -368,8 +368,11 @@
             {{t.target_completion_date.toFormat('M/d/y')}}
             @end
           </td>
-          <td><a href="{{ `/tasks/${t.id}/edit` }}"><i class="fas fa-pencil-alt"></i></a> |
+          <td>
+            <a href="{{`/task_view/${t.id}`}}"><i class="fas fa-eye"></i></a>
+           <!-- <a href="{{ `/tasks/${t.id}/edit` }}"><i class="fas fa-pencil-alt"></i></a> |
             <a href="{{ `/add_sub_tasks/${t.id}` }}"><i class="fab fa-cloudsmith"></i></i></a>
+            -->
           </td>
         </tr>
         @if(t.subtasks)
