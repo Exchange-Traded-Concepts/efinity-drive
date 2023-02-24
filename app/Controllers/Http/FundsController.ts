@@ -11,6 +11,7 @@ import EFMailer from "App/utils/mailer";
 import Env from "@ioc:Adonis/Core/Env";
 import Note from "App/Models/Note";
 import Database from "@ioc:Adonis/Lucid/Database";
+import Document from "App/Models/Document";
 
 export default class FundsController {
   public async index({view}: HttpContextContract) {
@@ -1042,14 +1043,16 @@ export default class FundsController {
 
     //const docs = await Document.query().preload('createdBy')
     //  .where('resource_id', params.id).andWhere('doc_type_id', 2)
-
+/*
     let docs = await Database.rawQuery('SELECT id, name, url, size, type,  DATE_FORMAT(created_at, "%m/%d/%Y") as createdAt  FROM  documents WHERE doc_type_id = 2 AND resource_id = ? ' +
       ' UNION ' +
       ' SELECT id, name, url, size, type,  DATE_FORMAT(created_at, "%m/%d/%Y") as createdAt FROM  documents WHERE doc_type_id = 3 AND resource_id IN (SELECT id FROM tasks WHERE fund_id = ?)' +
       ' UNION ' +
       ' SELECT id, name, url, size, type,  DATE_FORMAT(created_at, "%m/%d/%Y") as createdAt FROM documents WHERE doc_type_id = 4 AND resource_id IN (SELECT sub_tasks.id from sub_tasks, tasks WHERE sub_tasks.task_id = tasks.id AND tasks.fund_id = ? )', [params.id, params.id, params.id])
+*/
+    let docs = await Document.query().where('resource_id', '=', params.id).andWhere('doc_type_id', '=' , 2)
 
-    docs = docs[0];
+  //  docs = docs[0];
 
     const notes = await Note.query().preload('createdBy').where('note_type_id', 2).andWhere('resource_id', params.id).orderBy('id', 'desc')
     const trunc_notes =  await Note.query().preload('createdBy').where('note_type_id', 2).andWhere('resource_id', params.id).orderBy('id', 'desc').limit(3)
