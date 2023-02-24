@@ -10,7 +10,7 @@ import SubTask from "App/Models/SubTask";
 import EFMailer from "App/utils/mailer";
 import Env from "@ioc:Adonis/Core/Env";
 import Note from "App/Models/Note";
-import Database from "@ioc:Adonis/Lucid/Database";
+//import Database from "@ioc:Adonis/Lucid/Database";
 import Document from "App/Models/Document";
 
 export default class FundsController {
