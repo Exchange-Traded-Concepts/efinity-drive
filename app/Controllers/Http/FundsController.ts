@@ -150,11 +150,11 @@ export default class FundsController {
     let t = await Task.query().orderBy('id', 'desc')
 
     let task_id = t[0].id
-
+/*
     console.log('TASK')
     console.log(task_id)
     console.log('END')
-
+*/
     await SubTask.createMany([
       {
         title: 'Conflict with existing products',
@@ -267,7 +267,7 @@ export default class FundsController {
 
    const mailstring = await EFMailer.getEmailByGroupArray([2,4,5,6,7,9])
 
-    console.log(mailstring)
+   // console.log(mailstring)
 
     //const mailto = emails.toString()
     let name = request.input('fund_name')
@@ -1048,9 +1048,17 @@ export default class FundsController {
       ' UNION ' +
       ' SELECT id, name, url, size, type,  DATE_FORMAT(created_at, "%m/%d/%Y") as createdAt FROM  documents WHERE doc_type_id = 3 AND resource_id IN (SELECT id FROM tasks WHERE fund_id = ?)' +
       ' UNION ' +
-      ' SELECT id, name, url, size, type,  DATE_FORMAT(created_at, "%m/%d/%Y") as createdAt FROM documents WHERE doc_type_id = 4 AND resource_id IN (SELECT sub_tasks.id from sub_tasks, tasks WHERE sub_tasks.task_id = tasks.id AND tasks.fund_id = ? )', [params.id, params.id, params.id])
+      ' SELECT id, name, url, size, type,  DATE_FORMAT(created_at, "%m/%d/%Y") as createdAt FROM documents WHERE doc_type_id = 4
+       AND resource_id IN (SELECT sub_tasks.id from sub_tasks, tasks WHERE sub_tasks.task_id = tasks.id AND tasks.fund_id = ? )', [params.id, params.id, params.id])
 */
-    let docs = await Document.query().where('resource_id', '=', params.id).andWhere('doc_type_id', '=' , 2)
+    const docs = await Document.query().where('resource_id', '=', params.id).andWhere('doc_type_id', '=' , 2)
+      .union([
+        (qq) => {qq.where('doc_type_id', '=', 3).andWhereIn('resource_id', (subQ) => subQ.from('tasks').select('id').where('fund_id', params.id))},
+        (qq) => {qq.where('doc_type_id', 4)
+          .andWhereIn('resource_id', (query)=>query.from('sub_tasks').join('tasks', 'sub_tasks.task_id' , '=', 'tasks.id').select('sub_tasks.id').where('tasks.fund_id', params.id))}, ]
+        , true)
+
+ //   let docs = await Document.query().where('resource_id', '=', params.id).andWhere('doc_type_id', '=' , 2)
 
   //  docs = docs[0];
 

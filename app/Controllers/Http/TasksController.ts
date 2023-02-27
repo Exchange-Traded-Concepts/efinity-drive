@@ -112,7 +112,7 @@ export default class TasksController {
   public async show({view}: HttpContextContract) {
     // @ts-ignore
     const tasks = await Task.query().preload('createdBy').preload('subtasks').whereIn('assigned_to_group_id', session.get('user_groups'))
-    console.log(tasks)
+    //console.log(tasks)
     return view.render('admin/tasks', {tasks})
   }
 
@@ -205,7 +205,7 @@ export default class TasksController {
     const etcUsers = await users.query().where('is_admin', 1)
     const groups = await Group.all()
     const fund = await Fund.findBy('id', params.id)
-    console.log(fund)
+   // console.log(fund)
     let u_task = fund
     // @ts-ignore
     u_task.fundId = u_task.id
@@ -234,7 +234,7 @@ export default class TasksController {
 
   public async to_do({view, session}: HttpContextContract){
 
-    console.log(session.get('user_groups'))
+   // console.log(session.get('user_groups'))
     const tasks = await Task.query()
       .preload('fund')
       .preload('taskStatus')
@@ -258,7 +258,7 @@ export default class TasksController {
 
   public async task_by_status({params, view, session}: HttpContextContract){
 
-    console.log(session.get('user_groups'))
+   // console.log(session.get('user_groups'))
     const tasks = await Task.query()
       .preload('fund')
       .preload('taskStatus')

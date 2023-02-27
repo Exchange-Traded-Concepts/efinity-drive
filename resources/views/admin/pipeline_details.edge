@@ -435,7 +435,7 @@
           <tr>
             <th onclick="sortTable(0, 'docSort')" class="cursor-pointer select-none">Name</th>
             <th>File</th>
-            <th onclick="sortTable(0, 'docSort')" class="cursor-pointer select-none date">Created</th>
+            <th onclick="sortTable(2, 'docSort')" class="cursor-pointer select-none date">Created</th>
             <th>Type</th>
             <th>Size</th>
           </tr>
@@ -449,7 +449,9 @@
               <a href="{{d.url}}" target="_blank">{{d.name}}</a>
             </td>
             <td>
-              {{d.createdAt ||  ''}}
+              @if(d.createdAt)
+                {{d.createdAt.toFormat('M/dd/y') ||  ''}}
+              @end
             </td>
             <td>
               {{d.type}}

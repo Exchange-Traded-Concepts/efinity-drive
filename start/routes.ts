@@ -61,10 +61,10 @@ Route.get('/dashboard', async ({view})  => {
 
  */
 
-Route.get('/register', 'AuthController.showRegister') // .middleware('isAdmin')
-Route.post('/register', 'AuthController.register') //.middleware('isAdmin')
-Route.get('/register/:id/edit', 'AuthController.edit') //.middleware('editAdmin')
-Route.patch('/register/:id', 'AuthController.update') //.middleware('editAdmin')
+Route.get('/register', 'AuthController.showRegister').middleware('isAdmin')
+Route.post('/register', 'AuthController.register').middleware('isAdmin')
+Route.get('/register/:id/edit', 'AuthController.edit').middleware('editAdmin')
+Route.patch('/register/:id', 'AuthController.update').middleware('editAdmin')
 
 Route.post('/login', 'AuthController.login')
 Route.get('/logout', 'AuthController.logout').middleware('auth')
