@@ -77,7 +77,7 @@ export default class CalendarEventsController {
     if(c_event.created_by != auth.user.id){
       return view.render('/cal')
     }
-    console.log(c_event)
+   // console.log(c_event)
     return view.render('maintenance/cal_event', {c_event, events});
   }
 

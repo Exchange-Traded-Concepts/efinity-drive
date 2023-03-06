@@ -28,6 +28,27 @@ export default class Invoice extends BaseModel {
   public expense_ratio: number
 
   @column()
+  public attn:string
+
+  @column()
+  public month_end_assets: number
+
+  @column()
+  public avg_daily_assets: number
+
+  @column()
+  public income: number
+
+  @column()
+  public bps: string
+
+  @column()
+  public days_in_year: number
+
+  @column()
+  public pdf_url: string
+
+  @column()
   public created_by: number
   @belongsTo(()=> users, {
     foreignKey: 'created_by',

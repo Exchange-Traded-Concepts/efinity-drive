@@ -1,3 +1,8 @@
+function num_format(el){
+  let formatted_number = number_format(el.value, 2,'.', ',')
+  return document.getElementById(el.id).value = formatted_number;
+}
+
 function addFields(){
   // Generate a dynamic number of inputs
   //var number = document.getElementById("member").value;
@@ -8,7 +13,7 @@ function addFields(){
 
   let totalRowCount = table.tBodies[0].rows.length;
 
-  console.log(totalRowCount);
+//  console.log(totalRowCount);
 
   let row = table.tBodies[0].insertRow(-1 );
 
@@ -20,16 +25,16 @@ function addFields(){
   let cell6 = row.insertCell(-1);
 
   cell1.innerHTML = "<label class='type_label'>Type:</label>" +
-    "<select name='transaction_type["+eval(totalRowCount+1)+"]' class='invoice_input'>"  +
+    "<select name='type["+eval(totalRowCount+1)+"]' class='invoice_input'>"  +
     "<option value='asset_based'>Asset Based</option>" +
     "<option value='board_expenses'>Board Expenses</option>" +
     "<option value='other'>Other</option>" +
     "<option value='escrow'>Escrow</option>" +
     "</select>";
-  cell2.innerHTML = "<label class='desc_label'>Description:</label> <input class='desc_input' name='description["+eval(totalRowCount+1)+"]' type='text'>";
+  cell2.innerHTML = "<label class='desc_label'>Description:</label><input class='desc_input' name='description["+eval(totalRowCount+1)+"]' type='text'>";
   cell3.innerHTML = "<label class='desc_label'>Qty:</label><input name='qty["+eval(totalRowCount+1)+"]' id='qty"+eval(totalRowCount+1)+ "' type='text' class='invoice_input' size='3' value='1'>";
-  cell4.innerHTML = "<label class='desc_label'>Min Pmnt.:</label><input name='min_pmnt["+eval(totalRowCount+1)+"]' id='minpmnt"+eval(totalRowCount+1)+ "' type='text' class='invoice_input' size='10'>";
-  cell5.innerHTML = " <label class='desc_label'>Calculated Pmnt.:</label><input name='calc_pmnt["+eval(totalRowCount+1)+"]' id='calc_pmnt"+eval(totalRowCount+1)+"' type='text' class='invoice_input' size='10'>";
+  cell4.innerHTML = "<label class='desc_label'>Min Pmnt.:</label><input name='min_payment["+eval(totalRowCount+1)+"]' id='min_payment"+eval(totalRowCount+1)+ "' type='text' class='invoice_input' size='10' onblur='num_format(this)'>";
+  cell5.innerHTML = " <label class='desc_label'>Calculated Pmnt.:</label><input name='calc_payment["+eval(totalRowCount+1)+"]' id='calc_payment"+eval(totalRowCount+1)+"' type='text' class='invoice_input' size='10' onblur='num_format(this)'>";
   cell6.innerHTML = "<label class='desc_label'>Total:</label><input name='total["+eval(totalRowCount+1)+"]' type='text' id='total"+eval(totalRowCount+1)+ "' class='invoice_input' onblur='calc_row_total("+eval(totalRowCount+1)+")'>";
 }
 
@@ -60,7 +65,7 @@ function add_etc_fees(){
   let cell6 = row.insertCell(-1);
 
   cell1.innerHTML = "<label class='type_label'>Type:</label>" +
-    "<select name='transaction_type["+eval(totalRowCount+1)+"]' class='invoice_input'>"  +
+    "<select name='type["+eval(totalRowCount+1)+"]' class='invoice_input'>"  +
     "<option value='asset_based' selected>Asset Based</option>" +
     "<option value='board_expenses'>Board Expenses</option>" +
     "<option value='other'>Other</option>" +
@@ -69,8 +74,8 @@ function add_etc_fees(){
   cell2.innerHTML = "<label class='desc_label'>Description:</label> " +
     "<input class='desc_input' name='description["+eval(totalRowCount+1)+"]' type='text' value='ETC Fee "+basis_points+"(bps) -"+days_in_month+" Days'>";
   cell3.innerHTML = "<label class='desc_label'>Qty:</label><input name='qty["+eval(totalRowCount+1)+"]' id='qty"+eval(totalRowCount+1)+ "' type='text' class='invoice_input' size='3' value='1'>";
-  cell4.innerHTML = "<label class='desc_label'>Min Pmnt.:</label><input name='min_pmnt["+eval(totalRowCount+1)+"]' id='minpmnt"+eval(totalRowCount+1)+ "' type='text' class='invoice_input' size='10'>";
-  cell5.innerHTML = " <label class='desc_label'>Calculated Pmnt.:</label><input name='calc_pmnt["+eval(totalRowCount+1)+"]' id='calc_pmnt"+eval(totalRowCount+1)+"' type='text' class='invoice_input' size='10' value='"+total_etc+"'>";
+  cell4.innerHTML = "<label class='desc_label'>Min Pmnt.:</label><input name='min_payment["+eval(totalRowCount+1)+"]' id='min_payment"+eval(totalRowCount+1)+ "' type='text' class='invoice_input' size='10'>";
+  cell5.innerHTML = " <label class='desc_label'>Calculated Pmnt.:</label><input name='calc_payment["+eval(totalRowCount+1)+"]' id='calc_payment"+eval(totalRowCount+1)+"' type='text' class='invoice_input' size='10' value='"+total_etc+"'>";
   cell6.innerHTML = "<label class='desc_label'>Total:</label><input name='total["+eval(totalRowCount+1)+"]' type='text' id='total"+eval(totalRowCount+1)+ "' class='invoice_input' onblur='calc_row_total("+eval(totalRowCount+1)+")'>";
 
   calc_row_total(eval(totalRowCount+1));
@@ -113,8 +118,8 @@ function add_vendor_fees(){
   cell2.innerHTML = "<label class='desc_label'>Description:</label> " +
     "<input class='desc_input' name='description["+eval(totalRowCount+1)+"]' type='text' value='Vendor Fee "+v_bps+"(bps) -"+days_in_month+" Days'>";
   cell3.innerHTML = "<label class='desc_label'>Qty:</label><input name='qty["+eval(totalRowCount+1)+"]' id='qty"+eval(totalRowCount+1)+ "' type='text' class='invoice_input' size='3' value='1'>";
-  cell4.innerHTML = "<label class='desc_label'>Min Pmnt.:</label><input name='min_pmnt["+eval(totalRowCount+1)+"]' id='minpmnt"+eval(totalRowCount+1)+ "' type='text' class='invoice_input' size='10'>";
-  cell5.innerHTML = " <label class='desc_label'>Calculated Pmnt.:</label><input name='calc_pmnt["+eval(totalRowCount+1)+"]' id='calc_pmnt"+eval(totalRowCount+1)+"' type='text' class='invoice_input' size='10' value='"+vendor_total+"'>";
+  cell4.innerHTML = "<label class='desc_label'>Min Pmnt.:</label><input name='min_payment["+eval(totalRowCount+1)+"]' id='min_payment"+eval(totalRowCount+1)+ "' type='text' class='invoice_input' size='10'>";
+  cell5.innerHTML = " <label class='desc_label'>Calculated Pmnt.:</label><input name='calc_payment["+eval(totalRowCount+1)+"]' id='calc_payment"+eval(totalRowCount+1)+"' type='text' class='invoice_input' size='10' value='"+vendor_total+"'>";
   cell6.innerHTML = "<label class='desc_label'>Total:</label><input name='total["+eval(totalRowCount+1)+"]' type='text' id='total"+eval(totalRowCount+1)+ "' class='invoice_input' onblur='calc_row_total("+eval(totalRowCount+1)+")'>";
 
   calc_row_total(eval(totalRowCount+1));
@@ -171,22 +176,22 @@ function days_in_yr(){
 function calc_row_total(row_id){
 
   let qty = parseFloat(document.getElementById('qty'+row_id).value);
-  let min_pmnt = document.getElementById('minpmnt'+row_id).value;
-  min_pmnt = min_pmnt.replaceAll(',','');
-  let str = document.getElementById('calc_pmnt'+row_id).value;
-  calc_pmnt = str.replaceAll(',','');
+  let min_payment = document.getElementById('min_payment'+row_id).value;
+  min_payment = min_payment.replaceAll(',','');
+  let str = document.getElementById('calc_payment'+row_id).value;
+  calc_payment = str.replaceAll(',','');
 
-
-  if (min_pmnt>=calc_pmnt){
-    let cal_amount = parseFloat(eval(qty * min_pmnt));
+  if (parseFloat(min_payment)>=parseFloat(calc_payment)){
+    let cal_amount = parseFloat(eval(qty * min_payment));
     cal_amount = number_format(cal_amount, 2, '.', ',')
     return document.getElementById('total'+row_id).value = cal_amount;
    }else
    {
-     let cal_amount = parseFloat(eval(qty * calc_pmnt));
+     let cal_amount = parseFloat(eval(qty * calc_payment));
      cal_amount = number_format(cal_amount, 2, '.', ',')
      return document.getElementById('total'+row_id).value = cal_amount;
    }
+   calc_sheet()
 
 }
 
@@ -194,14 +199,16 @@ function calc_sheet(){
   let table = document.getElementById("invoice_transactions");
   let totalRowCount = table.tBodies[0].rows.length;
   let total =0;
-  console.log(totalRowCount);
+ // console.log(totalRowCount);
 
   let income = document.getElementById('income').value;
   income = income.replaceAll(',','');
 
   for(let i =1; i<= totalRowCount; i++){
     total += parseFloat(document.getElementById('total'+i).value.replace(',', ''));
-    console.log(total)
+
+    document.getElementById('total'+i).value = number_format(document.getElementById('total'+i).value, 2, '.', ',')
+
   }
   total = (1*total)
   total = parseFloat(income - total);
@@ -211,6 +218,8 @@ function calc_sheet(){
   //alert(total)
 
 }
+
+
 
 function number_format (number, decimals, dec_point, thousands_sep) {
   // Strip all characters but numerical ones.
@@ -323,7 +332,6 @@ async function dayFetch(dateString) {
   }
 }
 
-async
 
 function semiAnnualArr(key){
  let  arr = {

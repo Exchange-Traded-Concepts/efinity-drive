@@ -1,71 +1,259 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Invoice for CLIENT</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <!-- Font Awesome -->
+  <link href="/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <link
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    rel="stylesheet">
+  <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v1.8.0/dist/alpine.js" defer></script>
+
+  <style>
+    .negative_balance{
+      background-color: #ca2819;
+    }
+  </style>
+
 </head>
-<body class="bg-gray-100 m-6">
+<body>
+<div class="container-fluid">
+  <!-- HEADER -->
+  <div class="card shadow mb-4">
+    <div
+      class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+      <h6 class="m-0 font-weight-bold text-primary">Invoices </h6>
+      <div class="dropdown no-arrow">
+        <a href="/invoice">Create Invoice <i class="fas fa-plus-circle"></i></a>
+      </div>
 
-<main class="bg-white w-[11in] h-[8.5in] mx-auto p-[1.25in]">
-  <div class="mb-12">
-    <h1 class="text-3xl font-serif tracking-wider">
-      INVOICE
-    </h1>
-    @if (recipient)
-    <h5 class="font-mono text-gray-600">
-      Generated for:
-    </h5>
-    @endif
-    <h5 class="font-mono text-gray-600">
-      Sent by:
-    </h5>
+    </div>
+
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-5">
+           {{invoice[0].fund.ticker}}<br>
+           {{invoice[0].fund.fund_name}}<br>
+           {{invoice[0].fund.client.name}}<br>
+           {{invoice[0].fund.client.address}}<br>
+          {{invoice[0].fund.client.city}},  {{invoice[0].fund.client.state}}  {{invoice[0].fund.client.zip}}<br>
+          {{invoice[0].fund.client.phone || ''}} <br>
+
+        </div>
+        <div class="col-md-7" style="text-align: center"><img src="/img/etc-logo.png" width="300"></div>
+
+      </div>
+      <div class="row" style="padding: 2rem; background-color: #96dbe4; border-top: #1c294e solid 1px; margin: 1rem 0 1rem 0">
+        <div class="col-md-1" style="border-bottom: #1c294e 2px solid">Fund</div>
+        <div class="col-md-3" style="border-bottom: #1c294e 2px solid">Name</div>
+        <div class="col-md-2" style="border-bottom: #1c294e 2px solid">Month End Assets</div>
+        <div class="col-md-2" style="border-bottom: #1c294e 2px solid">AVG. Daily Assets</div>
+        <div class="col-md-2" style="border-bottom: #1c294e 2px solid">Expense Ratio</div>
+        <div class="col-md-2" style="border-bottom: #1c294e 2px solid">Income</div>
+
+        <div class="col-md-1">{{invoice[0].fund.ticker}}</div>
+        <div class="col-md-3">{{invoice[0].fund.fund_name}}</div>
+        <div class="col-md-2">{{parseFloat(invoice[0].month_end_assets).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}</div>
+        <div class="col-md-2">{{parseFloat(invoice[0].avg_daily_assets).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}</div>
+        <div class="col-md-2">{{invoice[0].expense_ratio}}</div>
+        <div class="col-md-2">{{parseFloat(invoice[0].income).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}</div>
+
+      </div>
+      <div class="row">
+        <div class="col-md-3">
+          <p>Invoice Date: {{invoice[0].invoice_date.toFormat('M/d/y')}}<br>
+          Invoice #: {{invoice[0].invoice_number}}<br>
+          Invoice For Date: {{invoice[0].invoice_for_date.toFormat('M/d/y')}}<br>
+          Days In month: {{invoice[0].days_in_month}}<br>
+          </p>
+
+          <p style="margin-bottom: 20px; margin-top: 20px;">
+            For Wire Transfers<br>
+            Bank of The Legend<br>
+            Address Here<br>
+          </p>
+          <p>
+            Account Name: <br>
+            ETC<br>
+            Account Number: 0000000000000<br>
+            ABA:<br>
+          </p>
+
+
+        </div>
+        <div class="col-md-9">
+          <div class="row" style="margin: 2rem 4px 1px 15px;">
+            <div class="col-md-3" style="text-align: right; font-weight: bold">Asset Based</div>
+            <div class="col-md-3">Description</div>
+            <div class="col-md-2" style="text-align: right">Minimum Payment</div>
+            <div class="col-md-2" style="text-align: right">Calculated Payment</div>
+            <div class="col-md-2" style="text-align: right">Total</div>
+          </div>
+          <div class="row" style="border-top: #1c294e solid 1px; margin: 8px 0 8px 0;">
+
+           @if(asset_based[0])
+            @each(a in asset_based[0])
+               <div class="col-md-3"></div>
+               <div class="col-md-3">{{a.description}}</div>
+               <div class="col-md-2" style="text-align: right">{{parseFloat(a.min_payment).toLocaleString('en-US', {style: 'currency', currency: 'USD'}) }}</div>
+               <div class="col-md-2" style="text-align: right">{{parseFloat(a.calc_payment).toLocaleString('en-US', {style: 'currency', currency: 'USD'}) }}</div>
+               <div class="col-md-2" style="text-align: right">{{parseFloat(a.col_total).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}</div>
+            @end
+            <div class="row">
+              <div class="col-md-10"></div>
+              <div class="col-md-2"></div>
+
+            </div>
+          @end
+        </div>
+          <div class="row" style="margin: 4px 0px 1px 15px">
+            <div class="col-md-10" style="text-align: right; font-weight: bold;">Sub Total</div>
+            <div class="col-md-2" style="text-align: right; font-weight: bold";>
+              @each(st in sum_type[0])
+              @if(st.type == 'asset_based')
+              {{parseFloat(st.sum_type).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}
+              @end
+              @end
+            </div>
+          </div>
+
+          <!-- BOARD --->
+          <div class="row" style="margin: 2rem 4px 1px 15px;">
+            <div class="col-md-3" style="text-align: right; font-weight: bold">Board Expenses</div>
+            <div class="col-md-3">Description</div>
+            <div class="col-md-2" style="text-align: right">Minimum Payment</div>
+            <div class="col-md-2" style="text-align: right">Calculated Payment</div>
+            <div class="col-md-2" style="text-align: right">Total</div>
+          </div>
+          <div class="row" style="border-top: #1c294e solid 1px; margin: 8px 0 8px 0;">
+
+            @if(board_expenses[0])
+            @each(b in board_expenses[0])
+            <div class="col-md-3"></div>
+            <div class="col-md-3">{{b.description}}</div>
+            <div class="col-md-2" style="text-align: right">{{parseFloat(b.min_payment).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}</div>
+            <div class="col-md-2" style="text-align: right">{{parseFloat(b.calc_payment).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}</div>
+            <div class="col-md-2" style="text-align: right">{{parseFloat(b.col_total).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}</div>
+            @end
+            <div class="row">
+              <div class="col-md-10"></div>
+              <div class="col-md-2"></div>
+
+            </div>
+            @end
+          </div>
+          <div class="row" style="margin: 4px 0px 1px 15px">
+            <div class="col-md-10" style="text-align: right; font-weight: bold;">Sub Total</div>
+            <div class="col-md-2" style="text-align: right; font-weight: bold";>
+              @each(st in sum_type[0])
+              @if(st.type == 'board_expenses')
+              {{parseFloat(st.sum_type).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}
+              @end
+              @end
+            </div>
+          </div>
+          <!--// -->
+          <!-- ESCROW -->
+          <div class="row" style="margin: 2rem 4px 1px 15px;">
+            <div class="col-md-3" style="text-align: right; font-weight: bold">Escrow</div>
+            <div class="col-md-3">Description</div>
+            <div class="col-md-2" style="text-align: right">Minimum Payment</div>
+            <div class="col-md-2" style="text-align: right">Calculated Payment</div>
+            <div class="col-md-2" style="text-align: right">Total</div>
+          </div>
+          <div class="row" style="border-top: #1c294e solid 1px; margin: 8px 0 8px 0;">
+
+            @if(escrow[0])
+            @each(e in escrow[0])
+            <div class="col-md-3"></div>
+            <div class="col-md-3">{{e.description}}</div>
+            <div class="col-md-2" style="text-align: right">{{parseFloat(e.min_payment).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}</div>
+            <div class="col-md-2" style="text-align: right">{{parseFloat(e.calc_payment).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}</div>
+            <div class="col-md-2" style="text-align: right">{{parseFloat(e.col_total).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}</div>
+            @end
+            <div class="row">
+              <div class="col-md-10"></div>
+              <div class="col-md-2"></div>
+
+            </div>
+            @end
+          </div>
+          <div class="row" style="margin: 4px 0px 1px 15px">
+            <div class="col-md-10" style="text-align: right; font-weight: bold;">Sub Total</div>
+            <div class="col-md-2" style="text-align: right; font-weight: bold";>
+              @each(st in sum_type[0])
+              @if(st.type == 'escrow')
+              {{parseFloat(st.sum_type).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}
+              @end
+              @end
+            </div>
+          </div>
+
+
+          <!--//-->
+          <!-- OTHER -->
+          <div class="row" style="margin: 2rem 4px 1px 15px;">
+            <div class="col-md-3" style="text-align: right; font-weight: bold">Other</div>
+            <div class="col-md-3">Description</div>
+            <div class="col-md-2" style="text-align: right">Minimum Payment</div>
+            <div class="col-md-2" style="text-align: right">Calculated Payment</div>
+            <div class="col-md-2" style="text-align: right">Total</div>
+          </div>
+          <div class="row" style="border-top: #1c294e solid 1px; margin: 8px 0px 8px 0px;">
+
+            @if(other[0])
+            @each(o in other[0])
+            <div class="col-md-3"></div>
+            <div class="col-md-3">{{o.description}}</div>
+            <div class="col-md-2" style="text-align: right">{{parseFloat(o.min_payment).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}</div>
+            <div class="col-md-2" style="text-align: right">{{parseFloat(o.calc_payment).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}</div>
+            <div class="col-md-2" style="text-align: right">{{parseFloat(o.col_total).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}</div>
+            @end
+
+            @end
+          </div>
+          <div class="row" style="margin: 4px 0px 1px 15px">
+            <div class="col-md-10" style="text-align: right; font-weight: bold;">Sub Total</div>
+            <div class="col-md-2" style="text-align: right; font-weight: bold";>
+              @each(st in sum_type[0])
+                @if(st.type == 'other')
+              {{parseFloat(st.sum_type).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}
+                @end
+              @end
+            </div>
+          </div>
+          <div class="row" style="margin: 4px 0px 1px 15px">
+            <div class="col-md-10" style="text-align: right; font-weight: bold">
+              Total Expenses:
+            </div>
+            <div class="col-md-2" style="text-align: right; font-weight: bold">
+               {{parseFloat(total_expenses[0][0].total).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="margin: 4px 0px 1px 15px">
+        <div class="col-md-10" style="text-align: right; font-weight: bold">Total</div>
+
+        <div  style="font-weight: bold; text-align: right; "
+          @if(parseFloat(invoice[0].income - total_expenses[0][0].total) < 0)
+             class='col-md-2 negative_balance'
+          @else
+             class='col-md-2 normal'
+          @end
+         >
+          {{ parseFloat(invoice[0].income - total_expenses[0][0].total).toLocaleString('en-US', {style: 'currency', currency: 'USD'}) }}
+        </div>
+
+      </div>
+
+
+    </div>
   </div>
-  <div class="mb-12 font-mono">
-    <h3 class="font-bold">Abstergo Ind.</h3>
-    <address>
-      1234 Abs Parkway<br/>
-      Cupertino, California 95014
-    </address>
-  </div>
-
-  <table class="w-full mb-12 font-mono">
-    <tr>
-      <td class="font-bold">Quantity</td>
-      <td class="font-bold">Description</td>
-      <td class="font-bold text-right">Unit Price</td>
-      <td class="font-bold text-right">Amount</td>
-    </tr>
-    <tr>
-      <td>1.0</td>
-      <td>24h Animus Usage</td>
-      <td class="text-right">$12,000.00</td>
-      <td class="text-right">$12,000.00</td>
-    </tr>
-    <tr>
-      <td>1.0</td>
-      <td>Abstergo T-Shirt</td>
-      <td class="text-right">$15.00</td>
-      <td class="text-right">$15.00</td>
-    </tr>
-  </table>
-
-  <dl class="flex flex-col items-end font-mono">
-    <div class="inline-grid grid-cols-2 justify-end">
-      <dt class="font-bold">Subtotal</dt>
-      <dd class="w-28 text-right">$12,015.00</dd>
-    </div>
-    <div class="inline-grid grid-cols-2 justify-end">
-      <dt class="font-bold">Sales Tax</dt>
-      <dd class="w-28 text-right">$750.94</dd>
-    </div>
-    <div class="inline-grid grid-cols-2 justify-end">
-      <dt class="font-bold">Total</dt>
-      <dd class="w-28 text-right font-bold">$12,765.94</dd>
-    </div>
-  </dl>
-</main>
+</div>
 
 </body>
 </html>

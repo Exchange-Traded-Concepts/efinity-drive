@@ -9,16 +9,22 @@ export default class InvoiceTransaction extends BaseModel {
   @column()
   public invoiceId: number
   @belongsTo(()=> Invoice)
-  public invoice : BelongsTo<typeof Invoice>
+  public invoice_id : BelongsTo<typeof Invoice>
 
   @column()
-  public transaction_type: string
+  public type: string
 
   @column()
   public description: string
 
   @column()
-  public amount: number
+  public qty: number
+
+  @column()
+  public min_payment: number
+
+  @column()
+  public calc_payment: number
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

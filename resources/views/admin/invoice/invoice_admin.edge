@@ -1,0 +1,69 @@
+@layout('layouts/adminDashboard')
+
+@section('content')
+
+
+<div class="container-fluid">
+<div>
+  @if(flashMessages.has('notification'))
+  <div class="alert alert-success">{{ flashMessages.get('notification') }}</div>
+  @endif
+</div>
+<!-- HEADER -->
+<div class="card shadow mb-4">
+  <div
+    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+    <h6 class="m-0 font-weight-bold text-primary">Invoices </h6>
+    <div class="dropdown no-arrow">
+      <a href="/invoice">Create Invoice <i class="fas fa-plus-circle"></i></a>
+    </div>
+
+  </div>
+  <div class="card-body">
+    <table class="table table-striped" id="sortTable">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th onclick="sortTable(1)" class="cursor-pointer select-none">Ticker</th>
+        <th onclick="sortTable(2)" class="cursor-pointer select-none">Fund name</th>
+        <th onclick="sortTable(3)" class="cursor-pointer select-none">Client</th>
+        <th onclick="sortTable(4)" class="cursor-pointer select-none">Invoice #</th>
+        <th onclick="sortTable(5)" class="cursor-pointer select-none date">Date</th>
+        <th>Options</th>
+      </tr>
+      </thead>
+  @each(i in invoices)
+      <tr>
+        <td>
+          {{i.id}}
+        </td>
+        <td>
+          {{i.fund.ticker}}
+        </td>
+        <td>
+          {{i.fund.client.name}}
+        </td>
+        <td>
+           {{i.fund.fund_name}}
+        </td>
+        <td>
+          {{i.invoice_number}}
+        </td>
+        <td>
+          {{i.invoice_for_date.toFormat('M/d/y')}}
+        </td>
+        <td>
+         <a href="{{`/invoice/${i.id}`}}">Edit</a> <a href="{{`/show_invoice/${i.id}`}}">View</a><br>
+          @if(i.pdf_url)
+            <a href="{{i.pdf_url}}" target="_blank">PDF</a>
+          @end
+        </td>
+      </tr>
+  @end
+    </table>
+  </div>
+</div>
+</div>
+
+
+@endsection

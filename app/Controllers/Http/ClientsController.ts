@@ -105,17 +105,8 @@ export default class ClientsController {
 
   public async update ({ params, request, response, session  }: HttpContextContract) {
 
-    console.log('HERE')
-
     const c = await Client.findOrFail( params.id)
-
-    console.log("PAST")
-
     const data = await this.validateInput(request)
-
-    console.log('YO')
-
-    console.log(data)
 
     c.merge({
       name: data.name,
