@@ -12,10 +12,186 @@
   <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v1.8.0/dist/alpine.js" defer></script>
 
-  <style>
+  <style type="text/css">
     .negative_balance{
       background-color: #ca2819;
     }
+    .container{
+        display:flex;
+        justify-content: space-between;
+                          }
+    .logo{
+      display: flex;
+      max-width: 180px;
+      padding-top: 15px;
+    }
+    h1 {
+      font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+      font-style: normal;
+      font-size: 3em;
+    }
+    h2 {
+      font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+      font-style: normal;
+      font-size: 1.3em;
+      color: #3540fa;
+    }
+    h3 {
+      font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+      font-style: normal;
+      margin-bottom: 0px;
+      line-height: 2px;
+    }
+    h4 {
+      font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+      font-style: normal;
+      font-size: 12px;
+      margin-bottom: 0px;
+      line-height: 2px;
+      text-align: right;
+    }
+    h5 {
+      font-family: Roboto, Arial, sans-serif;
+      font-style: normal;
+      font-size: 12px;
+      text-transform: uppercase;
+      color: #3540fa;
+      margin-bottom: 0px;
+      line-height: 2px;
+    }
+    h6 {
+      font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+      font-style: normal;
+      font-size: 12px;
+      margin-bottom: 0px;
+      line-height: 2px;
+      text-align: left;
+      text-transform: uppercase;
+    }
+    p {
+      font-size: 14px;
+      font-family: Roboto, Arial, sans-serif;
+      font-style: normal;
+    }
+    .label {
+      color: #6d6e70;
+      text-transform: uppercase;
+      font-size: 11px;
+      text-align: right;
+    }
+
+    .title {
+      text-align: left;
+    }
+    td {
+      margin: 5px;
+      padding: 10px;
+      width: 100%;
+      min-width: 100px;
+    }
+    table, td {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .call-out td{
+      background-color: #f5cb27;
+      border: 2px solid white;
+      border-collapse: collapse;
+      padding-top: 25px;
+      width: auto;
+    }
+    .info{
+      display: inline-flex;
+      align-items: baseline;
+    }
+    .data-line{
+      height: 16px;
+    }
+    .top {
+      padding-top: 5px;
+    }
+    .line-item {
+      margin: 0px;
+      line-height: 5px;
+    }
+    .text-container {
+      background-color: #f0f0f1;
+      width: 100%;
+      margin-bottom: 20px;
+      margin-top: -10px
+    }
+
+    .header-container {
+      margin-bottom: 0px;
+      height: auto;
+      width: auto;
+    }
+    .col-label {
+      color: #6d6e70;
+      font-size: 11px;
+      text-align: left !important;
+      font-weight: 400;
+    }
+    .col-label-alt {
+      color: #6d6e70;
+      font-size: 11px;
+      text-align: right !important;
+      font-weight: 400;
+    }
+    .figure {
+      text-align: right;
+      color: #404041;
+      font-size: 12px;
+    }
+    .subtotal {
+      font-family: Roboto, Arial, sans-serif;
+      font-style: normal;
+      font-size: 12px;
+      text-transform: uppercase;
+      color: #231f20;
+      margin-bottom: 0px;
+      line-height: 2px;
+      text-align: right;
+      font-weight: 500;
+    }
+    .details{
+      font-size: 12px;
+      color: #231f20;
+    }
+    .total-exp {
+      font-family: Roboto, Arial, sans-serif;
+      font-style: normal;
+      font-size: 14px;
+      text-transform: uppercase;
+      color: #231f20;
+      margin-bottom: 0px;
+      line-height: 2px;
+      text-align: right;
+      font-weight: 700;
+    }
+    .total-due {
+      font-family: Roboto, Arial, sans-serif;
+      font-style: normal;
+      font-size: 18px;
+      text-transform: uppercase;
+      color: #000;
+      margin-bottom: 0px;
+      line-height: 2px;
+      text-align: right;
+      font-weight: 900;
+      padding-top: 20px;
+    }
+    .thanks-banner {
+      padding-top: 2%;
+    }
+    footer {
+      background-color: #f0f0f1;
+      width: 100%;
+      padding: 5px;
+      margin: 0px;
+      height: 80px;
+    }
+
   </style>
 
 </head>
@@ -157,6 +333,7 @@
           </div>
           <!--// -->
           <!-- ESCROW -->
+          @if(escrow[0])
           <div class="row" style="margin: 2rem 4px 1px 15px;">
             <div class="col-md-3" style="text-align: right; font-weight: bold">Escrow</div>
             <div class="col-md-3">Description</div>
@@ -191,7 +368,7 @@
               @end
             </div>
           </div>
-
+          @end
 
           <!--//-->
           <!-- OTHER -->

@@ -1,0 +1,431 @@
+
+
+<html>
+<head>
+  <style type="text/css">
+    .container{
+      display:flex;
+      justify-content: space-between;
+    }
+    .logo{
+      display: flex;
+      max-width: 180px;
+      padding-top: 15px;
+    }
+    h1 {
+      font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+      font-style: normal;
+      font-size: 3em;
+    }
+    h2 {
+      font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+      font-style: normal;
+      font-size: 1.3em;
+      color: #3540fa;
+    }
+    h3 {
+      font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+      font-style: normal;
+      margin-bottom: 0px;
+      line-height: 2px;
+    }
+    h4 {
+      font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+      font-style: normal;
+      font-size: 12px;
+      margin-bottom: 0px;
+      line-height: 2px;
+      text-align: right;
+    }
+    h5 {
+      font-family: Roboto, Arial, sans-serif;
+      font-style: normal;
+      font-size: 12px;
+      text-transform: uppercase;
+      color: #3540fa;
+      margin-bottom: 0px;
+      line-height: 2px;
+    }
+    h6 {
+      font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+      font-style: normal;
+      font-size: 12px;
+      margin-bottom: 0px;
+      line-height: 2px;
+      text-align: left;
+      text-transform: uppercase;
+    }
+    p {
+      font-size: 14px;
+      font-family: Roboto, Arial, sans-serif;
+      font-style: normal;
+    }
+    .label {
+      color: #6d6e70;
+      text-transform: uppercase;
+      font-size: 11px;
+      text-align: right;
+    }
+
+    .title {
+      text-align: left;
+    }
+    td {
+      margin: 5px;
+      padding: 10px;
+      width: 100%;
+      min-width: 100px;
+    }
+    table, td {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .call-out td{
+      background-color: #f5cb27;
+      border: 2px solid white;
+      border-collapse: collapse;
+      padding-top: 25px;
+      width: auto;
+    }
+    .info{
+      display: inline-flex;
+      align-items: baseline;
+    }
+    .data-line{
+      height: 16px;
+    }
+    .top {
+      padding-top: 5px;
+    }
+    .line-item {
+      margin: 0px;
+      line-height: 5px;
+    }
+    .text-container {
+      background-color: #f0f0f1;
+      width: 100%;
+      margin-bottom: 20px;
+      margin-top: -10px
+    }
+
+    .header-container {
+      margin-bottom: 0px;
+      height: auto;
+      width: auto;
+    }
+    .col-label {
+      color: #6d6e70;
+      font-size: 11px;
+      text-align: left !important;
+      font-weight: 400;
+    }
+    .col-label-alt {
+      color: #6d6e70;
+      font-size: 11px;
+      text-align: right !important;
+      font-weight: 400;
+    }
+    .figure {
+      text-align: right;
+      color: #404041;
+      font-size: 12px;
+    }
+    .subtotal {
+      font-family: Roboto, Arial, sans-serif;
+      font-style: normal;
+      font-size: 12px;
+      text-transform: uppercase;
+      color: #231f20;
+      margin-bottom: 0px;
+      line-height: 2px;
+      text-align: right;
+      font-weight: 500;
+    }
+    .details{
+      font-size: 12px;
+      color: #231f20;
+    }
+    .total-exp {
+      font-family: Roboto, Arial, sans-serif;
+      font-style: normal;
+      font-size: 14px;
+      text-transform: uppercase;
+      color: #231f20;
+      margin-bottom: 0px;
+      line-height: 2px;
+      text-align: right;
+      font-weight: 700;
+    }
+    .total-due {
+      font-family: Roboto, Arial, sans-serif;
+      font-style: normal;
+      font-size: 18px;
+      text-transform: uppercase;
+      color: #000;
+      margin-bottom: 0px;
+      line-height: 2px;
+      text-align: right;
+      font-weight: 900;
+      padding-top: 20px;
+    }
+    .thanks-banner {
+      padding-top: 2%;
+    }
+    footer {
+      background-color: #f0f0f1;
+      width: 100%;
+      padding: 5px;
+      margin: 0px;
+      height: 80px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="col-md-6">
+    <img class="logo" src="https://cdn-webmaker1.nyc3.digitaloceanspaces.com/721432e6_50a4_48fd_b33c_ffb86de5fb9f_fb97b51e93.png" />
+    <h5>payable to:</h5>
+    <p><strong>Exchange Traded Concepts</strong><br>
+      10900 Hefner Pointe Dr, Suite 400<br>
+      Oklahoma City, OK 73120
+    </p>
+  </div>
+  <div class="col-md-6">
+    <h1>INVOICE</h1>
+    <h5>Bill to:</h5>
+    <p><strong>{{invoice[0].fund.ticker}}<br>
+      {{invoice[0].fund.fund_name}}<br>
+      {{invoice[0].fund.client.name}}</strong><br>
+      {{invoice[0].fund.client.address}}<br>
+      {{invoice[0].fund.client.city}},  {{invoice[0].fund.client.state}}  {{invoice[0].fund.client.zip}}</p>
+  </div>
+</div>
+<table class="call-out">
+  <tr>
+    <td>
+      <h3>{{invoice[0].fund.ticker}}</h3>
+      <p class="label title">{{invoice[0].fund.fund_name}}</p>
+    </td>
+    <td>
+      <h4>{{parseFloat(invoice[0].avg_daily_assets).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}</h4>
+      <p class="label">AVG. Daily Assets</p>
+    </td>
+    <td>
+      <h4>{{parseFloat(invoice[0].month_end_assets).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}</h4>
+      <p class="label">Month End Assets</p>
+    </td>
+    <td>
+      <h4>{{invoice[0].expense_ratio}}</h4>
+      <p class="label">Expense Ratio</p>
+    </td>
+    <td>
+      <h4>{{parseFloat(invoice[0].income).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}</h4>
+      <p class="label">Income</p>
+    </td>
+  </tr>
+
+</table>
+<div class="container">
+  <div class="col-md-6">
+    <div class="data-line top">
+      <span class="info"><h5>INVOICE DATE</h5>&nbsp;&nbsp;<p>{{invoice[0].invoice_date.toFormat('M/d/y')}}</p></span>
+    </div>
+    <div class="data-line">
+      <span class="info"><h5>INVOICE #</h5>&nbsp;&nbsp;<p>{{invoice[0].invoice_number}}</p></span>
+    </div>
+    <div class="data-line">
+      <span class="info"><h5>INVOICE FOR DATE</h5>&nbsp;&nbsp;<p>{{invoice[0].invoice_for_date.toFormat('M/d/y')}}</p></span>
+    </div>
+    <div>
+      <span class="info"><h5>DAYS IN MONTH</h5>&nbsp;&nbsp;<p>{{invoice[0].days_in_month}}</p></span>
+    </div>
+    <h5>FOR WIRE TRANSFERS</h5>
+    <p>Bank of the Legend<br>
+      123 Bob Stoops Blvd<br>
+      Oklahoma City, OK 73120</p>
+    <div class="data-line">
+      <span class="info"><h5>ACCOUNT NAME</h5>&nbsp;&nbsp;<p>ETC</p></span>
+    </div>
+    <div class="data-line">
+      <span class="info"><h5>ACCOUNT #</h5>&nbsp;&nbsp;<p>000000000</p></span>
+    </div>
+    <div class="data-line">
+      <span class="info"><h5>ABA</h5>&nbsp;&nbsp;<p>TBD</p></span>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="header-container">
+      <table>
+        <thead>
+        <td><p class="col-label">Details</p></td>
+        <td><p class="col-label-alt">Min Payment</p></td>
+        <td><p class="col-label-alt">Calculated Payment</p></td>
+        <td><p class="col-label-alt">TOTAL</p></td>
+        </thead>
+      </table>
+    </div>
+    <div class="text-container">
+      <table>
+        <tr class="line-item">
+          <td>
+            <h6>Asset Based</h6 >
+            <p class="details">test</p>
+            <p class="details">Test 2</p>
+          </td>
+          <td>
+            <h4><br></h4>
+            <p class="figure">$6,000.00</p>
+            <p class="figure">$17,000.00</p>
+          </td>
+          <td>
+            <h4><br></h4>
+            <p class="figure">$9,000.00</p>
+            <p class="figure">$5,000.00</p>
+          </td>
+          <td>
+            <h4><br></h4>
+            <p class="figure">$9,000.00</p>
+            <p class="figure">$17,000.00</p>
+          </td>
+        </tr>
+        <tr>
+          <td></td><td></td>
+          <td><p class="subtotal">subtotal</p></td>
+          <td><p class="subtotal">$26,000.00</p></td>
+        </tr>
+      </table>
+    </div>
+    <div class="text-container">
+      <table>
+        <tr class="line-item">
+          <td>
+            <h6>board expenses</h6 >
+            <p class="details">test 3</p>
+            <p class="details">This is a board expense</p>
+          </td>
+          <td>
+            <h4><br></h4>
+            <p class="figure">$5,000.00</p>
+            <p class="figure">$0.00</p>
+          </td>
+          <td>
+            <h4><br></h4>
+            <p class="figure">$6,000.00</p>
+            <p class="figure">$6,900.00</p>
+          </td>
+          <td>
+            <h4><br></h4>
+            <p class="figure">$6,000.00</p>
+            <p class="figure">$9,000.00</p>
+          </td>
+        </tr>
+        <tr>
+          <td></td><td></td>
+          <td><p class="subtotal">subtotal</p></td>
+          <td><p class="subtotal">$12,900.00</p></td>
+        </tr>
+      </table>
+    </div>
+    <div class="text-container">
+      <table>
+        <tr class="line-item">
+          <td>
+            <h6>escrow</h6 >
+            <p class="details">Line of Escrow</p>
+          </td>
+          <td>
+            <h4><br></h4>
+            <p class="figure">$0.00</p>
+          </td>
+          <td>
+            <h4><br></h4>
+            <p class="figure">$1,000.00</p>
+          </td>
+          <td>
+            <h4><br></h4>
+            <p class="figure">$1,000.00</p>
+          </td>
+        </tr>
+        <tr>
+          <td></td><td></td>
+          <td><p class="subtotal">subtotal</p></td>
+          <td><p class="subtotal">$1,000.00</p></td>
+        </tr>
+      </table>
+    </div>
+    <div class="text-container">
+      <table>
+        <tr class="line-item">
+          <td>
+            <h6>other</h6 >
+            <p class="details">Legend Fee</p>
+            <p class="details">ETC Web Fee</p>
+            <p class="details">Being in my presence Fee</p>
+          </td>
+          <td>
+            <h4><br></h4>
+            <p class="figure">$0.00</p>
+            <p class="figure">$0.00</p>
+            <p class="figure">$0.00</p>
+          </td>
+          <td>
+            <h4><br></h4>
+            <p class="figure">$8,000.00</p>
+            <p class="figure">$1,500.00</p>
+            <p class="figure">$3,000.00</p>
+          </td>
+          <td>
+            <h4><br></h4>
+            <p class="figure">$8,000.00</p>
+            <p class="figure">$1,500.00</p>
+            <p class="figure">$3,000.00</p>
+          </td>
+        </tr>
+        <tr>
+          <td></td><td></td>
+          <td><p class="subtotal">subtotal</p></td>
+          <td><p class="subtotal">$12,500.00</p></td>
+        </tr>
+      </table>
+    </div>
+
+    <table>
+      <tr>
+
+        <td><p class="total-exp">TOTAL EXPENSES</p></td>
+        <td><p class="total-exp">$52,400.00</p></td>
+      </tr>
+      <tr>
+
+        <td><p class="total-due">TOTAL DUE</p></td>
+        <td><p class="total-due">$830,643.83</p></td>
+      </tr>
+    </table>
+    <div class="thanks-banner">
+      <h2>Thank you for your business</h2>
+    </div>
+  </div>
+</div>
+</div>
+<footer>
+  <div class="container">
+    <div class="col-md-6">
+      <h6>Questions?</h6>
+      <div class="data-line">
+        <span class="info"><h5>email</h5>&nbsp;&nbsp;<p>accounting@exchangetradedconcepts.com</p></span>
+      </div>
+      <div class="data-line">
+        <span class="info"><h5>call</h5>&nbsp;&nbsp;<p>1-844-880-ETFS (3837)</p></span>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <h6>Terms & Conditions</h6>
+      <div class="data-line">
+        <span class="info"><h5>due upon receipt</h5></span>
+      </div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
