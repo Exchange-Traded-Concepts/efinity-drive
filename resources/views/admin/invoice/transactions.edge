@@ -87,10 +87,10 @@
   <div class="row">
     <div class="col-md-4">
       <div>
-      <label class="income_input">Month End Assets:</label> <input type="text" name="month_end_assets" class="invoice_input" id="month_end_assets" value="{{invoice[0].month_end_assets}}" onblur="num_format(this)"> <br>
+      <label class="income_input">Month End Assets:</label> <input type="text" name="month_end_assets" class="invoice_input" id="month_end_assets" value="{{parseFloat(invoice[0].month_end_assets).toLocaleString()}}" onblur="num_format(this)"> <br>
       </div>
       <div>
-      <label class="income_input">Average Daily Assets:</label> <input type="text" name="avg_daily_assets"  id="avg_daily_assets" value="{{invoice[0].avg_daily_assets}}" onblur="num_format(this)" class="invoice_input"> <br>
+      <label class="income_input">Average Daily Assets:</label> <input type="text" name="avg_daily_assets"  id="avg_daily_assets" value="{{parseFloat(invoice[0].avg_daily_assets).toLocaleString()}}" onblur="num_format(this)" class="invoice_input"> <br>
       </div>
     <div><label class="income_input">Expense Ratio:</label>
       <input type="text" name="exp_ratio" class="invoice_input"
@@ -101,7 +101,7 @@
              @end
             > <br>
     </div>
-      <div><label class="income_input">Income:</label> <input type="text" name="income" class="invoice_input" id="income" value="{{invoice[0].income}}" onblur="num_format(this)"></div>
+      <div><label class="income_input">Income:</label> <input type="text" name="income" class="invoice_input" id="income" value="{{parseFloat(invoice[0].income).toLocaleString()}}" onblur="num_format(this)"></div>
    </div>
     <div class="col-md-4" >
       <label class="income_input">Bps:</label> <input name="bps"  type="text"  id="bps" value="{{invoice[0].bps}}"  class="invoice_input"><br>
@@ -199,7 +199,9 @@
       <label class='desc_label'>Total:</label>
       <input name='{{`total[${index+1}]`}}' type='text' id='{{`total${index +1}`}}' class='invoice_input'
              onblur='{{`calc_row_total(${index+1})`}}'
-      @if((t.calc_payment* 1) > (t.min_payment*1))
+      @if((t.calc_payment *1) < 0)
+        value="{{parseFloat(t.calc_payment).toLocaleString()}}"
+      @elseif((t.calc_payment* 1) > (t.min_payment*1))
         value="{{t.calc_payment * t.qty}}"
        @else
         value="{{t.min_payment * t.qty}}"

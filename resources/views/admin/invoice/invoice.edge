@@ -100,7 +100,7 @@
                <div class="col-md-3">{{a.description}}</div>
                <div class="col-md-2" style="text-align: right">{{parseFloat(a.min_payment).toLocaleString('en-US', {style: 'currency', currency: 'USD'}) }}</div>
                <div class="col-md-2" style="text-align: right">{{parseFloat(a.calc_payment).toLocaleString('en-US', {style: 'currency', currency: 'USD'}) }}</div>
-               <div class="col-md-2" style="text-align: right">{{parseFloat(a.col_total).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}</div>
+               <div class="col-md-2" style="text-align: right">{{a.col_total}}</div>
             @end
             <div class="row">
               <div class="col-md-10"></div>

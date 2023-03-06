@@ -181,7 +181,7 @@ function calc_row_total(row_id){
   let str = document.getElementById('calc_payment'+row_id).value;
   calc_payment = str.replaceAll(',','');
 
-  if (parseFloat(min_payment)>=parseFloat(calc_payment)){
+  if (parseFloat(min_payment)>=parseFloat(calc_payment) && (parseFloat(calc_payment) >=0 )){
     let cal_amount = parseFloat(eval(qty * min_payment));
     cal_amount = number_format(cal_amount, 2, '.', ',')
     return document.getElementById('total'+row_id).value = cal_amount;
