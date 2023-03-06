@@ -93,9 +93,9 @@ export default class InvoicesController {
       .where('id', params.id )
 
     const asset_based = await Database.rawQuery("SELECT min_payment , calc_payment, type, description, GREATEST(min_payment, calc_payment) as col_total FROM invoice_transactions WHERE ?? = ? AND invoice_id = ?", ['type', 'asset_based', params.id]);
-   // const board_expenses = await Database.rawQuery("SELECT min_payment , calc_payment, type, description, GREATEST(min_payment, calc_payment) as col_total FROM invoice_transactions WHERE type= 'board_expenses' AND invoice_id = ?", [params.id]);
-   // const escrow = await Database.rawQuery("SELECT min_payment , calc_payment, type, description, GREATEST(min_payment, calc_payment) as col_total FROM invoice_transactions WHERE type= 'escrow' AND invoice_id = ?", [params.id]);
-   // const other = await Database.rawQuery("SELECT min_payment , calc_payment, type, description, GREATEST(min_payment, calc_payment) as col_total FROM invoice_transactions WHERE type= 'other' AND invoice_id = ?", [params.id]);
+    const board_expenses = await Database.rawQuery("SELECT min_payment , calc_payment, type, description, GREATEST(min_payment, calc_payment) as col_total FROM invoice_transactions WHERE ?? = ?  AND invoice_id = ?", ['type', 'board_expenses',params.id]);
+    const escrow = await Database.rawQuery("SELECT min_payment , calc_payment, type, description, GREATEST(min_payment, calc_payment) as col_total FROM invoice_transactions WHERE ?? = ? AND invoice_id = ?", ['type', 'escrow', params.id]);
+    const other = await Database.rawQuery("SELECT min_payment , calc_payment, type, description, GREATEST(min_payment, calc_payment) as col_total FROM invoice_transactions WHERE ?? = ? AND invoice_id = ?", ['type', 'other', params.id]);
 
     const sum_type = await Database.rawQuery('SELECT type, SUM(GREATEST(min_payment, calc_payment)) as sum_type FROM invoice_transactions   WHERE invoice_id = ? GROUP BY type', [params.id])
     console.log(sum_type[0])
