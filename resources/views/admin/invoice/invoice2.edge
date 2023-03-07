@@ -71,7 +71,7 @@
       text-align: left;
     }
     td {
-      margin: 5px;
+      margin: 0px 5px;
       padding: 10px;
       width: 100%;
       min-width: 100px;
@@ -82,7 +82,7 @@
     }
     .call-out td{
       background-color: #f5cb27;
-      border: 2px solid white;
+      border-left: 2px solid white;
       border-collapse: collapse;
       padding-top: 25px;
       width: auto;
@@ -99,7 +99,7 @@
     }
     .line-item {
       margin: 0px;
-      line-height: 5px;
+      line-height: 0px;
     }
     .text-container {
       background-color: #f0f0f1;
@@ -178,6 +178,15 @@
       margin: 0px;
       height: 80px;
     }
+    .top td {
+      height: 100%;
+    }
+    .bottom td {
+      margin-top: 0px;
+      padding-top: 0px;
+
+      height: 100%;
+    }
   </style>
 </head>
 <body>
@@ -193,51 +202,43 @@
   <div class="col-md-6">
     <h1>INVOICE</h1>
     <h5>Bill to:</h5>
-    <p><strong>{{invoice[0].fund.ticker}}<br>
+    <p><strong> {{invoice[0].fund.ticker}}<br>
       {{invoice[0].fund.fund_name}}<br>
       {{invoice[0].fund.client.name}}</strong><br>
-      {{invoice[0].fund.client.address}}<br>
+      {{invoice[0].fund.client.address}}.<br>
       {{invoice[0].fund.client.city}},  {{invoice[0].fund.client.state}}  {{invoice[0].fund.client.zip}}</p>
   </div>
 </div>
 <table class="call-out">
-  <tr>
-    <td>
-      <h3>{{invoice[0].fund.ticker}}</h3>
-      <p class="label title">{{invoice[0].fund.fund_name}}</p>
-    </td>
-    <td>
-      <h4>{{parseFloat(invoice[0].avg_daily_assets).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}</h4>
-      <p class="label">AVG. Daily Assets</p>
-    </td>
-    <td>
-      <h4>{{parseFloat(invoice[0].month_end_assets).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}</h4>
-      <p class="label">Month End Assets</p>
-    </td>
-    <td>
-      <h4>{{invoice[0].expense_ratio}}</h4>
-      <p class="label">Expense Ratio</p>
-    </td>
-    <td>
-      <h4>{{parseFloat(invoice[0].income).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}</h4>
-      <p class="label">Income</p>
-    </td>
+  <tr class="top">
+    <td><h3>{{invoice[0].fund.ticker}}</h3></td>
+    <td><h4>{{parseFloat(invoice[0].avg_daily_assets).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}</h4></td>
+    <td><h4>{{parseFloat(invoice[0].month_end_assets).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}</h4></td>
+    <td><h4>{{invoice[0].expense_ratio}}</h4></td>
+    <td><h4>{{parseFloat(invoice[0].income).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}</h4></td>
+  </tr>
+  <tr class="bottom">
+    <td><p class="label title">{{invoice[0].fund.fund_name}}</p></td>
+    <td><p class="label">AVG. Daily Assets</p></td>
+    <td><p class="label">Month End Assets</p></td>
+    <td><p class="label">Expense Ratio</p></td>
+    <td><p class="label">Income</p></td>
   </tr>
 
 </table>
 <div class="container">
   <div class="col-md-6">
     <div class="data-line top">
-      <span class="info"><h5>INVOICE DATE</h5>&nbsp;&nbsp;<p>{{invoice[0].invoice_date.toFormat('M/d/y')}}</p></span>
+      <span class="info"><h5>INVOICE DATE</h5>&nbsp;&nbsp;<p>2/28/23</p></span>
     </div>
     <div class="data-line">
-      <span class="info"><h5>INVOICE #</h5>&nbsp;&nbsp;<p>{{invoice[0].invoice_number}}</p></span>
+      <span class="info"><h5>INVOICE #</h5>&nbsp;&nbsp;<p>ARMR23</p></span>
     </div>
     <div class="data-line">
-      <span class="info"><h5>INVOICE FOR DATE</h5>&nbsp;&nbsp;<p>{{invoice[0].invoice_for_date.toFormat('M/d/y')}}</p></span>
+      <span class="info"><h5>INVOICE FOR DATE</h5>&nbsp;&nbsp;<p>2/28/23</p></span>
     </div>
     <div>
-      <span class="info"><h5>DAYS IN MONTH</h5>&nbsp;&nbsp;<p>{{invoice[0].days_in_month}}</p></span>
+      <span class="info"><h5>DAYS IN MONTH</h5>&nbsp;&nbsp;<p>14</p></span>
     </div>
     <h5>FOR WIRE TRANSFERS</h5>
     <p>Bank of the Legend<br>
@@ -257,156 +258,147 @@
   <div class="col-md-6">
     <div class="header-container">
       <table>
-        <thead>
-        <td><p class="col-label">Details</p></td>
-        <td><p class="col-label-alt">Min Payment</p></td>
-        <td><p class="col-label-alt">Calculated Payment</p></td>
-        <td><p class="col-label-alt">TOTAL</p></td>
-        </thead>
-      </table>
-    </div>
-    <div class="text-container">
-      <table>
-        <tr class="line-item">
-          <td>
-            <h6>Asset Based</h6 >
-            <p class="details">test</p>
-            <p class="details">Test 2</p>
-          </td>
-          <td>
-            <h4><br></h4>
-            <p class="figure">$6,000.00</p>
-            <p class="figure">$17,000.00</p>
-          </td>
-          <td>
-            <h4><br></h4>
-            <p class="figure">$9,000.00</p>
-            <p class="figure">$5,000.00</p>
-          </td>
-          <td>
-            <h4><br></h4>
-            <p class="figure">$9,000.00</p>
-            <p class="figure">$17,000.00</p>
-          </td>
-        </tr>
         <tr>
-          <td></td><td></td>
-          <td><p class="subtotal">subtotal</p></td>
-          <td><p class="subtotal">$26,000.00</p></td>
+          <td><p class="col-label">Details</p></td>
+          <td><p class="col-label-alt">Min Payment</p></td>
+          <td><p class="col-label-alt">Calculated Payment</p></td>
+          <td><p class="col-label-alt">TOTAL</p></td>
         </tr>
       </table>
     </div>
+    @if(asset_based[0] != null)
     <div class="text-container">
-      <table>
-        <tr class="line-item">
-          <td>
-            <h6>board expenses</h6 >
-            <p class="details">test 3</p>
-            <p class="details">This is a board expense</p>
-          </td>
-          <td>
-            <h4><br></h4>
-            <p class="figure">$5,000.00</p>
-            <p class="figure">$0.00</p>
-          </td>
-          <td>
-            <h4><br></h4>
-            <p class="figure">$6,000.00</p>
-            <p class="figure">$6,900.00</p>
-          </td>
-          <td>
-            <h4><br></h4>
-            <p class="figure">$6,000.00</p>
-            <p class="figure">$9,000.00</p>
-          </td>
-        </tr>
-        <tr>
-          <td></td><td></td>
-          <td><p class="subtotal">subtotal</p></td>
-          <td><p class="subtotal">$12,900.00</p></td>
-        </tr>
-      </table>
-    </div>
-    <div class="text-container">
-      <table>
-        <tr class="line-item">
-          <td>
-            <h6>escrow</h6 >
-            <p class="details">Line of Escrow</p>
-          </td>
-          <td>
-            <h4><br></h4>
-            <p class="figure">$0.00</p>
-          </td>
-          <td>
-            <h4><br></h4>
-            <p class="figure">$1,000.00</p>
-          </td>
-          <td>
-            <h4><br></h4>
-            <p class="figure">$1,000.00</p>
-          </td>
-        </tr>
-        <tr>
-          <td></td><td></td>
-          <td><p class="subtotal">subtotal</p></td>
-          <td><p class="subtotal">$1,000.00</p></td>
-        </tr>
-      </table>
-    </div>
-    <div class="text-container">
-      <table>
-        <tr class="line-item">
-          <td>
-            <h6>other</h6 >
-            <p class="details">Legend Fee</p>
-            <p class="details">ETC Web Fee</p>
-            <p class="details">Being in my presence Fee</p>
-          </td>
-          <td>
-            <h4><br></h4>
-            <p class="figure">$0.00</p>
-            <p class="figure">$0.00</p>
-            <p class="figure">$0.00</p>
-          </td>
-          <td>
-            <h4><br></h4>
-            <p class="figure">$8,000.00</p>
-            <p class="figure">$1,500.00</p>
-            <p class="figure">$3,000.00</p>
-          </td>
-          <td>
-            <h4><br></h4>
-            <p class="figure">$8,000.00</p>
-            <p class="figure">$1,500.00</p>
-            <p class="figure">$3,000.00</p>
-          </td>
-        </tr>
-        <tr>
-          <td></td><td></td>
-          <td><p class="subtotal">subtotal</p></td>
-          <td><p class="subtotal">$12,500.00</p></td>
-        </tr>
-      </table>
-    </div>
 
+      <table>
+        <tr class="line-item">
+          <td><h6>Asset Based</h6></td>
+        </tr>
+        @each(a in asset_based[0])
+        <tr class="line-item">
+          <td><p class="details">{{a.description}}</p></td>
+          <td><p class="figure">{{parseFloat(a.min_payment).toLocaleString('en-US', {style: 'currency', currency: 'USD'}) }}</p></td>
+          <td><p class="figure">{{parseFloat(a.calc_payment).toLocaleString('en-US', {style: 'currency', currency: 'USD'}) }}</p></td>
+          <td><p class="figure">{{parseFloat(a.col_total).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}</p></td>
+        </tr>
+        @end
+
+        <tr class="line-item">
+          <td></td><td></td>
+          <td><p class="subtotal">subtotal</p></td>
+          <td><p class="subtotal">
+            @each(st in sum_type[0])
+              @if(st.type == 'asset_based')
+                {{parseFloat(st.sum_type).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}
+              @end
+            @end
+          </p>
+          </td>
+        </tr>
+      </table>
+    </div>
+    @end
+    @if(board_expenses[0] != null)
+    <div class="text-container">
+      <table>
+        <tr class="line-item">
+          <td><h6>board expenses</h6></td>
+        </tr>
+        @each(b in board_expenses[0])
+        <tr class="line-item">
+          <td><p class="details">{{b.description}}</p></td>
+          <td><p class="figure">{{parseFloat(b.min_payment).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}</p></td>
+          <td><p class="figure">{{parseFloat(b.calc_payment).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}</p></td>
+          <td><p class="figure">{{parseFloat(b.col_total).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}</p></td>
+        </tr>
+        @end
+        <tr class="line-item">
+          <td></td><td></td>
+          <td><p class="subtotal">subtotal</p></td>
+          <td><p class="subtotal">
+            @each(st in sum_type[0])
+              @if(st.type == 'board_expenses')
+                {{parseFloat(st.sum_type).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}
+              @end
+            @end
+
+          </p></td>
+        </tr>
+
+      </table>
+    </div>
+    @end
+    @if(escrow[0] != null)
+    <div class="text-container">
+      <table>
+        <tr class="line-item">
+          <td><h6>escrow</h6></td>
+        </tr>
+        @each(e in escrow[0])
+        <tr class="line-item">
+          <td><p class="details">{{e.description}}</p></td>
+          <td><p class="figure">{{parseFloat(e.min_payment).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}</p></td>
+          <td><p class="figure">{{parseFloat(e.calc_payment).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}</p></td>
+          <td><p class="figure">{{parseFloat(e.col_total).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}</p></td>
+        </tr>
+        @end
+        <tr class="line-item">
+          <td></td><td></td>
+          <td><p class="subtotal">subtotal</p></td>
+          <td><p class="subtotal">
+            @each(st in sum_type[0])
+              @if(st.type == 'escrow')
+               {{parseFloat(st.sum_type).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}
+              @end
+            @end
+
+          </p></td>
+        </tr>
+      </table>
+    </div>
+    @end
+    @if(other[0] != null)
+    <div class="text-container">
+      <table>
+        <tr class="line-item">
+          <td><h6>other</h6></td>
+        </tr>
+        @each(o in other[0])
+        <tr class="line-item">
+          <td><p class="details">{{o.description}}</p></td>
+          <td><p class="figure">{{parseFloat(o.min_payment).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}</p></td>
+          <td><p class="figure">{{parseFloat(o.calc_payment).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}</p></td>
+          <td><p class="figure">{{parseFloat(o.col_total).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}</p></td>
+        </tr>
+        @end
+
+        <tr class="line-item">
+          <td></td><td></td>
+          <td><p class="subtotal">subtotal</p></td>
+          <td><p class="subtotal">
+            @each(st in sum_type[0])
+              @if(st.type == 'other')
+                {{parseFloat(st.sum_type).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}
+              @end
+            @end
+          </p></td>
+        </tr>
+      </table>
+    </div>
+    @end
     <table>
       <tr>
-
         <td><p class="total-exp">TOTAL EXPENSES</p></td>
-        <td><p class="total-exp">$52,400.00</p></td>
+        <td><p class="total-exp">  {{parseFloat(total_expenses[0][0].total).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}}</p></td>
       </tr>
       <tr>
-
         <td><p class="total-due">TOTAL DUE</p></td>
-        <td><p class="total-due">$830,643.83</p></td>
+        <td><p class="total-due"> {{ parseFloat(invoice[0].income - total_expenses[0][0].total).toLocaleString('en-US', {style: 'currency', currency: 'USD'}) }}</p></td>
       </tr>
     </table>
     <div class="thanks-banner">
       <h2>Thank you for your business</h2>
     </div>
   </div>
-</div>
 </div>
 <footer>
   <div class="container">
