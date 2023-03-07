@@ -104,24 +104,6 @@ export default class InvoicesController {
     return view.render('admin/invoice/invoice', { invoice, invoice_id: params.id, transactions, total_expenses, asset_based, board_expenses, escrow, other, sum_type})
   }
 
-  public async showInvoice2({params, view}: HttpContextContract){
-    const invoice = await Invoice.query()
-      .preload('fund', (q)=>q.preload('client'))
-      .where('id', params.id )
-
-    const asset_based = await Database.rawQuery("SELECT min_payment , calc_payment, type, description, CASE WHEN calc_payment < 0 THEN calc_payment ELSE GREATEST(min_payment, calc_payment) END AS col_total   FROM invoice_transactions WHERE ?? = ? AND invoice_id = ?", ['type', 'asset_based', params.id]);
-    const board_expenses = await Database.rawQuery("SELECT min_payment , calc_payment, type, description, CASE WHEN calc_payment < 0 THEN calc_payment ELSE GREATEST(min_payment, calc_payment) END AS col_total FROM invoice_transactions WHERE ?? = ?  AND invoice_id = ?", ['type', 'board_expenses',params.id]);
-    const escrow = await Database.rawQuery("SELECT min_payment , calc_payment, type, description, CASE WHEN calc_payment < 0 THEN calc_payment ELSE GREATEST(min_payment, calc_payment) END AS col_total FROM invoice_transactions WHERE ?? = ? AND invoice_id = ?", ['type', 'escrow', params.id]);
-    const other = await Database.rawQuery("SELECT min_payment , calc_payment, type, description, CASE WHEN calc_payment < 0 THEN calc_payment ELSE GREATEST(min_payment, calc_payment) END AS col_total FROM invoice_transactions WHERE ?? = ? AND invoice_id = ?", ['type', 'other', params.id]);
-
-    const sum_type = await Database.rawQuery('SELECT  type, SUM(CASE WHEN calc_payment < 0 THEN calc_payment ELSE GREATEST(min_payment, calc_payment) END) AS sum_type FROM invoice_transactions WHERE invoice_id = ? GROUP BY type ', [params.id])
-    const transactions = await InvoiceTransaction.query().where('invoice_id', params.id).orderBy('type')
-    const total_expenses = await Database.rawQuery('SELECT SUM(CASE WHEN calc_payment < 0 THEN calc_payment ELSE GREATEST(min_payment, calc_payment) END) AS total from invoice_transactions WHERE invoice_id =?', [params.id])
-
-    return view.render('admin/invoice/invoice2', { invoice, invoice_id: params.id, transactions, total_expenses, asset_based, board_expenses, escrow, other, sum_type})
-
-
-  }
 
   public async generate({ request, response, view}: HttpContextContract) {
     if (!request.hasValidSignature()) {
