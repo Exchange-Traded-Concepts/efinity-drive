@@ -266,7 +266,7 @@
         </tr>
       </table>
     </div>
-    @if(asset_based[0] != null)
+    @if(asset_based[0].length > 0)
     <div class="text-container">
 
       <table>
@@ -297,7 +297,7 @@
       </table>
     </div>
     @end
-    @if(board_expenses[0] != null)
+    @if(board_expenses[0].length > 0)
     <div class="text-container">
       <table>
         <tr class="line-item">
@@ -327,7 +327,8 @@
       </table>
     </div>
     @end
-    @if(escrow[0] != null)
+
+   @if(escrow[0].length > 0)
     <div class="text-container">
       <table>
         <tr class="line-item">
@@ -356,7 +357,7 @@
       </table>
     </div>
     @end
-    @if(other[0] != null)
+    @if(other[0].length > 0)
     <div class="text-container">
       <table>
         <tr class="line-item">
