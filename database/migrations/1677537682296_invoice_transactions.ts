@@ -13,7 +13,6 @@ export default class InvoiceTransactions extends BaseSchema {
         .onDelete('CASCADE') // delete profile when user is deleted
       table.string('type')
       table.text('description')
-      table.integer('qty')
       table.decimal('min_payment', 14,2)
       table.decimal('calc_payment', 14,2)
       /**

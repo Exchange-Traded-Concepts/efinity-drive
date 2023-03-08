@@ -18,9 +18,6 @@ export default class InvoiceTransaction extends BaseModel {
   public description: string
 
   @column()
-  public qty: number
-
-  @column()
   public min_payment: number
 
   @column()

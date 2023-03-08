@@ -175,13 +175,10 @@ export default class InvoicesController {
 
   public async update({request, session, response}: HttpContextContract) {
 
-    console.log('HERE')
-
     const desc_array = request.input('description')
     const min_payment_array = request.input('min_payment')
     const calc_payment_array = request.input('calc_payment')
     const type_array = request.input('type')
-    const qty_array = request.input('qty')
     const invoice_id = request.input('invoice_id')
 
     let month_end_assets = request.input('month_end_assets').toString().replace(/[^\d.-]/g, '')
@@ -197,7 +194,6 @@ export default class InvoicesController {
           invoiceId: invoice_id,
           type: type_array[i],
           description: desc_array[i],
-          qty: qty_array[i].replace(/[^\d.-]/g, ''),
           min_payment: min_payment_array[i].replace(/[^\d.-]/g, ''),
           calc_payment: calc_payment_array[i].replace(/[^\d.-]/g, '')
 
@@ -224,7 +220,7 @@ export default class InvoicesController {
       await inv.save()
       session.flash('notification', 'Client Updated')
       return response.redirect('back', )
-    //  console.log(desc_array[i] +" "+ min_payment_array[i] +"  "+calc_payment_array[i]+" "+qty_array[i] +" "+type_array[i] + " "+ invoice_id+"<br>")
+
 
     }
 
