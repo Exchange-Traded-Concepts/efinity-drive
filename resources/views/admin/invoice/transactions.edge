@@ -30,12 +30,12 @@
 }
 .type_label{
   font-weight: bold;
- }
+}
 
 .exp_input{
   font-weight: bold;
   width: 90px;
- /*margin-left: 40px*/;
+  /*margin-left: 40px*/;
 
 }
 .desc_label{
@@ -59,181 +59,221 @@
     <div>Invoice Date {{invoice[0].invoice_date.toFormat('M/d/y') ||''}}</div>
   </div>
   <div class="card-body">
-<form
-  @if(edit)
-  action=" {{ `/invoice/${invoice[0].id}?_method=PATCH`}}"
-  @else
-  action="/invoice_transactions"
-  @end
-  method="POST"
-  enctype="multipart/form-data"
->
-  {{ csrfField() }}
-  <input type="hidden" name="invoice_id" value="{{invoice[0].id}}">
-<div class="row">
-  <div class="col-md-6">
-    Fund: {{invoice[0].fund.ticker}} <br>{{invoice[0].fund.fund_name}}
-  </div>
+    <form
+      @if(edit)
+      action=" {{ `/invoice/${invoice[0].id}?_method=PATCH`}}"
+      @else
+      action="/invoice_transactions"
+      @end
+      method="POST"
+      enctype="multipart/form-data"
+    >
+      {{ csrfField() }}
+      <input type="hidden" name="invoice_id" value="{{invoice[0].id}}">
+      <div class="row">
+        <div class="col-md-6">
+          Fund: {{invoice[0].fund.ticker}} <br>{{invoice[0].fund.fund_name}}
+        </div>
 
-  <div class="col-md-6">
-    Invoice Date: {{invoice[0].invoice_date.toFormat('M/d/y') ||''}}<br>
-    Invoice For Date: {{invoice[0].invoice_for_date.toFormat('M/d/y') ||''}} <input type="hidden" name="invoice_for_date" id ="invoice_for_date" value="{{invoice[0].invoice_for_date}}"> <br>
-    Invoice #: {{invoice[0].invoice_number}}<br>
-    Days In Month: {{invoice[0].days_in_month}}<br>
+        <div class="col-md-6">
+          Invoice Date: {{invoice[0].invoice_date.toFormat('M/d/y') ||''}}<br>
+          Invoice For Date: {{invoice[0].invoice_for_date.toFormat('M/d/y') ||''}} <input type="hidden" name="invoice_for_date" id ="invoice_for_date" value="{{invoice[0].invoice_for_date}}"> <br>
+          Invoice #: {{invoice[0].invoice_number}}<br>
+          Days In Month: {{invoice[0].days_in_month}}<br>
 
-  </div>
-</div>
-  <hr>
-  <div class="row">
-    <div class="col-md-4">
-      <div>
-      <label class="income_input">Month End Assets:</label> <input type="text" name="month_end_assets" class="invoice_input" id="month_end_assets" value="{{parseFloat(invoice[0].month_end_assets).toLocaleString()}}" onblur="num_format(this)"> <br>
+        </div>
       </div>
-      <div>
-      <label class="income_input">Average Daily Assets:</label> <input type="text" name="avg_daily_assets"  id="avg_daily_assets" value="{{parseFloat(invoice[0].avg_daily_assets).toLocaleString()}}" onblur="num_format(this)" class="invoice_input"> <br>
-      </div>
-    <div><label class="income_input">Expense Ratio:</label>
-      <input type="text" name="exp_ratio" class="invoice_input"
-             @if(edit== 1)
-             value="{{invoice[0].expense_ratio}}"
-             @else
-             value="{{invoice[0].fund.exp_ratio}}"
-             @end
+      <hr>
+      <div class="row">
+        <div class="col-md-4">
+          <div>
+            <label class="income_input">Month End Assets:</label>
+              <input
+                type="text"
+                name="month_end_assets"
+                class="invoice_input"
+                id="month_end_assets"
+                @if(invoice[0].month_end_assets != null )
+                  value="{{parseFloat(invoice[0].month_end_assets).toLocaleString('en-US' , {minimumFractionDigits: 2, maximumFractionDigits: 2}) }}"
+                @else
+                  value=" "
+                @end
+                onblur="num_format(this)"> <br>
+          </div>
+          <div>
+            <label class="income_input">Average Daily Assets:</label>
+              <input
+                type="text"
+                name="avg_daily_assets"
+                id="avg_daily_assets"
+                @if(invoice[0].avg_daily_assets != null)
+                  value="{{parseFloat(invoice[0].avg_daily_assets).toLocaleString('en-US' , {minimumFractionDigits: 2, maximumFractionDigits: 2})}}"
+                @else
+                  value=""
+                @end
+                onblur="num_format(this)"
+                class="invoice_input"> <br>
+          </div>
+          <div><label class="income_input">Expense Ratio:</label>
+            <input type="text" name="exp_ratio" class="invoice_input"
+                   @if(edit== 1)
+                   value="{{invoice[0].expense_ratio}}"
+                   @else
+                   value="{{invoice[0].fund.exp_ratio}}"
+                   @end
             > <br>
-    </div>
-      <div><label class="income_input">Income:</label> <input type="text" name="income" class="invoice_input" id="income" value="{{parseFloat(invoice[0].income).toLocaleString()}}" onblur="num_format(this)"></div>
-   </div>
-    <div class="col-md-4" >
-      <label class="income_input">Bps:</label> <input name="bps"  type="text"  id="bps" value="{{invoice[0].bps}}"  class="invoice_input"><br>
-      <!-- <label class="income_input">Vendor Bps:</label> <input name="vendor_bps"  type="number"  id="vendor_bps" value=".001" size="5" onblur="vendor_fee()" class="invoice_input"><br> -->
-      <label class="income_input">Days in Year:</label> <input name="days_in_yr" type="number"  id="days_in_yr" value="" size="3" class="invoice_input"><br>
-      <label class="income_input">Days In Month:</label> <input name="days_in_month"  type="number"  id="days_in_month" value="{{invoice[0].days_in_month}}"  class="invoice_input"><br>
+          </div>
+          <div><label class="income_input">Income:</label>
+            <input
+              type="text"
+              name="income"
+              class="invoice_input"
+              id="income"
+              @if(invoice[0].income != null)
+                value="{{parseFloat(invoice[0].income).toLocaleString('en-US' , {minimumFractionDigits: 2, maximumFractionDigits: 2})}}"
+              @else
+                value=""
+              @end
+              onblur="num_format(this)">
+          </div>
+        </div>
+        <div class="col-md-4" >
+          <label class="income_input">Bps:</label>
+            <input
+              name="bps"
+              type="text"
+              id="bps"
+              value="{{invoice[0].bps || ''}}"
+              class="invoice_input">
+          <br>
+          <!-- <label class="income_input">Vendor Bps:</label> <input name="vendor_bps"  type="number"  id="vendor_bps" value=".001" size="5" onblur="vendor_fee()" class="invoice_input"><br> -->
+          <label class="income_input">Days in Year:</label> <input name="days_in_yr" type="number"  id="days_in_yr" value="" size="3" class="invoice_input"><br>
+          <label class="income_input">Days In Month:</label> <input name="days_in_month"  type="number"  id="days_in_month" value="{{invoice[0].days_in_month ||''}}"  class="invoice_input"><br>
 
 
-    </div>
+        </div>
 
-    <div class="col-md-4" >
-    <!--
-      <label class="income_input">ETC Fee Total:</label> <input name="bps_total" id="bps_total"  type="number" value="" onblur="etc_fee()" class="invoice_input"><br>
-      <label class="income_input">Vendor Fee Total:</label> <input name="vendor_total" id="vendor_total"  type="number" value="" onblur="vendor_fee()" class="invoice_input">
-      <label class="income_input"></label><button type="button" class="btn btn-primary" style="text-align: right" onclick="add_vendor_fees()" value="Add Fees to Invoice">Add Fees to Invoice</button>
-      -->
-    </div>
+        <div class="col-md-4" >
+          <label>Notes</label><br>
+          <textarea name="notes" cols="26" rows="5" class="invoice_input"
+            style="-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; width: 100%; text-align: left !important;"
+          >{{invoice[0].notes || ''}}</textarea>
+          <!--
+            <label class="income_input">ETC Fee Total:</label> <input name="bps_total" id="bps_total"  type="number" value="" onblur="etc_fee()" class="invoice_input"><br>
+            <label class="income_input">Vendor Fee Total:</label> <input name="vendor_total" id="vendor_total"  type="number" value="" onblur="vendor_fee()" class="invoice_input">
+            <label class="income_input"></label><button type="button" class="btn btn-primary" style="text-align: right" onclick="add_vendor_fees()" value="Add Fees to Invoice">Add Fees to Invoice</button>
+            -->
+        </div>
 
 
-  </div>
-<hr>
-  <table id="invoice_transactions">
-    <thead></thead>
-    <tbody>
-    @if(transactions =='')
-    <tr>
-    <td>
-   <label class='type_label'>Type:</label>
-    <select name='type[1]' class='invoice_input'>
-      <option value='asset_based' selected>Asset Based</option>
-      <option value='board_expenses'>Board Expenses</option>
-      <option value='other'>Other</option>
-      <option value='escrow'>Escrow</option>
-      </select>
-    </td>
-    <td>
-      <label class='desc_label'>Description: </label>
-      <input class='desc_input' name='description[1]' type='text' value=''>
-    </td>
-    <td>
-      <label class='desc_label'>Qty:</label><input name='qty[1]' id='qty1' type='text' class='invoice_input' size='3' value='1'>
-    </td>
-    <td>
-      <label class='desc_label'>Min Pmnt.:</label><input name='min_payment[1]' id='min_payment1' type='text' class='invoice_input' size='10' onblur='num_format(this)'>
-    </td>
-    <td>
-      <label class='desc_label'>Calculated Pmnt.:</label><input name='calc_payment[1]' id='calc_payment1' type='text' class='invoice_input' size='10' value='' onblur='num_format(this)'>
-    </td>
-    <td>
-      <label class='desc_label'>Total:</label><input name='total[1]' type='text' id='total1' class='invoice_input' onblur='calc_row_total(1)'>
-    </td>
-    </tr>
-    @else
-      @each((t, index) in transactions)
-    <tr>
-        <td>
-          <label class='type_label'>Type:</label>
-          <select name='{{`type[${index +1}]`}}' class='invoice_input'>
-            <option value='asset_based'
-                    @if(t.type == 'asset_based')
-                    selected
-                    @end
+      </div>
+      <hr>
+      <table id="invoice_transactions">
+        <thead></thead>
+        <tbody>
+        @if(transactions =='')
+        <tr>
+          <td>
+            <label class='type_label'>Type:</label>
+            <select name='type[1]' class='invoice_input'>
+              <option value='asset_based' selected>Asset Based</option>
+              <option value='board_expenses'>Board Expenses</option>
+              <option value='other'>Other</option>
+              <option value='escrow'>Escrow</option>
+            </select>
+          </td>
+          <td>
+            <label class='desc_label'>Description: </label>
+            <input class='desc_input' name='description[]' type='text' value=''>
+          </td>
+          <td>
+            <label class='desc_label'>Min Pmnt.:</label><input name='min_payment[]' id='min_payment' type='text' class='invoice_input' size='10' onblur='num_format(this)'>
+          </td>
+          <td>
+            <label class='desc_label'>Calculated Pmnt.:</label><input name='calc_payment[]' id='calc_payment' type='text' class='invoice_input' size='10' value='' onblur='num_format(this)'>
+          </td>
+          <td>
+            <label class='desc_label'>Total:</label><input name='total[]' type='text' id='total' class='invoice_input'  onblur='calculateRowTotal(this)'>
+          </td>
+        </tr>
+        @else
+        @each((t, index) in transactions)
+        <tr>
+          <td>
+            <label class='type_label'>Type:</label>
+            <select name='{{`type[${index +1}]`}}' class='invoice_input'>
+              <option value='asset_based'
+                      @if(t.type == 'asset_based')
+              selected
+              @end
               >Asset Based</option>
-            <option value='board_expenses'
-                @if(t.type == 'board_expenses')
-                  selected
-                @end
-            >Board Expenses</option>
-            <option value='other'
-                @if(t.type == 'other')
-                  selected
-                @end
-            >Other</option>
-            <option value='escrow'
-                @if(t.type == 'escrow')
-                  selected
-                @end
-            >Escrow</option>
-          </select>
-        </td>
-    <td>
-      <label class='desc_label'>Description: </label>
-      <input class='desc_input' name='{{`description[${index+1}]`}}' type='text' value='{{t.description}}' >
-    </td>
-    <td>
-      <label class='desc_label'>Qty:</label><input name='{{`qty[${index+1}]`}}' id='{{`qty${index+1}`}}' type='text' class='invoice_input' size='3' value='{{t.qty}}'>
-    </td>
-    <td>
-      <label class='desc_label'>Min Pmnt.:</label><input name='{{`min_payment[${index+1}]`}}' id='{{`min_payment${index+1}`}}' type='text' class='invoice_input' size='10' value="{{t.min_payment}}" onblur='num_format(this)'>
-    </td>
-    <td>
-      <label class='desc_label'>Calculated Pmnt.:</label><input name='{{`calc_payment[${index +1}]`}}' id='{{`calc_payment${index+1}`}}' type='text' class='invoice_input' size='10' value='{{t.calc_payment}}' onblur='num_format(this)'>
-    </td>
-    <td>
-      <label class='desc_label'>Total:</label>
-      <input name='{{`total[${index+1}]`}}' type='text' id='{{`total${index +1}`}}' class='invoice_input'
-             onblur='{{`calc_row_total(${index+1})`}}'
-      @if((t.calc_payment *1) < 0)
-        value="{{parseFloat(t.calc_payment).toLocaleString()}}"
-      @elseif((t.calc_payment* 1) > (t.min_payment*1))
-        value="{{t.calc_payment * t.qty}}"
-       @else
-        value="{{t.min_payment * t.qty}}"
-       @end
-      >
+              <option value='board_expenses'
+                      @if(t.type == 'board_expenses')
+              selected
+              @end
+              >Board Expenses</option>
+              <option value='other'
+                      @if(t.type == 'other')
+              selected
+              @end
+              >Other</option>
+              <option value='escrow'
+                      @if(t.type == 'escrow')
+              selected
+              @end
+              >Escrow</option>
+            </select>
+          </td>
+          <td>
+            <label class='desc_label'>Description: </label>
+            <input class='desc_input' name='description[]' type='text' value='{{t.description}}' >
+          </td>
+          <td>
+            <label class='desc_label'>Min Pmnt.:</label><input name="min_payment[]" type='text' class='invoice_input' size='10' value="{{t.min_payment}}" onblur='num_format(this)'>
+          </td>
+          <td>
+            <label class='desc_label'>Calculated Pmnt.:</label><input name="calc_payment[]"  type='text' class='invoice_input' size='10' value='{{t.calc_payment}}' onblur='num_format(this)'>
+          </td>
+          <td>
+            <label class='desc_label'>Total:</label>
+            <input name="total[]" type='text' class='invoice_input'
 
-    </td>
-    </tr>
-    @end
-    @end
-    </tbody>
-    <tfoot>
-    <tr>
-      <td></td>
-      <td colspan="4"></td>
-      <td><label class="desc_label">Total:</label><input class="invoice_input" name="sheet_total" type="text" id="sheet_total" onblur="calc_sheet()"></td>
-    </tr>
-      <tr>
-        <td><a href="#" onclick="addFields()" style="text-decoration: none"><i class="fas fa-plus"></i></a></td>
-        <td colspan="4"></td>
-        <td align="right"><button type="submit" class="btn btn-primary" style="text-align: right">Submit</button></td>
-      </tr>
-    </tfoot>
+                   onblur='calculateRowTotal(this)'
+                   @if((t.calc_payment *1) < 0)
+            value="{{parseFloat(t.calc_payment).toLocaleString()}}"
+            @elseif((t.calc_payment* 1) > (t.min_payment*1))
+            value="{{t.calc_payment}}"
+            @else
+            value="{{t.min_payment}}"
+            @end
+            >
 
-  </table>
+          </td>
+        </tr>
+        @end
+        @end
+        </tbody>
+        <tfoot>
+        <tr>
+          <td></td>
+          <td colspan="3"></td>
+          <td><label class="desc_label">Total:</label><span id="total"></span></td>
+        </tr>
+        <tr>
+          <td><a href="#" onclick="addFields()" style="text-decoration: none"><i class="fas fa-plus"></i></a></td>
+          <td colspan="4"></td>
+          <td align="right"><button type="submit" class="btn btn-primary" style="text-align: right">Submit</button></td>
+        </tr>
+        </tfoot>
+
+      </table>
 
 
-<div style="clear: both"><p><br></p></div>
+      <div style="clear: both"><p><br></p></div>
 
 
-</form>
-</div>
+    </form>
+  </div>
 </div>
 </div>
 <script defer>days_in_yr()</script>

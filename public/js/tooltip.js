@@ -10,9 +10,10 @@ var Tooltip = {
        targets[i].addEventListener('mouseleave', Tooltip.hide);
     //  alert(targets[i]['title'])
     }
-    Tooltip.tooltip.addEventListener('click', Tooltip.hide);
-     window.addEventListener('resize', Tooltip.show);
-
+    if(Tooltip.tooltip) {
+      Tooltip.tooltip.addEventListener('click', Tooltip.hide);
+      window.addEventListener('resize', Tooltip.show);
+    }
   },
 
   show: function()

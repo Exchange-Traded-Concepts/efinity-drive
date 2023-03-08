@@ -7,19 +7,20 @@ var strengthbar = document.getElementById("meter");
 
 var display = document.getElementsByClassName("textbox")[0];
 
-code.addEventListener("keyup", function() {
-  checkpassword(code.value);
-});
+if(code) {
+  code.addEventListener("keyup", function () {
+    checkpassword(code.value);
+  });
 
-function showPass(){
-   const passField = document.getElementById('password')
-  if (passField.type === "password") {
-    passField.type = "text";
-  } else {
-    passField.type = "password";
+  function showPass() {
+    const passField = document.getElementById('password')
+    if (passField.type === "password") {
+      passField.type = "text";
+    } else {
+      passField.type = "password";
+    }
   }
 }
-
 
 
 function confirmPassword(){

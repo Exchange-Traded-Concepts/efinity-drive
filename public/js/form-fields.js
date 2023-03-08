@@ -1,9 +1,10 @@
 function num_format(el){
-  let formatted_number = number_format(el.value, 2,'.', ',')
-  return document.getElementById(el.id).value = formatted_number;
+  let value = el.value
+  let formatted_number = number_format(value, 2,'.', ',')
+  return el.value = formatted_number;
 }
 
-function addFields(){
+function addFieldsBAK(){
   // Generate a dynamic number of inputs
   //var number = document.getElementById("member").value;
   // Get the element where the inputs will be added to
