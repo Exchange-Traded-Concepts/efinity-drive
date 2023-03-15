@@ -43,6 +43,14 @@
   margin-left: 22px;
 }
 
+th, td{
+  padding: 8px 12px
+}
+
+.floatRight{
+  float:right;
+}
+
 </style>
 
 <div class="container-fluid">
@@ -56,7 +64,7 @@
   <div
     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
     <h6 class="m-0 font-weight-bold text-primary">Invoice</h6>
-    <div>Invoice Date {{invoice[0].invoice_date.toFormat('M/d/y') ||''}}</div>
+    <div><button onclick="confirmReturn()" style="cursor: pointer; color:#0F5EAC; ">Invoice Manager</button></div>
   </div>
   <div class="card-body">
     <form
@@ -75,12 +83,15 @@
           Fund: {{invoice[0].fund.ticker}} <br>{{invoice[0].fund.fund_name}}
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-5">
           Invoice Date: {{invoice[0].invoice_date.toFormat('M/d/y') ||''}}<br>
           Invoice For Date: {{invoice[0].invoice_for_date.toFormat('M/d/y') ||''}} <input type="hidden" name="invoice_for_date" id ="invoice_for_date" value="{{invoice[0].invoice_for_date}}"> <br>
           Invoice #: {{invoice[0].invoice_number}}<br>
           Days In Month: {{invoice[0].days_in_month}}<br>
 
+        </div>
+        <div class="col-md-1 floatRight" >
+          Clone
         </div>
       </div>
       <hr>
@@ -138,14 +149,15 @@
           </div>
         </div>
         <div class="col-md-4" >
-          <label class="income_input">Bps:</label>
-            <input
+          <!-- <label class="income_input">Bps:</label>
+           <input
               name="bps"
               type="text"
               id="bps"
               value="{{invoice[0].bps || ''}}"
               class="invoice_input">
           <br>
+          -->
           <!-- <label class="income_input">Vendor Bps:</label> <input name="vendor_bps"  type="number"  id="vendor_bps" value=".001" size="5" onblur="vendor_fee()" class="invoice_input"><br> -->
           <label class="income_input">Days in Year:</label> <input name="days_in_yr" type="number"  id="days_in_yr" value="" size="3" class="invoice_input"><br>
           <label class="income_input">Days In Month:</label> <input name="days_in_month"  type="number"  id="days_in_month" value="{{invoice[0].days_in_month ||''}}"  class="invoice_input"><br>
@@ -154,7 +166,7 @@
         </div>
 
         <div class="col-md-4" >
-          <label>Notes</label><br>
+          <label class="income_input">Notes:</label><br>
           <textarea name="notes" cols="26" rows="5" class="invoice_input"
             style="-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; width: 100%; text-align: left !important;"
           >{{invoice[0].notes || ''}}</textarea>
@@ -168,7 +180,7 @@
 
       </div>
       <hr>
-      <table id="invoice_transactions">
+      <table id="invoice_transactions" class="table-striped" width="100%">
         <thead></thead>
         <tbody>
         @if(transactions =='')
@@ -187,21 +199,21 @@
             <input class='desc_input' name='description[]' type='text' value=''>
           </td>
           <td>
-            <label class='desc_label'>Min Pmnt.:</label><input name='min_payment[]' id='min_payment' type='text' class='invoice_input' size='10' onblur='num_format(this)'>
+            <label class='desc_label'>Min Pmnt.:</label><input name='min_payment[]' value="0" id='min_payment' type='text' class='invoice_input' size='10' onblur='num_format(this)'>
           </td>
           <td>
-            <label class='desc_label'>Calculated Pmnt.:</label><input name='calc_payment[]' id='calc_payment' type='text' class='invoice_input' size='10' value='' onblur='num_format(this)'>
+            <label class='desc_label'>Calculated Pmnt.:</label><input name='calc_payment[]' value="0" id='calc_payment' type='text' class='invoice_input' size='10' value='' onblur='num_format(this)'>
           </td>
-          <td>
-            <label class='desc_label'>Total:</label><input name='total[]' type='text' id='total' class='invoice_input'  onblur='calculateRowTotal(this)'>
+          <td class="floatRight">
+            <label class='desc_label'>Total:</label><input name='total[]' type='text' id='total'  value="0" class='invoice_input'  onblur='calculateRowTotal(this)'>
           </td>
         </tr>
         @else
         @each((t, index) in transactions)
-        <tr>
+        <tr height="48px">
           <td>
             <label class='type_label'>Type:</label>
-            <select name='{{`type[${index +1}]`}}' class='invoice_input'>
+            <select name='type[]' class='invoice_input'>
               <option value='asset_based'
                       @if(t.type == 'asset_based')
               selected
@@ -234,20 +246,20 @@
           <td>
             <label class='desc_label'>Calculated Pmnt.:</label><input name="calc_payment[]"  type='text' class='invoice_input' size='10' value='{{t.calc_payment}}' onblur='num_format(this)'>
           </td>
-          <td>
+          <td class="floatRight">
             <label class='desc_label'>Total:</label>
             <input name="total[]" type='text' class='invoice_input'
 
                    onblur='calculateRowTotal(this)'
                    @if((t.calc_payment *1) < 0)
-            value="{{parseFloat(t.calc_payment).toLocaleString()}}"
+            value="{{parseFloat(t.calc_payment).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}}"
             @elseif((t.calc_payment* 1) > (t.min_payment*1))
             value="{{t.calc_payment}}"
             @else
             value="{{t.min_payment}}"
             @end
             >
-
+            <i class="fas fa-minus" style="color: #ca2819; cursor: pointer;" onclick="hideRow(this)"></i>
           </td>
         </tr>
         @end
@@ -257,11 +269,16 @@
         <tr>
           <td></td>
           <td colspan="3"></td>
-          <td><label class="desc_label">Total:</label><span id="total"></span></td>
+          <td><label class="desc_label" style="float: left">Total Exp:</label><span id="inv_total" style="text-align: right; float:right; display: inline-block; padding-right: 12px;"></span></td>
         </tr>
         <tr>
-          <td><a href="#" onclick="addFields()" style="text-decoration: none"><i class="fas fa-plus"></i></a></td>
-          <td colspan="4"></td>
+          <td></td>
+          <td colspan="3"></td>
+          <td><label class="desc_label" style="float: left">Net:</label><span id="inv_net" style="text-align: right; float:right; display: inline-block; padding-right: 12px;"></span></td>
+        </tr>
+        <tr>
+          <td><a href="javascript:void();" onclick="addFields()" style="text-decoration: none"><i class="fas fa-plus"></i></a></td>
+          <td colspan="3"></td>
           <td align="right"><button type="submit" class="btn btn-primary" style="text-align: right">Submit</button></td>
         </tr>
         </tfoot>
@@ -277,7 +294,7 @@
 </div>
 </div>
 <script defer>days_in_yr()</script>
-<script defer>calc_sheet()</script>
+<script defer>formatAll()</script>
 
 
 @endsection

@@ -31,6 +31,10 @@ export default class InvoicesController {
   public async create({request, session, auth, response}: HttpContextContract) {
 
     const data = await this.validateInput(request)
+    const fund = await Fund.findOrFail(request.input('fund_id'))
+    console.log(fund.exp_ratio)
+
+    let exp_ratio = fund.exp_ratio
 
     await Invoice.create({
       fundId: data.fund_id,
@@ -38,7 +42,7 @@ export default class InvoicesController {
       invoice_for_date: data.invoice_for_date,
       days_in_month: data.days_in_month,
       invoice_number: data.invoice_number,
-     // expense_ratio: data.expense_ratio,
+      expense_ratio: exp_ratio,
       // @ts-ignore
       created_by: auth.user.id
 
@@ -52,7 +56,7 @@ export default class InvoicesController {
     session.flash({notification: 'Invoice Created'})
 
     return response.redirect().toRoute('InvoicesController.transactions', {id: new_invoice_id[0].id , invoice} )
-    //return view.render('admin/invoice/transactions', { invoice, invoice_id: new_invoice_id[0]})
+
   }
 
   public async transactions({params, view}: HttpContextContract){

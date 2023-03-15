@@ -26,10 +26,11 @@ function addFields(){
     "<option value='other'>Other</option>" +
     "<option value='escrow'>Escrow</option>" +
     "</select>";
-  cell2.innerHTML = "<label class='desc_label'>Description:</label><input class='desc_input' name='description[]' type='text'>";
+  cell2.innerHTML = "<label class='desc_label'>Description:</label><input class='desc_input' name='description[]' type='text' onblur='stayLoggedIn()'>";
   cell3.innerHTML = "<label class='desc_label'>Min Pmnt.:</label><input name='min_payment[]' type='text' class='invoice_input' size='10' onblur='num_format(this)'>";
   cell4.innerHTML = " <label class='desc_label'>Calculated Pmnt.:</label><input name='calc_payment[]'  type='text' class='invoice_input' size='10' onblur='num_format(this)'>";
-  cell5.innerHTML = "<label class='desc_label'>Total:</label><input name='total[]' type='text' id='total' class='invoice_input' onblur='calculateRowTotal(this)'>";
+  cell5.innerHTML = "<label class='desc_label'>Total:&nbsp;</label><input name='total[]' type='text' id='total' class='invoice_input' onblur='calculateRowTotal(this)'>&nbsp;&nbsp;&nbsp;";
+  cell5.className = "floatRight";
 }
 
 function calculateRowTotal(totalInput) {
@@ -50,11 +51,12 @@ function calculateRowTotal(totalInput) {
   }
 
   // Set the value of the total input
-  totalInput.value = parseFloat(maxPayment).toLocaleString();
+  totalInput.value = parseFloat(maxPayment).toLocaleString('en-US',{minimumFractionDigits: 2, maximumFractionDigits: 2});
   updateTotalSum();
+  displayNet();
 }
 
-function updateTotalSum() {
+function calcExpSum(){
   const totalInputs = document.querySelectorAll('input[name="total[]"]');
   let sum = 0;
 
@@ -65,8 +67,79 @@ function updateTotalSum() {
       sum += value;
     }
   });
+  return sum;
+}
 
-  // Set the text of the total span to the sum
-  const totalSpan = document.getElementById('total');
-  totalSpan.textContent = sum.toFixed(2); // Round to 2 decimal places
+
+function updateTotalSum() {
+  let sum = calcExpSum()
+ // Set the text of the total span to the sum
+  const totalSpan = document.getElementById('inv_total');
+  totalSpan.textContent = parseFloat(sum).toLocaleString('en-US', {style: 'currency', currency: 'USD'}); // Round to 2 decimal places
+}
+
+function formatAll(){
+  const mins = document.querySelectorAll('input[name="min_payment[]"]');
+  const calcs = document.querySelectorAll('input[name="calc_payment[]"]');
+  const totals = document.querySelectorAll('input[name="total[]"]');
+  mins.forEach((min) => {
+    const val = min.value.replace(',', '');
+    min.value = parseFloat(val).toLocaleString('en-US' , {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  })
+  calcs.forEach((calc) => {
+    const val2 = calc.value.replace(',','');
+    calc.value = parseFloat(val2).toLocaleString('en-US' , {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  })
+  totals.forEach((total) => {
+    const val3 = total.value.replace(',','');
+    total.value = parseFloat(val3).toLocaleString('en-US' , {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  })
+  updateTotalSum();
+  displayNet();
+
+}
+
+
+function hideRow(button) {
+  const row = button.parentNode.parentNode; // Get the parent row
+  const descriptionInput = row.querySelector('input[name="description[]"]');
+  const totalInput = row.querySelector('input[name="total[]"]');
+
+  // Clear the description input field
+  descriptionInput.value = '';
+  totalInput.value=0;
+
+  // Hide the row
+  row.style.display = 'none';
+
+  // Update the total sum
+  updateTotalSum();
+  displayNet();
+}
+
+function calcNet(){
+  let exp = calcExpSum();
+  let income = parseFloat(document.getElementById('income').value.replace(',',''));
+
+  return parseFloat(income - exp)
+}
+
+function displayNet(){
+  let sum = calcNet();
+  const netSpan = document.getElementById('inv_net');
+  netSpan.textContent = parseFloat(sum).toLocaleString('en-US', {style: 'currency', currency: 'USD'}); // Round to 2 decimal places
+}
+
+function confirmReturn(){
+    let ask = window.confirm("Please make sure all updates have been submitted");
+    if (ask) {
+     // window.alert("This post was successfully deleted.");
+        location.href = "/invoice_admin";
+    }
+}
+
+function stayLoggedIn(){
+
+  fetch('/logged').then(r => 'logged');
+
 }
