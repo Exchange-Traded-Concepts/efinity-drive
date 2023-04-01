@@ -214,15 +214,17 @@ Route.group(() => {
   Route.get('/notes/:id', 'NotesController.index').middleware('isAdmin')
   Route.post('/notes', 'NotesController.create').middleware('isAdmin')
   }).middleware('editAdmin')
+// INVOICE
+
+Route.get('/show_invoice/:id', 'InvoicesController.showInvoice').as('pdf.invoice')
 
 Route.group(() => {
   Route.get('/invoice', 'InvoicesController.index').middleware('isAdmin')
   Route.get('/invoice_admin', 'InvoicesController.admin').middleware('isAdmin')
   Route.get('/invoice/:id', 'InvoicesController.transactions').middleware('isAdmin')
   Route.patch('/invoice/:id', 'InvoicesController.updateTransactions')
-  Route.get('/show_invoice/:id', 'InvoicesController.showInvoice')
-  Route.post('/invoice/send', 'InvoicesController.send')//.middleware('isAdmin')
-  Route.get('/pdf/invoice/', 'InvoicesController.generate').as('pdf.invoice')
+  Route.post('/invoice/send', 'InvoicesController.send').as('invoice.send')
+  // Route.get('/pdf/invoice/', 'InvoicesController.generate').as('pdf.invoice')
   Route.post('/invoice', 'InvoicesController.create').middleware('isAdmin')
   Route.post('/invoice_transactions', 'InvoicesController.update').middleware('isAdmin')
 }).middleware('editAdmin')

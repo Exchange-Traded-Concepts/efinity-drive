@@ -5,8 +5,10 @@ import Fund from "App/Models/Fund";
 import * as console from "console";
 import InvoiceTransaction from "App/Models/InvoiceTransaction";
 import Database from "@ioc:Adonis/Lucid/Database";
+import Event from '@ioc:Adonis/Core/Event'
+
 //import * as puppeteer from "puppeteer";
-//import Route from "@ioc:Adonis/Core/Route";
+import Route from "@ioc:Adonis/Core/Route";
 
 export default class InvoicesController {
   public async index({view}: HttpContextContract) {
@@ -91,7 +93,8 @@ export default class InvoicesController {
  */
   }
 
-  public async showInvoice({params, view}: HttpContextContract){
+  public async showInvoice({params, view,request}: HttpContextContract){
+    const isPdf = request.qs().isPdf
     const invoice = await Invoice.query()
       .preload('fund', (q)=>q.preload('client'))
       .where('id', params.id )
@@ -105,23 +108,30 @@ export default class InvoicesController {
     const transactions = await InvoiceTransaction.query().where('invoice_id', params.id).orderBy('type')
     const total_expenses = await Database.rawQuery('SELECT SUM(CASE WHEN calc_payment < 0 THEN calc_payment ELSE GREATEST(min_payment, calc_payment) END) AS total from invoice_transactions WHERE invoice_id =?', [params.id])
 
-    return view.render('admin/invoice/invoice', { invoice, invoice_id: params.id, transactions, total_expenses, asset_based, board_expenses, escrow, other, sum_type})
+    return view.render('admin/invoice/invoice', { isPdf, invoice, invoice_id: params.id, transactions, total_expenses, asset_based, board_expenses, escrow, other, sum_type})
   }
 
 
   public async generate({ request, response, view}: HttpContextContract) {
-    if (!request.hasValidSignature()) {
-      return response.badRequest('The route signature is invalid')
+  if (!request.hasValidSignature()) {
+      return response.badRequest('The route signature is invalid.')
     }
-   // const recipient = request.qs().recipient
-   // const user = await users.findOrFail(params.uid)
+    // const recipient = request.qs().recipient
+    // const user = await User.findOrFail(params.uid)
 
-    return view.render('invoice', {})
+    return view.render('admin/invoice/invoice', { invoice, invoice_id: params.id, transactions, total_expenses, asset_based, board_expenses, escrow, other, sum_type})
   }
 
-  public async send({ response }: HttpContextContract) {
+  public async send({ response,request }: HttpContextContract) {
+    const data= { isPdf: true}
+    const path = Route.makeSignedUrl('pdf.invoice', { id: request.input("user_id") }, { expiresIn: '3m', qs: data })
+    console.log({path})
+    Event.emit('send:invoice', {
+      userId: request.input("user_id"),
+      signedInvoicePath: path
+    })
 
-      return response.redirect().toPath('/')
+    return response.redirect().toPath('/invoice_admin')
   }
 
 

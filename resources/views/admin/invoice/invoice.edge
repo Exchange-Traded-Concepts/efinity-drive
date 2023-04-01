@@ -190,6 +190,15 @@
   </style>
 </head>
 <body>
+@if(!isPdf)
+  <form method="POST" action="{{ route('invoice.send') }}" class="max-w-sm">
+    {{ csrfField() }}
+    <input type="hidden" id="user_id" value="{{invoice_id}}" name="user_id" />
+    <button type="submit">
+      Generate Pdf
+    </button>
+  </form>
+@end
 <div style="display:flex; width: 100%; max-width: 800px; height: 100%; max-height: 792px; flex-direction: column">
 <div class="container" >
   <div class="col-md-6">
